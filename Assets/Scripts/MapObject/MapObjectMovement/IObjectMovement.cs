@@ -10,8 +10,10 @@ public interface IObjectMovement
     Vector3 accelerationDirection { get; set; }
     Vector3 velocity { get; }
     Vector3 acceleration { get; }
+    void ResetSpeedToDefault();
     void MoveBy(Vector3 distance);
     void MoveTo(Vector3 endPosition);
+    void Move();
     void Move(Vector3 moveDirection);
     void Move(Vector3 directmoveDirectionion, Vector3 accelerationDirection);
     void StopMoving();

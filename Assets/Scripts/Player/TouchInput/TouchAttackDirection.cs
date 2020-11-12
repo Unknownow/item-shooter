@@ -69,6 +69,8 @@ public class TouchAttackDirection : MonoBehaviour
         currentTouchPosition.z = 0;
 
         Vector3 direction = currentTouchPosition - _touchBeganPosition;
+        if (direction == Vector3.zero)
+            return;
         direction = direction.normalized;
         gameObject.GetComponent<IPlayerAttackSystem>().Attack(direction);
 

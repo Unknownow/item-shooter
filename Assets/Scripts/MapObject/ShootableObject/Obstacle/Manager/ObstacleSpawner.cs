@@ -14,8 +14,8 @@ public class ObstacleSpawner : MonoBehaviour
     private int minObstacleSpawnPerTime;
     [SerializeField]
     private int maxObstacleSpawnPerTime;
-    private float minTimeToSpawn = 0.8f;
-    private float maxTimeToSpawn = 2f;
+    private float minTimeToSpawn = 0.2f;
+    private float maxTimeToSpawn = 0.5f;
 
     private float _counter;
 
@@ -35,16 +35,13 @@ public class ObstacleSpawner : MonoBehaviour
     {
         if (_counter <= 0)
         {
-            int amountOfObstacle = Random.Range(minObstacleSpawnPerTime, maxObstacleSpawnPerTime);
-
-            for (int i = 0; i < amountOfObstacle; i++)
-            {
-                GameObject obstacle = ObstaclePool.instance.GetObstacle(ObstacleType.POINT_1);
-                Vector3 spawnPosition = new Vector3(Random.Range(0, Screen.width), Random.Range(Screen.height * 4.0f / 3, Screen.height * 5.0f / 3));
-                spawnPosition = Camera.main.ScreenToWorldPoint(spawnPosition);
-                obstacle.transform.position = new Vector3(spawnPosition.x, spawnPosition.y, 0);
-                obstacle.GetComponent<IShootableObject>().StartObject();
-            }
+            int[] listType = (int[])System.Enum.GetValues(typeof(ObstacleType));
+            ObstacleType randomType = (ObstacleType)listType[Random.Range(0, listType.Length)];
+            GameObject obstacle = ObstaclePool.instance.GetObstacle(randomType);
+            Vector3 spawnPosition = new Vector3(Random.Range(0, Screen.width), Random.Range(Screen.height * 4.0f / 3, Screen.height * 5.0f / 3));
+            spawnPosition = Camera.main.ScreenToWorldPoint(spawnPosition);
+            obstacle.transform.position = new Vector3(spawnPosition.x, spawnPosition.y, 0);
+            obstacle.GetComponent<IShootableObject>().StartObject();
 
             _counter = Random.Range(minTimeToSpawn, maxTimeToSpawn);
             return;

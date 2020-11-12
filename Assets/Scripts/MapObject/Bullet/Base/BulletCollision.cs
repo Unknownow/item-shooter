@@ -20,7 +20,7 @@ public class BulletCollision : MonoBehaviour
 
     protected void OnHitShootableObject(GameObject shootableObject)
     {
-        ShootableObjectCollision baseShootableObjectCollisionSystem = shootableObject.GetComponent<ShootableObjectCollision>();
-        baseShootableObjectCollisionSystem.OnGetHitByBullet(gameObject);
+        ShootableObjectCollision shootableObjectCollision = shootableObject.GetComponent<ShootableObjectCollision>();
+        shootableObjectCollision.OnGetHitByBullet(gameObject);
     }
 }

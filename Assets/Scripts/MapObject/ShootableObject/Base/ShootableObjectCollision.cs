@@ -2,17 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ShootableObjectCollision : MonoBehaviour
+public abstract class ShootableObjectCollision : MapObjectCollision
 {
-    public string GetClassName()
+    protected override void OnTriggerEnter2D(Collider2D other)
     {
-        return this.GetType().Name;
-    }
-    // ========== Fields and properties ==========
+        base.OnTriggerEnter2D(other);
 
-    // ========== MonoBehaviour methods ==========
-    protected virtual void OnTriggerEnter2D(Collider2D other)
-    {
         if (other.CompareTag(TagList.PLAYER))
         {
             OnHitPlayer(other.gameObject);

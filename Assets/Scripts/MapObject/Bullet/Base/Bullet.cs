@@ -4,10 +4,10 @@ using UnityEngine;
 
 public enum BulletType
 {
-    NORMAL_BULLET,
+    BULLET_NORMAL,
 }
 
-public class Bullet : MonoBehaviour
+public class Bullet : MonoBehaviour, IMapObject
 {
     public string GetClassName()
     {
@@ -22,6 +22,16 @@ public class Bullet : MonoBehaviour
         get
         {
             return this._type;
+        }
+    }
+
+    [SerializeField]
+    private MapObjectConfig _config;
+    public MapObjectConfig config
+    {
+        get
+        {
+            return _config;
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectCollision : MonoBehaviour
+public class MapObjectCollision : MonoBehaviour
 {
     public string GetClassName()
     {
@@ -10,7 +10,7 @@ public class ObjectCollision : MonoBehaviour
     }
 
     // ========== MonoBehaviour Methods ==========
-    private void OnTriggerEnter2D(Collider2D other)
+    protected virtual void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag(TagList.OBJECT_DESTROYER))
         {

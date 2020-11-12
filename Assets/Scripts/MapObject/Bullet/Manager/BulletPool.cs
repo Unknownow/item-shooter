@@ -44,10 +44,15 @@ public class BulletPool : MonoBehaviour
                 break;
             }
         }
+        
         if (bullet == null)
             bullet = CreateBullet(type);
-        bullet.transform.position = new Vector3(-100, -100, 0);
-        bullet.SetActive(true);
+
+        if (bullet != null)
+        {
+            bullet.transform.position = new Vector3(-100, -100, 0);
+            bullet.SetActive(true);
+        }
         return bullet;
     }
 

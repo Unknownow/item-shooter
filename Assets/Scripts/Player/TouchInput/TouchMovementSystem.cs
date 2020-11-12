@@ -10,7 +10,7 @@ public class TouchMovementSystem : MonoBehaviour
     // ========== Fields and properties ==========
     [SerializeField]
     private float _playerYPositionRatioToScreen;
-    
+
     private EventListener[] _eventListener = null;
     private Vector3 _lastTouchPosition = Vector3.zero;
     private Collider2D _playerCollider;
@@ -19,14 +19,12 @@ public class TouchMovementSystem : MonoBehaviour
     void Start()
     {
         _lastTouchPosition = Vector3.zero;
-        AddListeners();
         _playerCollider = gameObject.GetComponent<Collider2D>();
+        AddListeners();
     }
     private void Update()
     {
-        Vector3 position = transform.position;
-        position.y = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height * _playerYPositionRatioToScreen, 0)).y;
-        transform.position = position;
+        UpdatePlayerPosition();
     }
 
     private void AddListeners()
@@ -49,6 +47,13 @@ public class TouchMovementSystem : MonoBehaviour
     }
 
     // ========== Private Methods ==========
+    private void UpdatePlayerPosition()
+    {
+        Vector3 position = transform.position;
+        position.y = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height * _playerYPositionRatioToScreen, 0)).y;
+        transform.position = position;
+    }
+
     private bool CheckPositionInCameraBoundaries(Vector3 newPosition)
     {
         if (_playerCollider)

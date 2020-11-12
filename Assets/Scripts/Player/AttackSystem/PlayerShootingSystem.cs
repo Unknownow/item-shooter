@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerShootingBulletSystem : MonoBehaviour, IPlayerAttackSystem
+public class PlayerShootingSystem : MonoBehaviour, IPlayerAttackSystem
 {
     public string GetClassName()
     {
@@ -11,6 +11,18 @@ public class PlayerShootingBulletSystem : MonoBehaviour, IPlayerAttackSystem
 
     // ========== Fields and properties ==========
     private BulletType _currentBulletType;
+    public BulletType currentBulletType
+    {
+        get
+        {
+            return _currentBulletType;
+        }
+        set
+        {
+            _currentBulletType = value;
+        }
+    }
+    
     private Transform _gun;
 
     // ========== MonoBehaviour Methods ==========
@@ -45,6 +57,7 @@ public class PlayerShootingBulletSystem : MonoBehaviour, IPlayerAttackSystem
             else
                 direction = -Vector3.right;
         }
+
         GameObject bullet = BulletPool.instance.GetBullet(_currentBulletType);
         bullet.transform.position = _gun.position;
         bullet.GetComponent<IObjectMovement>().Move(direction);

@@ -46,8 +46,13 @@ public class ObstaclePool : MonoBehaviour
         }
         if (gotObject == null)
             gotObject = CreateObject(type);
-        gotObject.transform.position = new Vector3(-100, -100, 0);
-        gotObject.SetActive(true);
+
+        if (gotObject != null)
+        {
+            gotObject.transform.position = new Vector3(-100, -100, 0);
+            gotObject.SetActive(true);
+        }
+
         return gotObject;
     }
 

@@ -4,15 +4,15 @@ using UnityEngine;
 
 public enum ObstacleType
 {
-    POINT_1,
-    POINT_5,
-    POINT_10,
-    PENALTY_1,
-    PENALTY_5,
-    PENALTY_10,
+    ADD_POINT_1,
+    // ADD_POINT_2,
+    SUB_POINT_1,
+    // SUB_POINT_2,
+    // POWER_UP_1,
+    // POWER_UP_2,
 }
 
-public class Obstacle : MonoBehaviour, IShootableObject
+public class Obstacle : MonoBehaviour, IShootableObject, IMapObject
 {
     public string GetClassName()
     {
@@ -29,10 +29,26 @@ public class Obstacle : MonoBehaviour, IShootableObject
         }
     }
 
+    [SerializeField]
+    private ObstacleConfig _config;
+    public MapObjectConfig config
+    {
+        get
+        {
+            return _config;
+        }
+    }
+
+    private void Awake()
+    {
+    }
+
     public void StartObject()
     {
         LogUtils.instance.Log(GetClassName(), "StartMoving", "NOT_YET_IMPLEMENT");
         gameObject.GetComponent<IObjectMovement>().Move(Vector3.down, Vector3.down);
+        gameObject.GetComponent<IObjectMovement>().movementSpeed = Random.Range(2,10);
+        gameObject.GetComponent<IObjectMovement>().accelerationRate = Random.Range(10,20);
     }
 
     public void DestroyObject()

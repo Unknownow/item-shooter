@@ -21,9 +21,19 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
     [SerializeField]
     [Tooltip("Default direction for this object. Used to rotate with velocity")]
     private Vector3 _defaultDirection = Vector3.up;
+
     [SerializeField]
-    [Tooltip("Movement config. Should be implement IObjectMovement interface")]
-    private ObjectConfig _config;
+    [Tooltip("Movement config. Leave it empty to get default config of object")]
+    private MapObjectConfig _movementConfig;
+    public MapObjectConfig movementConfig
+    {
+        get
+        {
+            if (_movementConfig == null)
+                _movementConfig = gameObject.GetComponent<IMapObject>().config;
+            return _movementConfig;
+        }
+    }
 
     private float _movementSpeed;
     public float movementSpeed
@@ -36,6 +46,13 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
         {
             this._movementSpeed = value;
             _velocity = velocity.normalized * value;
+        }
+    }
+    public float currentMovementSpeed
+    {
+        get
+        {
+            return velocity.sqrMagnitude;
         }
     }
     private float _accelerationRate;
@@ -97,16 +114,7 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
     // ========== MonoBehaviour Methods ==========
     private void Awake()
     {
-        if (_config != null)
-        {
-            movementSpeed = _config.MOVEMENT_SPEED;
-            accelerationRate = _config.ACCELERATION_RATE;
-        }
-        else
-        {
-            movementSpeed = 0;
-            accelerationRate = 0;
-        }
+        ResetSpeedToDefault();
         _endPosition = transform.position;
     }
 
@@ -117,6 +125,20 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
     }
 
     // ========== Public Methods ==========
+    public void ResetSpeedToDefault()
+    {
+        if (movementConfig != null)
+        {
+            movementSpeed = movementConfig.MOVEMENT_SPEED;
+            accelerationRate = movementConfig.ACCELERATION_RATE;
+        }
+        else
+        {
+            movementSpeed = 0;
+            accelerationRate = 0;
+        }
+    }
+
     public void MoveBy(Vector3 distance)
     {
         _endPosition = transform.position + distance;
@@ -135,6 +157,11 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
         Vector3 direction = _endPosition - transform.position;
         direction = direction.normalized;
         moveDirection = direction;
+    }
+
+    public void Move()
+    {
+        LogUtils.instance.Log(GetClassName(), "Move()", "NOT OVERRIDED!");
     }
 
     public void Move(Vector3 moveDirection)
