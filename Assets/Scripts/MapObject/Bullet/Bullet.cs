@@ -7,7 +7,7 @@ public enum BulletType
     NORMAL_BULLET,
 }
 
-public class BaseBullet : MonoBehaviour
+public class Bullet : MonoBehaviour
 {
     public string GetClassName()
     {

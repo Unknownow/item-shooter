@@ -8,7 +8,7 @@ public enum MoveType
     HAS_END_POINT
 }
 
-public class StraightBulletMovement : MonoBehaviour, IBulletMovement
+public class StraightObjectMovement : MonoBehaviour, IObjectMovement
 {
     public string GetClassName()
     {
@@ -20,9 +20,10 @@ public class StraightBulletMovement : MonoBehaviour, IBulletMovement
     private bool _rotateWithVelocity;
     [SerializeField]
     [Tooltip("Default direction for this object. Used to rotate with velocity")]
-    private Vector3 _defaultDirectionVector = Vector3.up;
+    private Vector3 _defaultDirection = Vector3.up;
     [SerializeField]
-    private NormalBulletConfig _config;
+    [Tooltip("Movement config. Should be implement IObjectMovement interface")]
+    private ObjectConfig _config;
 
     private float _movementSpeed;
     public float movementSpeed
@@ -96,8 +97,17 @@ public class StraightBulletMovement : MonoBehaviour, IBulletMovement
     // ========== MonoBehaviour Methods ==========
     private void Awake()
     {
-        movementSpeed = _config.MOVEMENT_SPEED;
-        accelerationRate = _config.ACCELERATION_RATE;
+        if (_config != null)
+        {
+            movementSpeed = _config.MOVEMENT_SPEED;
+            accelerationRate = _config.ACCELERATION_RATE;
+        }
+        else
+        {
+            movementSpeed = 0;
+            accelerationRate = 0;
+        }
+        _endPosition = transform.position;
     }
 
     private void Update()
@@ -127,13 +137,21 @@ public class StraightBulletMovement : MonoBehaviour, IBulletMovement
         moveDirection = direction;
     }
 
-    public void Move(Vector3 direction)
+    public void Move(Vector3 moveDirection)
     {
         _endPosition = Vector3.zero;
         _moveType = MoveType.INFINITE;
 
-        direction = direction.normalized;
-        moveDirection = direction;
+        this.moveDirection = moveDirection.normalized;
+    }
+
+    public void Move(Vector3 moveDirection, Vector3 accelerationDirection)
+    {
+        _endPosition = Vector3.zero;
+        _moveType = MoveType.INFINITE;
+
+        this.moveDirection = moveDirection.normalized;
+        this.accelerationDirection = accelerationDirection.normalized;
     }
 
     public void StopMoving()
@@ -171,7 +189,7 @@ public class StraightBulletMovement : MonoBehaviour, IBulletMovement
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.position + _defaultDirectionVector.normalized);
+        Gizmos.DrawLine(transform.position, transform.position + _defaultDirection.normalized);
 
         Gizmos.color = Color.white;
         Gizmos.DrawLine(transform.position, transform.position + velocity);

@@ -11,6 +11,21 @@ public class PlayerShootingBulletSystem : MonoBehaviour, IPlayerAttackSystem
 
     // ========== Fields and properties ==========
     private BulletType _currentBulletType;
+    private Transform _gun;
+
+    // ========== MonoBehaviour Methods ==========
+    private void Awake()
+    {
+        // Get gun in child
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            if (transform.GetChild(i).CompareTag(TagList.PLAYER_GUN))
+            {
+                _gun = transform.GetChild(i);
+                break;
+            }
+        }
+    }
 
     // ========== Public methods ==========
     public void Attack()
@@ -20,10 +35,19 @@ public class PlayerShootingBulletSystem : MonoBehaviour, IPlayerAttackSystem
 
     public void Attack(Vector3 direction)
     {
-        LogUtils.instance.Log(GetClassName(), "Attack(Vector3 direction)", "NOT YET OVERRIDE");
+        LogUtils.instance.Log(GetClassName(), "Attack(Vector3 direction)", direction.ToString());
+        float directionAngle = Vector3.Angle(Vector3.up, direction);
+        if (directionAngle > 90)
+        {
+            LogUtils.instance.Log(GetClassName(), "Attack(Vector3 direction)", "DIRECTION_ANGLE = ", directionAngle.ToString(), "NOT_VALID");
+            if (Vector3.Angle(Vector3.right, direction) < 90)
+                direction = Vector3.right;
+            else
+                direction = -Vector3.right;
+        }
         GameObject bullet = BulletPool.instance.GetBullet(_currentBulletType);
-        bullet.transform.position = transform.position;
-        bullet.GetComponent<IBulletMovement>().Move(direction);
+        bullet.transform.position = _gun.position;
+        bullet.GetComponent<IObjectMovement>().Move(direction);
     }
 
     public void Attack(GameObject target)

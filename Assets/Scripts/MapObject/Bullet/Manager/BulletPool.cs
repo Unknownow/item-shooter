@@ -35,11 +35,11 @@ public class BulletPool : MonoBehaviour
         GameObject bullet = null;
         foreach (GameObject obj in _pool)
         {
-            LogUtils.instance.Log(GetClassName(), "GET_OBJECT", obj.activeSelf.ToString());
-            BaseBullet baseBullet = obj.GetComponent<BaseBullet>();
+            // LogUtils.instance.Log(GetClassName(), "GET_OBJECT", obj.activeSelf.ToString());
+            Bullet baseBullet = obj.GetComponent<Bullet>();
             if (baseBullet != null && baseBullet.type == type && obj.activeSelf == false)
             {
-                LogUtils.instance.Log(GetClassName(), "GetObject", obj.activeSelf.ToString());
+                // LogUtils.instance.Log(GetClassName(), "GetObject", obj.activeSelf.ToString());
                 bullet = obj;
                 break;
             }
@@ -54,23 +54,23 @@ public class BulletPool : MonoBehaviour
     // ========== Private Methods ==========
     private GameObject CreateBullet(BulletType type, Transform parent = null)
     {
-        LogUtils.instance.Log(GetClassName(), "CreateObject");
+        // LogUtils.instance.Log(GetClassName(), "CreateObject");
         GameObject objectPrefab = null;
         GameObject createdObject = null;
 
-        LogUtils.instance.Log(GetClassName(), "_prefabsList length", (_prefabsList.Count).ToString());
+        // LogUtils.instance.Log(GetClassName(), "_prefabsList length", (_prefabsList.Count).ToString());
         foreach (GameObject prefab in _prefabsList)
         {
-            BaseBullet baseBullet = prefab.GetComponent<BaseBullet>();
-            LogUtils.instance.Log(GetClassName(), "baseBullet", (baseBullet.type).ToString());
+            Bullet baseBullet = prefab.GetComponent<Bullet>();
+            // LogUtils.instance.Log(GetClassName(), "baseBullet", (baseBullet.type).ToString());
             if (baseBullet != null && baseBullet.type == type)
             {
-                LogUtils.instance.Log(GetClassName(), "CreateObject", (baseBullet.type == type).ToString());
+                // LogUtils.instance.Log(GetClassName(), "CreateObject", (baseBullet.type == type).ToString());
                 objectPrefab = prefab;
                 break;
             }
         }
-        LogUtils.instance.Log(GetClassName(), "CreateObject", "(objectPrefab != null)", (objectPrefab != null).ToString());
+        // LogUtils.instance.Log(GetClassName(), "CreateObject", "(objectPrefab != null)", (objectPrefab != null).ToString());
         if (objectPrefab != null)
         {
             if (parent == null)
@@ -78,7 +78,7 @@ public class BulletPool : MonoBehaviour
             createdObject = GameObject.Instantiate(objectPrefab, Vector3.zero, Quaternion.identity, parent);
             if (createdObject != null)
             {
-                LogUtils.instance.Log(GetClassName(), "CreateObject", "(createdObject != null)", (createdObject != null).ToString());
+                // LogUtils.instance.Log(GetClassName(), "CreateObject", "(createdObject != null)", (createdObject != null).ToString());
                 createdObject.SetActive(false);
                 _pool.Add(createdObject);
             }

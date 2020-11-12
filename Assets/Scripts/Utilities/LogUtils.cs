@@ -26,14 +26,14 @@ public class LogUtils
     }
 
     // ========== Public Methods ==========
-    public void Log(params string[] logs)
+    public void Log(params object[] logs)
     {
-    //     if (!GameSetting.isLog)
-    //         return;
+        if (!GameSetting.isLog)
+            return;
         string logString = "";
         for (int i = 0; i < logs.Length; i++)
         {
-            logString += logs[i];
+            logString += logs[i].ToString();
             if (i < logs.Length - 1)
                 logString += " ";
         }
