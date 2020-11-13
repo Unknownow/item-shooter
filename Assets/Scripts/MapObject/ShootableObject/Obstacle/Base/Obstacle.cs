@@ -46,9 +46,9 @@ public class Obstacle : MonoBehaviour, IShootableObject, IMapObject
     public void StartObject()
     {
         LogUtils.instance.Log(GetClassName(), "StartMoving", "NOT_YET_IMPLEMENT");
+        gameObject.GetComponent<IObjectMovement>().movementSpeed = Random.Range(2, 4);
+        gameObject.GetComponent<IObjectMovement>().accelerationRate = Random.Range(10, 12);
         gameObject.GetComponent<IObjectMovement>().Move(Vector3.down, Vector3.down);
-        gameObject.GetComponent<IObjectMovement>().movementSpeed = Random.Range(2,10);
-        gameObject.GetComponent<IObjectMovement>().accelerationRate = Random.Range(10,20);
     }
 
     public void DestroyObject()

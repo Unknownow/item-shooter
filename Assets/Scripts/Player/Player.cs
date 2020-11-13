@@ -4,15 +4,56 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public string GetClassName()
     {
-        
+        return this.GetType().Name;
     }
 
-    // Update is called once per frame
-    void Update()
+    // ========== Fields and properties ==========
+    [SerializeField]
+    private int _maxHealthPoint;
+    public int _currentHealthPoint;
+    public int currentHealthPoint
     {
-        
+        get
+        {
+            return _currentHealthPoint;
+        }
+    }
+
+    // ========== MonoBehaviour methods ==========
+    private void Awake()
+    {
+        _currentHealthPoint = _maxHealthPoint;
+    }
+
+    // ========== Public methods ==========
+    public void OnGetHit(int damageAmount)
+    {
+        if (damageAmount <= 0)
+        {
+            LogUtils.instance.Log(GetClassName(), "OnGetHit", "DAMAGE_AMOUNT =", damageAmount, "<=0 NOT_VALID");
+            return;
+        }
+        int newHealthPoint = _currentHealthPoint - damageAmount;
+        _currentHealthPoint = (newHealthPoint < 0) ? 0 : newHealthPoint;
+        if (_currentHealthPoint <= 0)
+            EventSystem.instance.DispatchEvent(EventCode.ON_PLAYER_DIED, new object[] { });
+    }
+
+    public void OnHeal(int healAmount)
+    {
+        if (healAmount <= 0)
+        {
+            LogUtils.instance.Log(GetClassName(), "OnHeal", "HEAL_AMOUNT =", healAmount, "<=0 NOT_VALID");
+            return;
+        }
+        if (_currentHealthPoint <= 0)
+        {
+            LogUtils.instance.Log(GetClassName(), "OnHeal", "PLAYER_ALREADY_DEAD");
+            return;
+        }
+        int newHealthPoint = _currentHealthPoint + healAmount;
+        _currentHealthPoint = (newHealthPoint > _maxHealthPoint) ? _maxHealthPoint : newHealthPoint;
     }
 }

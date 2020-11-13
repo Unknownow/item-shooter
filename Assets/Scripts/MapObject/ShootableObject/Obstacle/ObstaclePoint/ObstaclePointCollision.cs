@@ -31,13 +31,14 @@ public class ObstaclePointCollision : ShootableObjectCollision
             Manager.instance.AddPoint(config.POINT);
         else
             Manager.instance.SubPoint(Mathf.Abs(config.POINT));
+        gameObject.SetActive(false);
         return;
     }
 
     // // ========== Protected methods ==========
     protected override void OnHitPlayer(GameObject player)
     {
-        LogUtils.instance.Log(GetClassName(), "OnGetHitByBullet", "NOT YET IMPLEMENT!");
+        player.GetComponent<Player>().OnGetHit(config.DAMAGE);
         return;
     }
 }
