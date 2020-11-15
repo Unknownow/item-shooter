@@ -9,14 +9,20 @@ public abstract class ShootableObjectCollision : MapObjectCollision
         base.OnTriggerEnter2D(other);
 
         if (other.CompareTag(TagList.PLAYER))
-        {
             OnHitPlayer(other.gameObject);
-        }
     }
 
     // ========== Public methods ==========
-    public abstract void OnGetHitByBullet(GameObject bullet);
+    public virtual void OnGetHitByBullet(GameObject bullet)
+    {
+        gameObject.GetComponent<IShootableObject>().DestroyObjectByBullet();
+    }
 
     // ========== Protected methods ==========
     protected abstract void OnHitPlayer(GameObject player);
+    protected override void OnHitDestroyer()
+    {
+        base.OnHitDestroyer();
+        gameObject.GetComponent<IShootableObject>().DeactivateObject();
+    }
 }

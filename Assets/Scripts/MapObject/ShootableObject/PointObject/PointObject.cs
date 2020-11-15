@@ -39,6 +39,9 @@ public class PointObject : MonoBehaviour, IShootableObject, IMapObject
         }
     }
 
+    [SerializeField]
+    private float _timeBeforeDeactivateObject;
+
     private void Awake()
     {
     }
@@ -53,16 +56,18 @@ public class PointObject : MonoBehaviour, IShootableObject, IMapObject
         ResetObject();
         float defaultMovementSpeed = gameObject.GetComponent<IObjectMovement>().movementSpeed;
         gameObject.GetComponent<IObjectMovement>().movementSpeed = defaultMovementSpeed * (1 + percentIncrease / 100);
-
         float defaultAccelerationRate = gameObject.GetComponent<IObjectMovement>().accelerationRate;
         gameObject.GetComponent<IObjectMovement>().accelerationRate = defaultAccelerationRate * (1 + percentIncrease / 100);
-
         gameObject.GetComponent<IObjectMovement>().Move(Vector3.down, Vector3.down);
+
+        gameObject.GetComponent<PointObjectAnimation>().DoEffectStartObject();
     }
 
-    public void DestroyObject()
+    public void DestroyObjectByBullet()
     {
-        LogUtils.instance.Log(GetClassName(), "DestroyObject", "NOT_YET_IMPLEMENT");
+        gameObject.GetComponent<PointObjectAnimation>().DoEffectDestroyObject();
+        gameObject.GetComponent<Collider2D>().enabled = false;
+        Invoke("DeactivateObject", _timeBeforeDeactivateObject);
     }
 
     public void ResetObject()
@@ -71,5 +76,14 @@ public class PointObject : MonoBehaviour, IShootableObject, IMapObject
         gameObject.GetComponent<IObjectMovement>().moveDirection = Vector3.zero;
         gameObject.GetComponent<IObjectMovement>().accelerationDirection = Vector3.zero;
         gameObject.GetComponent<IObjectMovement>().ResetSpeedToDefault();
+
+        gameObject.GetComponent<PointObjectAnimation>().ResetEffectObject();
+        gameObject.GetComponent<Collider2D>().enabled = true;
+    }
+
+    public void DeactivateObject()
+    {
+        gameObject.SetActive(false);
+        ResetObject();
     }
 }

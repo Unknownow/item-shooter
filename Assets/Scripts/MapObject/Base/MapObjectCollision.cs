@@ -14,8 +14,13 @@ public class MapObjectCollision : MonoBehaviour
     {
         if (other.CompareTag(TagList.OBJECT_DESTROYER))
         {
-            LogUtils.instance.Log(GetClassName(), "NAME =", gameObject.name, "DESTROYED");
-            gameObject.SetActive(false);
+            OnHitDestroyer();
         }
+    }
+
+    protected virtual void OnHitDestroyer()
+    {
+        // LogUtils.instance.Log(GetClassName(), "NAME =", gameObject.name, "DESTROYED");
+        gameObject.SetActive(false);
     }
 }

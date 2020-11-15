@@ -6,6 +6,7 @@ public interface IShootableObject
 {
     void StartObject(float percentIncrease);
     void StartObject();
-    void DestroyObject();
+    void DestroyObjectByBullet();
     void ResetObject();
+    void DeactivateObject();
 }
