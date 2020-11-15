@@ -212,7 +212,7 @@ GameObject:
   - component: {fileID: 73839851}
   - component: {fileID: 73839852}
   m_Layer: 0
-  m_Name: obstacle_pool
+  m_Name: point_object_pool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -246,7 +246,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _prefabsList:
   - {fileID: 1610606110056743020, guid: 1f11220ca3f18410dacbe5cef59f66be, type: 3}
+  - {fileID: 1610606110056743020, guid: ed2aed37eeab1486f904396df6d373fe, type: 3}
+  - {fileID: 1610606110056743020, guid: 646492d67a02d46d5a60a64a65206e74, type: 3}
   - {fileID: 317710345821911773, guid: e700fb541aed946b7abf6a5e9079c258, type: 3}
+  - {fileID: 317710345821911773, guid: 95d1a7ef4f5b54bfe8a904f57f1fcc40, type: 3}
+  - {fileID: 317710345821911773, guid: 28e00dbd0960345d9a8d3f423d1db1f0, type: 3}
 --- !u!114 &73839852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,8 +263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 128febb6cf47f4e919fc71b101996058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minObstacleSpawnPerTime: -63
-  maxObstacleSpawnPerTime: 0
+  _config: {fileID: 11400000, guid: b751626c7323d456aa72de73e684e14d, type: 2}
 --- !u!1 &127599934
 GameObject:
   m_ObjectHideFlags: 0
@@ -386,7 +389,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07867102eb7b94815ad626c549571134, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _totalPoint: 0
   _playerPrefab: {fileID: 6645981994848035013, guid: 87a9ef77d51d846118d627021b845d37,
     type: 3}
 --- !u!1 &519420028

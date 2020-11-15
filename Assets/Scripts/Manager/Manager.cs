@@ -25,7 +25,7 @@ public class Manager : MonoBehaviour
     }
 
     // ========== Fields and properties ==========
-    public int _totalPoint;
+    private int _totalPoint;
     public int totalPoint
     {
         get

@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObstaclePointCollision : ShootableObjectCollision
+public class PointObjectCollision : ShootableObjectCollision
 {
     // ========== Fields and properties ==========
-    private Obstacle _baseObstacle;
+    private PointObject _basePointObject;
 
-    private ObstacleConfig _config;
-    private ObstacleConfig config
+    private PointObjectConfig _config;
+    private PointObjectConfig config
     {
         get
         {
             if (_config == null)
-                _config = (ObstacleConfig)gameObject.GetComponent<IMapObject>().config;
+                _config = (PointObjectConfig)gameObject.GetComponent<IMapObject>().config;
             return _config;
         }
     }
@@ -21,7 +21,7 @@ public class ObstaclePointCollision : ShootableObjectCollision
     // ========== MonoBehaviour methods ==========
     private void Awake()
     {
-        _baseObstacle = gameObject.GetComponent<Obstacle>();
+        _basePointObject = gameObject.GetComponent<PointObject>();
     }
 
     // ========== Public methods ==========

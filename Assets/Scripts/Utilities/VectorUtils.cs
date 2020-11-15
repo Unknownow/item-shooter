@@ -20,11 +20,6 @@ public class VectorUtils
         }
     }
 
-    // public static float Angle(Vector3 from, Vector3 to)
-    // {
-    //     return Mathf.Atan2(to.y - from.y, to.x - from.x);
-    // }
-
     public float AngleBetweenInRad(Vector2 from, Vector2 to)
     {
         return Mathf.Atan2(from.y - to.y, from.x - to.x);

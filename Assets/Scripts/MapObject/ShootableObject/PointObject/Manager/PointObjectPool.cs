@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObstaclePool : MonoBehaviour
+public class PointObjectPool : MonoBehaviour
 {
     public string GetClassName()
     {
@@ -10,8 +10,8 @@ public class ObstaclePool : MonoBehaviour
     }
 
     // ========== Fields and properties ==========
-    private static ObstaclePool _instance;
-    public static ObstaclePool instance
+    private static PointObjectPool _instance;
+    public static PointObjectPool instance
     {
         get
         {
@@ -22,7 +22,7 @@ public class ObstaclePool : MonoBehaviour
     [SerializeField]
     private List<GameObject> _prefabsList = new List<GameObject>();
     private List<GameObject> _pool;
-    private ObstaclePool()
+    private PointObjectPool()
     {
         if (_instance == null)
             _instance = this;
@@ -30,14 +30,14 @@ public class ObstaclePool : MonoBehaviour
     }
 
     // ========== Public Methods ==========
-    public GameObject GetObstacle(ObstacleType type)
+    public GameObject GetPointObject(PointObjectType type)
     {
         GameObject gotObject = null;
         foreach (GameObject obj in _pool)
         {
             // LogUtils.instance.Log(GetClassName(), "GET_OBJECT", obj.activeSelf.ToString());
-            Obstacle baseObstacle = obj.GetComponent<Obstacle>();
-            if (baseObstacle != null && baseObstacle.type == type && obj.activeSelf == false)
+            PointObject basePointObject = obj.GetComponent<PointObject>();
+            if (basePointObject != null && basePointObject.type == type && obj.activeSelf == false)
             {
                 // LogUtils.instance.Log(GetClassName(), "GetObject", obj.activeSelf.ToString());
                 gotObject = obj;
@@ -57,7 +57,7 @@ public class ObstaclePool : MonoBehaviour
     }
 
     // ========== Private Methods ==========
-    private GameObject CreateObject(ObstacleType type, Transform parent = null)
+    private GameObject CreateObject(PointObjectType type, Transform parent = null)
     {
         // LogUtils.instance.Log(GetClassName(), "CreateObject");
         GameObject objectPrefab = null;
@@ -66,7 +66,7 @@ public class ObstaclePool : MonoBehaviour
         // LogUtils.instance.Log(GetClassName(), "_prefabsList length", (_prefabsList.Count).ToString());
         foreach (GameObject prefab in _prefabsList)
         {
-            Obstacle baseObject = prefab.GetComponent<Obstacle>();
+            PointObject baseObject = prefab.GetComponent<PointObject>();
             // LogUtils.instance.Log(GetClassName(), "baseObject", (baseObject.type).ToString());
             if (baseObject != null && baseObject.type == type)
             {
