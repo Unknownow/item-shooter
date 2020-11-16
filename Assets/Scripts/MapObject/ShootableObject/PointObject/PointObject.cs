@@ -42,10 +42,7 @@ public class PointObject : MonoBehaviour, IShootableObject, IMapObject
     [SerializeField]
     private float _timeBeforeDeactivateObject;
 
-    private void Awake()
-    {
-    }
-
+    // ========== Public methods ==========
     public void StartObject()
     {
         LogUtils.instance.Log(GetClassName(), "StartObject", "NOT_YET_IMPLEMENT");
