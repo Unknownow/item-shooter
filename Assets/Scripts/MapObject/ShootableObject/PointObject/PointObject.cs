@@ -57,14 +57,25 @@ public class PointObject : MonoBehaviour, IShootableObject, IMapObject
         gameObject.GetComponent<IObjectMovement>().accelerationRate = defaultAccelerationRate * (1 + percentIncrease / 100);
         gameObject.GetComponent<IObjectMovement>().Move(Vector3.down, Vector3.down);
 
-        gameObject.GetComponent<PointObjectAnimation>().DoEffectStartObject();
+        gameObject.GetComponent<IShootableObjectAnimation>().DoEffectStartObject();
     }
 
     public void DestroyObjectByBullet()
     {
-        gameObject.GetComponent<PointObjectAnimation>().DoEffectDestroyObject();
+        gameObject.GetComponent<IShootableObjectAnimation>().DoEffectDestroyObject();
         gameObject.GetComponent<Collider2D>().enabled = false;
         Invoke("DeactivateObject", _timeBeforeDeactivateObject);
+    }
+
+    public void DestroyObjectByEffectObject(EffectObjectType type)
+    {
+        switch (type)
+        {
+            case EffectObjectType.BOMB:
+                OnDestroyedByBomb();
+                break;
+        }
+
     }
 
     public void ResetObject()
@@ -74,7 +85,7 @@ public class PointObject : MonoBehaviour, IShootableObject, IMapObject
         gameObject.GetComponent<IObjectMovement>().accelerationDirection = Vector3.zero;
         gameObject.GetComponent<IObjectMovement>().ResetSpeedToDefault();
 
-        gameObject.GetComponent<PointObjectAnimation>().ResetEffectObject();
+        gameObject.GetComponent<IShootableObjectAnimation>().ResetEffectObject();
         gameObject.GetComponent<Collider2D>().enabled = true;
     }
 
@@ -82,5 +93,14 @@ public class PointObject : MonoBehaviour, IShootableObject, IMapObject
     {
         gameObject.SetActive(false);
         ResetObject();
+    }
+
+    // ========== Private methods ==========
+    private void OnDestroyedByBomb()
+    {
+        PointObjectConfig currentConfig = (PointObjectConfig)config;
+        if (currentConfig.POINT > 0)
+            Manager.instance.AddPoint(currentConfig.POINT);
+        DeactivateObject();
     }
 }

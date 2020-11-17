@@ -32,4 +32,25 @@ public class ObjectUtils
             return true;
         return false;
     }
+
+    public bool CheckIfSpriteInScreen(SpriteRenderer spriteRenderer)
+    {
+        Bounds rendererBound = spriteRenderer.bounds;
+        Vector2 minScreenPosition = Camera.main.ScreenToWorldPoint(Vector2.zero);
+        Vector2 maxScreenPosition = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
+        return rendererBound.min.x >= minScreenPosition.x &&
+            rendererBound.min.y >= minScreenPosition.y &&
+            rendererBound.max.x <= maxScreenPosition.x &&
+            rendererBound.max.y <= maxScreenPosition.y;
+
+    }
+
+    public bool CheckIfSpriteAppearInScreen(SpriteRenderer spriteRenderer)
+    {
+        Bounds rendererBound = spriteRenderer.bounds;
+        Vector2 minScreenPosition = Camera.main.ScreenToWorldPoint(Vector2.zero);
+        Vector2 maxScreenPosition = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
+        return (rendererBound.min.x > minScreenPosition.x - rendererBound.size.x && rendererBound.min.x < maxScreenPosition.x) &&
+        (rendererBound.min.y > minScreenPosition.y - rendererBound.size.y && rendererBound.min.y < maxScreenPosition.y);
+    }
 }

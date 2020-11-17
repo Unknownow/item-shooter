@@ -25,6 +25,7 @@ public class Manager : MonoBehaviour
     }
 
     // ========== Fields and properties ==========
+    [SerializeField]
     private int _totalPoint;
     public int totalPoint
     {
