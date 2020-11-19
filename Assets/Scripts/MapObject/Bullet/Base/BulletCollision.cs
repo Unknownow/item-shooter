@@ -19,7 +19,7 @@ public class BulletCollision : MonoBehaviour
     protected void OnHitShootableObject(GameObject shootableObject)
     {
         SpriteRenderer renderer = shootableObject.gameObject.GetComponent<SpriteRenderer>();
-        if (renderer == null || !ObjectUtils.instance.CheckIfSpriteAppearInScreen(renderer))
+        if (renderer == null || !ObjectUtils.CheckIfSpriteAppearInScreen(renderer))
             return;
 
         ShootableObjectCollision shootableObjectCollision = shootableObject.GetComponent<ShootableObjectCollision>();

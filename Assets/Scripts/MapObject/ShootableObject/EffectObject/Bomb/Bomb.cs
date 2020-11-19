@@ -71,7 +71,7 @@ public class Bomb : EffectObject
             SpriteRenderer renderer = collider.GetComponent<SpriteRenderer>();
             if (renderer == null)
                 continue;
-            if (!ObjectUtils.instance.CheckIfSpriteInScreen(renderer))
+            if (!ObjectUtils.CheckIfSpriteInScreen(renderer))
                 continue;
 
             PointObject pointObject = collider.GetComponent<PointObject>();

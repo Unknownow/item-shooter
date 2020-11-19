@@ -1,27 +1,9 @@
 ﻿using UnityEngine;
 
-public class TouchUtils
+public static class TouchUtils
 {
-    public string getClassName()
-    {
-        return this.GetType().Name;
-    }
-
-    // ========== Fields and properties ==========
-    private static TouchUtils _instance;
-
-    public static TouchUtils instance
-    {
-        get
-        {
-            if (_instance == null)
-                _instance = new TouchUtils();
-            return _instance;
-        }
-    }
-
     // ========== Public Methods ==========
-    public Touch GetTouchByFingerID(int fingerId)
+    public static Touch GetTouchByFingerID(int fingerId)
     {
         if (Input.touchCount <= 0)
             throw new UnityException("NO TOUCHES EXIST");

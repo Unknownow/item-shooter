@@ -65,7 +65,7 @@ public class PointObjectSpawner : MonoBehaviour
             }
         }
 
-        ArrayUtils.instance.Shuffle<PointObjectType>(_spawnArray);
+        ArrayUtils.Shuffle<PointObjectType>(_spawnArray);
     }
 
     private bool CheckPointToIncreaseLevel()
@@ -109,7 +109,7 @@ public class PointObjectSpawner : MonoBehaviour
             spawnPosition = Camera.main.ScreenToWorldPoint(spawnPosition);
             pointObject.transform.position = new Vector3(spawnPosition.x, spawnPosition.y, 0);
         }
-        while (!ObjectUtils.instance.CheckSpriteBetweenTwoX(objectRenderer, minXPointInScreen, maxXPointInScreen));
+        while (!ObjectUtils.CheckSpriteBetweenTwoX(objectRenderer, minXPointInScreen, maxXPointInScreen));
 
         pointObject.GetComponent<IShootableObject>().StartObject(_currentIncreasePercentage);
     }
