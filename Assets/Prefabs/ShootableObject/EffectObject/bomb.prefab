@@ -106,7 +106,9 @@ MonoBehaviour:
   _affectedLayer:
     serializedVersion: 2
     m_Bits: 512
-  _timeBeforeDeactivateObject: 2
+  _timeBeforeDeactivateObject: 0.2
+  _bombForce: 25
+  _minBombForce: 12
 --- !u!114 &6520212856271302712
 MonoBehaviour:
   m_ObjectHideFlags: 0

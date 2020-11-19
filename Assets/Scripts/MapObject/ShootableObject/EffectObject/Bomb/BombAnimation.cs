@@ -14,6 +14,9 @@ public class BombAnimation : MonoBehaviour, IShootableObjectAnimation
     private float _angularSpeed;
     private float _currentAngularSpeed;
 
+    private const string EXPLOSION_ANIMATION = "Explosion";
+    private const string IDLE_ANIMATION = "Idle";
+
     // ========== MonoBehaviour methods ==========
 
     private void Awake()
@@ -29,6 +32,7 @@ public class BombAnimation : MonoBehaviour, IShootableObjectAnimation
     public void DoEffectStartObject()
     {
         StartRotation();
+        gameObject.GetComponent<Animator>().Play(IDLE_ANIMATION);
     }
 
     public void DoEffectDestroyObject()
@@ -39,12 +43,12 @@ public class BombAnimation : MonoBehaviour, IShootableObjectAnimation
         currentRotation = new Vector3(currentRotation.x, currentRotation.y, 0);
         transform.rotation = Quaternion.Euler(currentRotation);
 
-        gameObject.GetComponent<Animator>().SetTrigger("Explode");
+        gameObject.GetComponent<Animator>().Play(EXPLOSION_ANIMATION);
     }
 
     public void ResetEffectObject()
     {
-        gameObject.GetComponent<Animator>().SetTrigger("Reset");
+        gameObject.GetComponent<Animator>().Play(IDLE_ANIMATION);
     }
 
     // ========== Private methods ==========

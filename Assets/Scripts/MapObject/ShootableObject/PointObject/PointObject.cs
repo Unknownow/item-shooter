@@ -64,15 +64,19 @@ public class PointObject : MonoBehaviour, IShootableObject, IMapObject
     {
         gameObject.GetComponent<IShootableObjectAnimation>().DoEffectDestroyObject();
         gameObject.GetComponent<Collider2D>().enabled = false;
+        gameObject.GetComponent<IObjectMovement>().StopMoving();
         Invoke("DeactivateObject", _timeBeforeDeactivateObject);
     }
 
-    public void DestroyObjectByEffectObject(EffectObjectType type)
+    public void DestroyObjectByEffectObject(EffectObjectType type, GameObject sourceObject)
     {
+        gameObject.GetComponent<Collider2D>().enabled = false;
+        gameObject.GetComponent<IObjectMovement>().StopMoving();
+        Invoke("DeactivateObject", _timeBeforeDeactivateObject);
         switch (type)
         {
             case EffectObjectType.BOMB:
-                OnDestroyedByBomb();
+                OnDestroyedByBomb(sourceObject);
                 break;
         }
 
@@ -96,11 +100,12 @@ public class PointObject : MonoBehaviour, IShootableObject, IMapObject
     }
 
     // ========== Private methods ==========
-    private void OnDestroyedByBomb()
+    private void OnDestroyedByBomb(GameObject sourceObject)
     {
         PointObjectConfig currentConfig = (PointObjectConfig)config;
         if (currentConfig.POINT > 0)
             Manager.instance.AddPoint(currentConfig.POINT);
-        DeactivateObject();
+        gameObject.GetComponent<IObjectMovement>().StopMoving();
+        gameObject.GetComponent<PointObjectAnimation>().DoEffectDestroyObjectByBomb(sourceObject);
     }
 }

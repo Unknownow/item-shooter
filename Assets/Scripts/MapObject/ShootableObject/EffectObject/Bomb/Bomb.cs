@@ -20,6 +20,35 @@ public class Bomb : EffectObject
 
     [SerializeField]
     private float _timeBeforeDeactivateObject;
+    [SerializeField]
+
+    private float _bombForce;
+    public float bombForce
+    {
+        get
+        {
+            return _bombForce;
+        }
+    }
+
+    [SerializeField]
+    private float _minBombForce;
+    public float minBombForce
+    {
+        get
+        {
+            return _minBombForce;
+        }
+    }
+
+    public float radius
+    {
+        get
+        {
+            return ((BombConfig)config).RADIUS;
+        }
+    }
+
     // ========== Public methods ==========
     public override void StartObject()
     {
@@ -46,7 +75,7 @@ public class Bomb : EffectObject
                 continue;
 
             PointObject pointObject = collider.GetComponent<PointObject>();
-            pointObject.DestroyObjectByEffectObject(type);
+            pointObject.DestroyObjectByEffectObject(type, gameObject);
         }
 
         gameObject.GetComponent<IShootableObjectAnimation>().DoEffectDestroyObject();
@@ -68,7 +97,7 @@ public class Bomb : EffectObject
 
     public override void DeactivateObject()
     {
-        gameObject.SetActive(false);
+        // gameObject.SetActive(false);
         ResetObject();
     }
 

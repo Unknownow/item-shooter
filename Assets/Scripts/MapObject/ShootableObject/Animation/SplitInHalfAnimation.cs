@@ -31,7 +31,6 @@ public class SplitInHalfAnimation : MonoBehaviour
             return;
         ResetEffect();
 
-        gameObject.GetComponent<SpriteRenderer>().enabled = false;
         Vector3 currentRotation = transform.rotation.eulerAngles;
 
         _leftHalf.transform.localPosition = Vector2.zero;
@@ -54,7 +53,5 @@ public class SplitInHalfAnimation : MonoBehaviour
         _rightHalf.transform.localPosition = Vector2.zero;
         _rightHalf.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         _rightHalf.SetActive(false);
-
-        gameObject.GetComponent<SpriteRenderer>().enabled = true;
     }
 }
