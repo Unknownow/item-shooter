@@ -106,7 +106,7 @@ MonoBehaviour:
   _affectedLayer:
     serializedVersion: 2
     m_Bits: 512
-  _timeBeforeDeactivateObject: 0.2
+  _timeBeforeDeactivateObject: 2
   _bombForce: 25
   _minBombForce: 12
 --- !u!114 &6520212856271302712
@@ -124,6 +124,12 @@ MonoBehaviour:
   _rotateWithVelocity: 0
   _defaultDirection: {x: 0, y: 1, z: 0}
   _movementConfig: {fileID: 0}
+  _movementSpeed: 0
+  _accelerationRate: 0
+  _velocity: {x: 0, y: 0, z: 0}
+  _acceleration: {x: 0, y: 0, z: 0}
+  _endPosition: {x: 0, y: 0, z: 0}
+  _moveType: 0
 --- !u!114 &6520212856271302710
 MonoBehaviour:
   m_ObjectHideFlags: 0

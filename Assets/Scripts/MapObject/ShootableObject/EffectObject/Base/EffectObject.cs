@@ -16,7 +16,7 @@ public abstract class EffectObject : MonoBehaviour, IShootableObject, IMapObject
         return this.GetType().Name;
     }
     // ========== Fields and properties ==========
-    public MapObjectConfig config { get; }
+    public virtual MapObjectConfig config { get; }
 
     [SerializeField]
     protected EffectObjectType _type;

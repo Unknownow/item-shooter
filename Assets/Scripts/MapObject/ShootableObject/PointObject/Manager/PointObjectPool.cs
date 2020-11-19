@@ -30,7 +30,7 @@ public class PointObjectPool : MonoBehaviour
     }
 
     // ========== Public Methods ==========
-    public GameObject GetPointObject(PointObjectType type)
+    public GameObject GetObject(PointObjectType type)
     {
         GameObject gotObject = null;
         foreach (GameObject obj in _pool)

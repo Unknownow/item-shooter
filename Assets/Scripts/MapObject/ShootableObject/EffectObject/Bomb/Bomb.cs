@@ -6,8 +6,8 @@ public class Bomb : EffectObject
 {
     // ========== Fields and properties ==========
     [SerializeField]
-    protected BombConfig _config;
-    public new MapObjectConfig config
+    private BombConfig _config;
+    public override MapObjectConfig config
     {
         get
         {
@@ -58,29 +58,21 @@ public class Bomb : EffectObject
     public override void StartObject(float percentIncrease)
     {
         ResetObject();
-        LogUtils.instance.Log(GetClassName(), "StartObject(float percentIncrease)", "NOT_YET_IMPLEMENT");
+        float defaultMovementSpeed = gameObject.GetComponent<IObjectMovement>().movementSpeed;
+        gameObject.GetComponent<IObjectMovement>().movementSpeed = defaultMovementSpeed * (1 + percentIncrease / 100);
+        float defaultAccelerationRate = gameObject.GetComponent<IObjectMovement>().accelerationRate;
+        gameObject.GetComponent<IObjectMovement>().accelerationRate = defaultAccelerationRate * (1 + percentIncrease / 100);
+        gameObject.GetComponent<IObjectMovement>().Move(Vector3.down, Vector3.down);
+
+        gameObject.GetComponent<IShootableObjectAnimation>().DoEffectStartObject();
     }
 
     public override void DestroyObjectByBullet()
     {
-        LogUtils.instance.Log(GetClassName(), "DestroyObjectByBullet", "NOT_YET_IMPLEMENT");
-
-        Collider2D[] affectedColliders = Physics2D.OverlapCircleAll(transform.position, ((BombConfig)config).RADIUS, _affectedLayer);
-        foreach (Collider2D collider in affectedColliders)
-        {
-            SpriteRenderer renderer = collider.GetComponent<SpriteRenderer>();
-            if (renderer == null)
-                continue;
-            if (!ObjectUtils.CheckIfSpriteInScreen(renderer))
-                continue;
-
-            PointObject pointObject = collider.GetComponent<PointObject>();
-            pointObject.DestroyObjectByEffectObject(type, gameObject);
-        }
-
         gameObject.GetComponent<IShootableObjectAnimation>().DoEffectDestroyObject();
+        gameObject.GetComponent<IObjectMovement>().StopMoving();
         gameObject.GetComponent<Collider2D>().enabled = false;
-
+        Invoke("OnDetonate", ((BombConfig)config).DELAY_BEFORE_AFFECT);
         Invoke("DeactivateObject", _timeBeforeDeactivateObject);
     }
 
@@ -97,13 +89,30 @@ public class Bomb : EffectObject
 
     public override void DeactivateObject()
     {
-        // gameObject.SetActive(false);
+        gameObject.SetActive(false);
         ResetObject();
     }
 
+    // ========== Private methods ==========
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, ((BombConfig)_config).RADIUS);
+    }
+
+    private void OnDetonate()
+    {
+        Collider2D[] affectedColliders = Physics2D.OverlapCircleAll(transform.position, ((BombConfig)config).RADIUS, _affectedLayer);
+        foreach (Collider2D collider in affectedColliders)
+        {
+            SpriteRenderer renderer = collider.GetComponent<SpriteRenderer>();
+            if (renderer == null)
+                continue;
+            if (!ObjectUtils.CheckIfSpriteInScreen(renderer))
+                continue;
+
+            PointObject pointObject = collider.GetComponent<PointObject>();
+            pointObject.DestroyObjectByEffectObject(type, gameObject);
+        }
     }
 }

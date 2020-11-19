@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PointObjectSpawner : MonoBehaviour
+public class EffectObjectSpawner : MonoBehaviour
 {
     public string GetClassName()
     {
@@ -12,7 +12,7 @@ public class PointObjectSpawner : MonoBehaviour
     // ========== Fields and properties ==========
     [SerializeField]
     private ShootableObjectSpawnConfig _config;
-    private PointObjectType[] _spawnArray;
+    private EffectObjectType[] _spawnArray;
     private float _currentTimeBetweenSpawn;
     private float _currentLevel;
     private int _currentPointNeededToNextLevel;
@@ -27,7 +27,7 @@ public class PointObjectSpawner : MonoBehaviour
         _currentLevel = 0;
         _spawnCounter = 0;
 
-        _spawnArray = new PointObjectType[100];
+        _spawnArray = new EffectObjectType[100];
         InitSpawnArray();
     }
 
@@ -59,13 +59,13 @@ public class PointObjectSpawner : MonoBehaviour
             int count = _config.SPAWN_RATE_ARRAY[i];
             while (count > 0)
             {
-                _spawnArray[spawnArrayIndexCount] = (PointObjectType)i;
+                _spawnArray[spawnArrayIndexCount] = (EffectObjectType)i;
                 count -= 1;
                 spawnArrayIndexCount += 1;
             }
         }
 
-        ArrayUtils.Shuffle<PointObjectType>(_spawnArray);
+        ArrayUtils.Shuffle<EffectObjectType>(_spawnArray);
     }
 
     private bool CheckPointToIncreaseLevel()
@@ -97,20 +97,17 @@ public class PointObjectSpawner : MonoBehaviour
 
     private void SpawnObject()
     {
-        GameObject pointObject = PointObjectPool.instance.GetObject(GetRandomSpawnObject());
-
-        Bounds bounds = pointObject.GetComponent<SpriteRenderer>().bounds;
+        GameObject effectObject = EffectObjectPool.instance.GetObject(GetRandomSpawnObject());
+        Bounds bounds = effectObject.GetComponent<SpriteRenderer>().bounds;
         Vector3 spawnPosition = new Vector3(Random.Range(0, Screen.width), Random.Range(Screen.height * 11f / 10, Screen.height * 12f / 10));
         spawnPosition = Camera.main.ScreenToWorldPoint(spawnPosition);
         spawnPosition = ObjectUtils.ClampXPositionToScreen(spawnPosition, bounds);
 
-        pointObject.transform.position = new Vector3(spawnPosition.x, spawnPosition.y, 0);
-        pointObject.GetComponent<IShootableObject>().StartObject(_currentIncreasePercentage);
-
-        pointObject.GetComponent<IShootableObject>().StartObject(_currentIncreasePercentage);
+        effectObject.transform.position = new Vector3(spawnPosition.x, spawnPosition.y, 0);
+        effectObject.GetComponent<IShootableObject>().StartObject(_currentIncreasePercentage);
     }
 
-    private PointObjectType GetRandomSpawnObject()
+    private EffectObjectType GetRandomSpawnObject()
     {
         int randomIndex = Random.Range(0, _spawnArray.Length);
         return _spawnArray[randomIndex];

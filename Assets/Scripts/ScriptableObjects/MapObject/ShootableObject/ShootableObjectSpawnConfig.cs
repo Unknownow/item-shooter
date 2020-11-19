@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "PointObjectSpawnConfig", menuName = "ScriptableObjects/PointObjectConfig/PointObjectSpawnConfig", order = 1)]
-public class PointObjectSpawnConfig : ScriptableObject
+[CreateAssetMenu(fileName = "ShootableObjectSpawnConfig", menuName = "ScriptableObjects/ShootableObject/ShootableObjectSpawnConfig", order = 1)]
+public class ShootableObjectSpawnConfig : ScriptableObject
 {
     public int[] SPAWN_RATE_ARRAY;
 

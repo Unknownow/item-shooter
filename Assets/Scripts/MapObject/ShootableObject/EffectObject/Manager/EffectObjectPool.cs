@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ObjectPool<Type, MainClass> : MonoBehaviour
+public class EffectObjectPool : MonoBehaviour
 {
     public string GetClassName()
     {
@@ -10,8 +10,8 @@ public abstract class ObjectPool<Type, MainClass> : MonoBehaviour
     }
 
     // ========== Fields and properties ==========
-    private static ObjectPool<Type, MainClass> _instance;
-    public static ObjectPool<Type, MainClass> instance
+    private static EffectObjectPool _instance;
+    public static EffectObjectPool instance
     {
         get
         {
@@ -22,7 +22,7 @@ public abstract class ObjectPool<Type, MainClass> : MonoBehaviour
     [SerializeField]
     private List<GameObject> _prefabsList = new List<GameObject>();
     private List<GameObject> _pool;
-    private ObjectPool()
+    private EffectObjectPool()
     {
         if (_instance == null)
             _instance = this;
@@ -30,14 +30,14 @@ public abstract class ObjectPool<Type, MainClass> : MonoBehaviour
     }
 
     // ========== Public Methods ==========
-    public GameObject GetObject(Type type)
+    public GameObject GetObject(EffectObjectType type)
     {
         GameObject createdObject = null;
         foreach (GameObject obj in _pool)
         {
             // LogUtils.instance.Log(GetClassName(), "GET_OBJECT", obj.activeSelf.ToString());
-            MainClass baseObject = obj.GetComponent<MainClass>();
-            if (baseObject != null && GetObjectType(baseObject).Equals(type) && obj.activeSelf == false)
+            EffectObject baseObject = obj.GetComponent<EffectObject>();
+            if (baseObject != null && baseObject.type == type && obj.activeSelf == false)
             {
                 // LogUtils.instance.Log(GetClassName(), "GetObject", obj.activeSelf.ToString());
                 createdObject = obj;
@@ -57,7 +57,7 @@ public abstract class ObjectPool<Type, MainClass> : MonoBehaviour
     }
 
     // ========== Private Methods ==========
-    protected GameObject CreateObject(Type type, Transform parent = null)
+    private GameObject CreateObject(EffectObjectType type, Transform parent = null)
     {
         // LogUtils.instance.Log(GetClassName(), "CreateObject");
         GameObject objectPrefab = null;
@@ -66,9 +66,9 @@ public abstract class ObjectPool<Type, MainClass> : MonoBehaviour
         // LogUtils.instance.Log(GetClassName(), "_prefabsList length", (_prefabsList.Count).ToString());
         foreach (GameObject prefab in _prefabsList)
         {
-            MainClass baseObject = prefab.GetComponent<MainClass>();
+            EffectObject baseObject = prefab.GetComponent<EffectObject>();
             // LogUtils.instance.Log(GetClassName(), "baseObject", (baseObject.type).ToString());
-            if (baseObject != null && GetObjectType(baseObject).Equals(type))
+            if (baseObject != null && baseObject.type == type)
             {
                 // LogUtils.instance.Log(GetClassName(), "CreateObject", (baseObject.type == type).ToString());
                 objectPrefab = prefab;
@@ -90,6 +90,4 @@ public abstract class ObjectPool<Type, MainClass> : MonoBehaviour
         }
         return createdObject;
     }
-
-    protected abstract Type GetObjectType(MainClass baseObject);
 }

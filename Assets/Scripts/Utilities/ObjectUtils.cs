@@ -1,18 +1,27 @@
 using UnityEngine;
 public static class ObjectUtils
 {
-    // ========== Fields and properties ==========
-    public static bool CheckSpriteBetweenTwoX(SpriteRenderer spriteRenderer, float x1, float x2)
+    public static Vector3 ClampXPositionToScreen(Vector3 position, Bounds bounds)
     {
-        if (x1 > x2)
-        {
-            LogUtils.instance.Log("ObjectUtils", "CheckSpriteBetweenTwoX", "X1 =", x1, "X2 =", x2, "X1 > X2 INVALID");
-            return false;
-        }
-        Bounds rendererBound = spriteRenderer.bounds;
-        if (rendererBound.min.x >= x1 && rendererBound.max.x <= x2)
-            return true;
-        return false;
+
+        float minXPointInScreen = Camera.main.ScreenToWorldPoint(Vector2.zero).x;
+        float maxXPointInScreen = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)).x;
+        position.x = Mathf.Clamp(position.x, minXPointInScreen + bounds.extents.x, maxXPointInScreen - bounds.extents.x);
+        return position;
+    }
+
+    public static Vector3 ClampYPositionToScreen(Vector3 position, Bounds bounds)
+    {
+
+        float minYPointInScreen = Camera.main.ScreenToWorldPoint(Vector2.zero).y;
+        float maxYPointInScreen = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height)).y;
+        position.y = Mathf.Clamp(position.y, minYPointInScreen + bounds.extents.y, maxYPointInScreen - bounds.extents.y);
+        return position;
+    }
+
+    public static Vector3 ClampPositionToScreen(Vector3 position, Bounds bounds)
+    {
+        return ClampYPositionToScreen(ClampXPositionToScreen(position, bounds), bounds);
     }
 
     public static bool CheckIfSpriteInScreen(SpriteRenderer spriteRenderer)

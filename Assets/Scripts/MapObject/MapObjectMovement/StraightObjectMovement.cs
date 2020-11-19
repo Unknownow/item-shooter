@@ -24,7 +24,7 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
 
     [SerializeField]
     [Tooltip("Movement config. Leave it empty to get default config of object")]
-    private MapObjectConfig _movementConfig;
+    public MapObjectConfig _movementConfig;
     public MapObjectConfig movementConfig
     {
         get
@@ -35,7 +35,7 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
         }
     }
 
-    private float _movementSpeed;
+    public float _movementSpeed;
     public float movementSpeed
     {
         get
@@ -55,7 +55,7 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
             return velocity.sqrMagnitude;
         }
     }
-    private float _accelerationRate;
+    public float _accelerationRate;
     public float accelerationRate
     {
         get
@@ -90,7 +90,7 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
             _acceleration = value.normalized * accelerationRate;
         }
     }
-    private Vector3 _velocity = Vector3.zero;
+    public Vector3 _velocity = Vector3.zero;
     public Vector3 velocity
     {
         get
@@ -98,7 +98,7 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
             return this._velocity;
         }
     }
-    private Vector3 _acceleration;
+    public Vector3 _acceleration;
     public Vector3 acceleration
     {
         get
@@ -107,8 +107,8 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
         }
     }
 
-    private Vector3 _endPosition;
-    private MoveType _moveType;
+    public Vector3 _endPosition;
+    public MoveType _moveType;
 
 
     // ========== MonoBehaviour Methods ==========

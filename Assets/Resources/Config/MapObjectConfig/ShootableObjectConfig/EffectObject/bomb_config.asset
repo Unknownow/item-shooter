@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1d372570ff3b4baca2b992bf48e6d3c, type: 3}
   m_Name: bomb_config
   m_EditorClassIdentifier: 
-  MOVEMENT_SPEED: 2
+  MOVEMENT_SPEED: 0
   ACCELERATION_RATE: 2
   RADIUS: 2.8
+  DELAY_BEFORE_AFFECT: 0.1
