@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bomb : EffectObject
+public class IceBomb : EffectObject
 {
     // ========== Fields and properties ==========
     [SerializeField]
-    private BombConfig _config;
+    private IceBombConfig _config;
     public override MapObjectConfig config
     {
         get
@@ -21,31 +21,11 @@ public class Bomb : EffectObject
     [SerializeField]
     private float _timeBeforeDeactivateObject;
 
-    [SerializeField]
-    private float _bombForce;
-    public float bombForce
-    {
-        get
-        {
-            return _bombForce;
-        }
-    }
-
-    [SerializeField]
-    private float _minBombForce;
-    public float minBombForce
-    {
-        get
-        {
-            return _minBombForce;
-        }
-    }
-
     public float radius
     {
         get
         {
-            return ((BombConfig)config).RADIUS;
+            return ((IceBombConfig)config).RADIUS;
         }
     }
 
@@ -72,7 +52,7 @@ public class Bomb : EffectObject
         gameObject.GetComponent<IShootableObjectAnimation>().DoEffectDestroyObject();
         gameObject.GetComponent<IObjectMovement>().StopMoving();
         gameObject.GetComponent<Collider2D>().enabled = false;
-        Invoke("OnDetonate", ((BombConfig)config).DELAY_BEFORE_AFFECT);
+        Invoke("OnDetonate", ((IceBombConfig)config).DELAY_BEFORE_AFFECT);
         Invoke("DeactivateObject", _timeBeforeDeactivateObject);
     }
 
@@ -110,12 +90,12 @@ public class Bomb : EffectObject
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, ((BombConfig)_config).RADIUS);
+        Gizmos.DrawWireSphere(transform.position, ((IceBombConfig)_config).RADIUS);
     }
 
     private void OnDetonate()
     {
-        Collider2D[] affectedColliders = Physics2D.OverlapCircleAll(transform.position, ((BombConfig)config).RADIUS, _affectedLayer);
+        Collider2D[] affectedColliders = Physics2D.OverlapCircleAll(transform.position, ((IceBombConfig)config).RADIUS, _affectedLayer);
         foreach (Collider2D collider in affectedColliders)
         {
             SpriteRenderer renderer = collider.GetComponent<SpriteRenderer>();

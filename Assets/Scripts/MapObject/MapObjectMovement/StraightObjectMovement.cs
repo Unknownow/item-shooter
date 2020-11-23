@@ -24,7 +24,7 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
 
     [SerializeField]
     [Tooltip("Movement config. Leave it empty to get default config of object")]
-    public MapObjectConfig _movementConfig;
+    private MapObjectConfig _movementConfig;
     public MapObjectConfig movementConfig
     {
         get
@@ -35,7 +35,7 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
         }
     }
 
-    public float _movementSpeed;
+    private float _movementSpeed;
     public float movementSpeed
     {
         get
@@ -55,7 +55,7 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
             return velocity.sqrMagnitude;
         }
     }
-    public float _accelerationRate;
+    private float _accelerationRate;
     public float accelerationRate
     {
         get
@@ -90,7 +90,7 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
             _acceleration = value.normalized * accelerationRate;
         }
     }
-    public Vector3 _velocity = Vector3.zero;
+    private Vector3 _velocity = Vector3.zero;
     public Vector3 velocity
     {
         get
@@ -98,7 +98,7 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
             return this._velocity;
         }
     }
-    public Vector3 _acceleration;
+    private Vector3 _acceleration;
     public Vector3 acceleration
     {
         get
@@ -106,9 +106,17 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
             return this._acceleration;
         }
     }
+    private float _movementSpeedMultiplier = 1;
+    public float movementSpeedMultiplier
+    {
+        get
+        {
+            return _movementSpeedMultiplier;
+        }
+    }
 
-    public Vector3 _endPosition;
-    public MoveType _moveType;
+    private Vector3 _endPosition;
+    private MoveType _moveType;
 
 
     // ========== MonoBehaviour Methods ==========
@@ -127,6 +135,7 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
     // ========== Public Methods ==========
     public void ResetSpeedToDefault()
     {
+        _movementSpeedMultiplier = 1;
         if (movementConfig != null)
         {
             movementSpeed = movementConfig.MOVEMENT_SPEED;
@@ -187,6 +196,16 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
         _moveType = MoveType.HAS_END_POINT;
     }
 
+    public void SpeedUp(float percentage)
+    {
+        _movementSpeedMultiplier = 1 + percentage / 100f;
+    }
+
+    public void SlowDown(float percentage)
+    {
+        _movementSpeedMultiplier = 1 - percentage / 100f;
+    }
+
     // ========== Private Methods ==========
     private void UpdateBulletPosition()
     {
@@ -202,7 +221,7 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
             }
         }
 
-        transform.position += velocity * Time.deltaTime;
+        transform.position += velocity * movementSpeedMultiplier * Time.deltaTime;
         _velocity += acceleration * Time.deltaTime;
     }
 

@@ -68,7 +68,7 @@ public class PointObject : MonoBehaviour, IShootableObject, IMapObject
         Invoke("DeactivateObject", _timeBeforeDeactivateObject);
     }
 
-    public void DestroyObjectByEffectObject(EffectObjectType type, GameObject sourceObject)
+    public void OnAffectedByEffectObject(EffectObjectType type, GameObject sourceObject)
     {
         gameObject.GetComponent<Collider2D>().enabled = false;
         gameObject.GetComponent<IObjectMovement>().StopMoving();

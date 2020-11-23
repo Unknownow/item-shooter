@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameSetting : MonoBehaviour
 {
-    private static bool _isLog = true;
+    private static bool _isLog = false;
     public static bool isLog
     {
         get

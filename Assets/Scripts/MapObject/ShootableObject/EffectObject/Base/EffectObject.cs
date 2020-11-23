@@ -6,7 +6,7 @@ public enum EffectObjectType
 {
     BOMB,
     FLAME,
-    FREEZE
+    ICE_BOMB
 }
 
 public abstract class EffectObject : MonoBehaviour, IShootableObject, IMapObject
@@ -38,4 +38,5 @@ public abstract class EffectObject : MonoBehaviour, IShootableObject, IMapObject
     public abstract void ResetObject();
 
     public abstract void DeactivateObject();
+    public abstract void OnAffectedByEffectObject(EffectObjectType type, GameObject sourceObject);
 }

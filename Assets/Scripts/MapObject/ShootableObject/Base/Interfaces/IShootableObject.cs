@@ -9,4 +9,5 @@ public interface IShootableObject
     void DestroyObjectByBullet();
     void ResetObject();
     void DeactivateObject();
+    void OnAffectedByEffectObject(EffectObjectType type, GameObject sourceObject);
 }
