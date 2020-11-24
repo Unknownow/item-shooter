@@ -117,6 +117,7 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
 
     private Vector3 _endPosition;
     private MoveType _moveType;
+    private float _slowDuration;
 
 
     // ========== MonoBehaviour Methods ==========
@@ -130,6 +131,7 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
     {
         UpdateBulletPosition();
         RotateWithVelocity();
+        UpdateSlowDuration();
     }
 
     // ========== Public Methods ==========
@@ -196,14 +198,16 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
         _moveType = MoveType.HAS_END_POINT;
     }
 
-    public void SpeedUp(float percentage)
+    public void SpeedUp(float percentage = 0, float duration = -100f)
     {
         _movementSpeedMultiplier = 1 + percentage / 100f;
+        _slowDuration = duration;
     }
 
-    public void SlowDown(float percentage)
+    public void SlowDown(float percentage = 0, float duration = -100f)
     {
         _movementSpeedMultiplier = 1 - percentage / 100f;
+        _slowDuration = duration;
     }
 
     // ========== Private Methods ==========
@@ -222,7 +226,7 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
         }
 
         transform.position += velocity * movementSpeedMultiplier * Time.deltaTime;
-        _velocity += acceleration * Time.deltaTime;
+        _velocity += acceleration * movementSpeedMultiplier * Time.deltaTime;
     }
 
     private void RotateWithVelocity()
@@ -230,6 +234,18 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
         if (!_rotateWithVelocity)
             return;
         transform.rotation = Quaternion.FromToRotation(Vector3.up, velocity.normalized);
+    }
+
+    private void UpdateSlowDuration()
+    {
+        if (_slowDuration <= 0)
+        {
+            if (_slowDuration != -100f)
+                SpeedUp();
+            _slowDuration = -1;
+            return;
+        }
+        _slowDuration -= Time.deltaTime;
     }
 
     private void OnDrawGizmosSelected()

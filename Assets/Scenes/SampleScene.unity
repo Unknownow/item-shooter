@@ -934,7 +934,7 @@ MonoBehaviour:
   _affectedLayer:
     serializedVersion: 2
     m_Bits: 1536
-  _timeBeforeDeactivateObject: 4
+  _timeBeforeDeactivateObject: 2
 --- !u!212 &1785883455
 SpriteRenderer:
   m_ObjectHideFlags: 0

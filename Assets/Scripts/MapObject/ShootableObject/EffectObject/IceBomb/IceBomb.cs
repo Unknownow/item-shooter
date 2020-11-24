@@ -28,6 +28,34 @@ public class IceBomb : EffectObject
             return ((IceBombConfig)config).RADIUS;
         }
     }
+    private float _currentRadius;
+    private float _currentRadiusIncreaseSpeed;
+    public float slowPercentage
+    {
+        get
+        {
+            return ((IceBombConfig)config).SLOW_PERCENTAGE;
+        }
+    }
+    public float slowDuration
+    {
+        get
+        {
+            return ((IceBombConfig)config).SLOW_DURATION;
+        }
+    }
+
+    // ========== MonoBehaviour methods ==========
+    private void Awake()
+    {
+        _currentRadiusIncreaseSpeed = ((IceBombConfig)config).RADIUS_SPEED;
+        _currentRadius = radius;
+    }
+
+    private void Update()
+    {
+        IncreaseRadiusUpdate();
+    }
 
     // ========== Public methods ==========
     public override void StartObject()
@@ -52,7 +80,7 @@ public class IceBomb : EffectObject
         gameObject.GetComponent<IShootableObjectAnimation>().DoEffectDestroyObject();
         gameObject.GetComponent<IObjectMovement>().StopMoving();
         gameObject.GetComponent<Collider2D>().enabled = false;
-        Invoke("OnDetonate", ((IceBombConfig)config).DELAY_BEFORE_AFFECT);
+        _currentRadius = 0;
         Invoke("DeactivateObject", _timeBeforeDeactivateObject);
     }
 
@@ -87,15 +115,14 @@ public class IceBomb : EffectObject
     }
 
     // ========== Private methods ==========
-    private void OnDrawGizmosSelected()
+    private void IncreaseRadiusUpdate()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, ((IceBombConfig)_config).RADIUS);
-    }
+        if (_currentRadius >= radius)
+            return;
 
-    private void OnDetonate()
-    {
-        Collider2D[] affectedColliders = Physics2D.OverlapCircleAll(transform.position, ((IceBombConfig)config).RADIUS, _affectedLayer);
+        _currentRadius += Time.deltaTime * _currentRadiusIncreaseSpeed;
+
+        Collider2D[] affectedColliders = Physics2D.OverlapCircleAll(transform.position, _currentRadius, _affectedLayer);
         foreach (Collider2D collider in affectedColliders)
         {
             SpriteRenderer renderer = collider.GetComponent<SpriteRenderer>();
@@ -107,5 +134,14 @@ public class IceBomb : EffectObject
             IShootableObject affectedObject = collider.GetComponent<IShootableObject>();
             affectedObject.OnAffectedByEffectObject(type, gameObject);
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, ((IceBombConfig)_config).RADIUS);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, _currentRadius);
     }
 }

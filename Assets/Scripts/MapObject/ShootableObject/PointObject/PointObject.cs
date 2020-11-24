@@ -70,16 +70,15 @@ public class PointObject : MonoBehaviour, IShootableObject, IMapObject
 
     public void OnAffectedByEffectObject(EffectObjectType type, GameObject sourceObject)
     {
-        gameObject.GetComponent<Collider2D>().enabled = false;
-        gameObject.GetComponent<IObjectMovement>().StopMoving();
-        Invoke("DeactivateObject", _timeBeforeDeactivateObject);
         switch (type)
         {
             case EffectObjectType.BOMB:
                 OnDestroyedByBomb(sourceObject);
                 break;
+            case EffectObjectType.ICE_BOMB:
+                OnSlowedByIceBomb(sourceObject);
+                break;
         }
-
     }
 
     public void ResetObject()
@@ -102,10 +101,21 @@ public class PointObject : MonoBehaviour, IShootableObject, IMapObject
     // ========== Private methods ==========
     private void OnDestroyedByBomb(GameObject sourceObject)
     {
+        gameObject.GetComponent<Collider2D>().enabled = false;
+        gameObject.GetComponent<IObjectMovement>().StopMoving();
+        Invoke("DeactivateObject", _timeBeforeDeactivateObject);
+
         PointObjectConfig currentConfig = (PointObjectConfig)config;
         if (currentConfig.POINT > 0)
             Manager.instance.AddPoint(currentConfig.POINT);
         gameObject.GetComponent<IObjectMovement>().StopMoving();
         gameObject.GetComponent<PointObjectAnimation>().DoEffectDestroyObjectByBomb(sourceObject);
+    }
+
+    private void OnSlowedByIceBomb(GameObject sourceObject)
+    {
+        float slowPercentage = sourceObject.GetComponent<IceBomb>().slowPercentage;
+        float slowDuration = sourceObject.GetComponent<IceBomb>().slowDuration;
+        gameObject.GetComponent<IObjectMovement>().SlowDown(slowPercentage, slowDuration);
     }
 }

@@ -6,6 +6,7 @@ using UnityEngine;
 public class IceBombConfig : MapObjectConfig
 {
     public float RADIUS = 4;
-    public float DELAY_BEFORE_AFFECT = 0.2f;
     public float SLOW_PERCENTAGE = 50;
+    public float SLOW_DURATION = 2;
+    public float RADIUS_SPEED = 4;
 }

@@ -100,6 +100,9 @@ public class Bomb : EffectObject
             case EffectObjectType.BOMB:
                 DestroyObjectByBullet();
                 break;
+            case EffectObjectType.ICE_BOMB:
+                OnSlowedByIceBomb(sourceObject);
+                break;
             default:
                 DestroyObjectByBullet();
                 break;
@@ -127,5 +130,12 @@ public class Bomb : EffectObject
             IShootableObject affectedObject = collider.GetComponent<IShootableObject>();
             affectedObject.OnAffectedByEffectObject(type, gameObject);
         }
+    }
+
+    private void OnSlowedByIceBomb(GameObject sourceObject)
+    {
+        float slowPercentage = sourceObject.GetComponent<IceBomb>().slowPercentage;
+        float slowDuration = sourceObject.GetComponent<IceBomb>().slowDuration;
+        gameObject.GetComponent<IObjectMovement>().SlowDown(slowPercentage, slowDuration);
     }
 }

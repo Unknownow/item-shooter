@@ -17,6 +17,6 @@ public interface IObjectMovement
     void Move(Vector3 moveDirection);
     void Move(Vector3 directmoveDirectionion, Vector3 accelerationDirection);
     void StopMoving();
-    void SpeedUp(float percentage);
-    void SlowDown(float percentage);
+    void SpeedUp(float percentage, float duration = -100f);
+    void SlowDown(float percentage, float duration = -100f);
 }

@@ -46,11 +46,7 @@ public class IceBombAnimation : MonoBehaviour, IShootableObjectAnimation
         transform.rotation = Quaternion.Euler(currentRotation);
 
         _animator.Play(EXPLOSION_ANIMATION);
-
         float time = _animator.GetCurrentAnimatorStateInfo(0).length;
-        Debug.Log("TIME = " + time);
-        Debug.Log("LENGTH = " + _animator.GetCurrentAnimatorStateInfo(0).length);
-        Debug.Log("SPEED = " + _animator.speed);
         Invoke("OnExplosionDone", time);
     }
 
