@@ -5,8 +5,8 @@ using UnityEngine;
 public enum EffectObjectType
 {
     BOMB,
-    FLAME,
-    ICE_BOMB
+    ICE_BOMB,
+    // FLAME,
 }
 
 public abstract class EffectObject : MonoBehaviour, IShootableObject, IMapObject

@@ -124,8 +124,8 @@ public class Bomb : EffectObject
             SpriteRenderer renderer = collider.GetComponent<SpriteRenderer>();
             if (renderer == null)
                 continue;
-            if (!ObjectUtils.CheckIfSpriteInScreen(renderer))
-                continue;
+            // if (!ObjectUtils.CheckIfSpriteInScreen(renderer))
+            //     continue;
 
             IShootableObject affectedObject = collider.GetComponent<IShootableObject>();
             affectedObject.OnAffectedByEffectObject(type, gameObject);
@@ -137,5 +137,6 @@ public class Bomb : EffectObject
         float slowPercentage = sourceObject.GetComponent<IceBomb>().slowPercentage;
         float slowDuration = sourceObject.GetComponent<IceBomb>().slowDuration;
         gameObject.GetComponent<IObjectMovement>().SlowDown(slowPercentage, slowDuration);
+        gameObject.GetComponent<IShootableObjectAnimation>().DoEffectObjectAffectedByEffectObject(EffectObjectType.ICE_BOMB, sourceObject);
     }
 }

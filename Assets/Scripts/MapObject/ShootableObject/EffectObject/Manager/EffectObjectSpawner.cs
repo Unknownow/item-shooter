@@ -12,7 +12,7 @@ public class EffectObjectSpawner : MonoBehaviour
     // ========== Fields and properties ==========
     [SerializeField]
     private ShootableObjectSpawnConfig _config;
-    private EffectObjectType[] _spawnArray;
+    public EffectObjectType[] _spawnArray;
     private float _currentTimeBetweenSpawn;
     private float _currentLevel;
     private int _currentPointNeededToNextLevel;

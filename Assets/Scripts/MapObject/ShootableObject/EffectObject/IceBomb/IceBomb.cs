@@ -108,6 +108,9 @@ public class IceBomb : EffectObject
             case EffectObjectType.BOMB:
                 DestroyObjectByBullet();
                 break;
+            case EffectObjectType.ICE_BOMB:
+                DestroyObjectByBullet();
+                break;
             default:
                 DestroyObjectByBullet();
                 break;
@@ -128,8 +131,8 @@ public class IceBomb : EffectObject
             SpriteRenderer renderer = collider.GetComponent<SpriteRenderer>();
             if (renderer == null)
                 continue;
-            if (!ObjectUtils.CheckIfSpriteInScreen(renderer))
-                continue;
+            // if (!ObjectUtils.CheckIfSpriteInScreen(renderer))
+            //     continue;
 
             IShootableObject affectedObject = collider.GetComponent<IShootableObject>();
             affectedObject.OnAffectedByEffectObject(type, gameObject);

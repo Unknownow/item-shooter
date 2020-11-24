@@ -56,6 +56,22 @@ public class IceBombAnimation : MonoBehaviour, IShootableObjectAnimation
         _animator.Play(IDLE_ANIMATION);
     }
 
+    public void DoEffectObjectAffectedByEffectObject(EffectObjectType objectType, GameObject sourceObject)
+    {
+        switch (objectType)
+        {
+            case EffectObjectType.BOMB:
+                DoEffectDestroyObject();
+                break;
+            case EffectObjectType.ICE_BOMB:
+                DoEffectDestroyObject();
+                break;
+            default:
+                DoEffectDestroyObject();
+                break;
+        }
+    }
+
     // ========== Private methods ==========
     private void StartRotation()
     {

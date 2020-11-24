@@ -137,7 +137,8 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
     // ========== Public Methods ==========
     public void ResetSpeedToDefault()
     {
-        _movementSpeedMultiplier = 1;
+        // _movementSpeedMultiplier = 1;
+        SpeedUp();
         if (movementConfig != null)
         {
             movementSpeed = movementConfig.MOVEMENT_SPEED;

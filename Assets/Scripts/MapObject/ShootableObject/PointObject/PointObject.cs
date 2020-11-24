@@ -117,5 +117,6 @@ public class PointObject : MonoBehaviour, IShootableObject, IMapObject
         float slowPercentage = sourceObject.GetComponent<IceBomb>().slowPercentage;
         float slowDuration = sourceObject.GetComponent<IceBomb>().slowDuration;
         gameObject.GetComponent<IObjectMovement>().SlowDown(slowPercentage, slowDuration);
+        gameObject.GetComponent<IShootableObjectAnimation>().DoEffectObjectAffectedByEffectObject(EffectObjectType.ICE_BOMB, sourceObject);
     }
 }

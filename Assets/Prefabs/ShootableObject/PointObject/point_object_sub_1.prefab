@@ -353,8 +353,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bf6f913a510447f796923ca306a5bf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _slowColor: {r: 0, g: 0.6117647, b: 1, a: 1}
   _angularSpeed: 350
-  _bombForce: 30
 --- !u!114 &-26253156321183864
 MonoBehaviour:
   m_ObjectHideFlags: 0
