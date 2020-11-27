@@ -6,7 +6,7 @@ public enum EffectObjectType
 {
     BOMB,
     ICE_BOMB,
-    // FLAME,
+    LIGHTNING_BALL,
 }
 
 public abstract class EffectObject : MonoBehaviour, IShootableObject, IMapObject

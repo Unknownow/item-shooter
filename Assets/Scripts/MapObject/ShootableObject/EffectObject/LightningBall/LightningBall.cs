@@ -2,36 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PointObjectType
+public class LightningBall : EffectObject
 {
-    ADD_POINT_1,
-    ADD_POINT_2,
-    ADD_POINT_3,
-    SUB_POINT_1,
-    SUB_POINT_2,
-    SUB_POINT_3,
-}
-
-public class PointObject : MonoBehaviour, IShootableObject, IMapObject
-{
-    public string GetClassName()
-    {
-        return this.GetType().Name;
-    }
     // ========== Fields and properties ==========
     [SerializeField]
-    private PointObjectType _type;
-    public PointObjectType type
-    {
-        get
-        {
-            return this._type;
-        }
-    }
-
-    [SerializeField]
-    private PointObjectConfig _config;
-    public MapObjectConfig config
+    private LightningBallConfig _config;
+    public override MapObjectConfig config
     {
         get
         {
@@ -40,15 +16,26 @@ public class PointObject : MonoBehaviour, IShootableObject, IMapObject
     }
 
     [SerializeField]
+    private LayerMask _affectedLayer;
+
+    [SerializeField]
     private float _timeBeforeDeactivateObject;
+    
+    public float radius
+    {
+        get
+        {
+            return ((BombConfig)config).RADIUS;
+        }
+    }
 
     // ========== Public methods ==========
-    public void StartObject()
+    public override void StartObject()
     {
         LogUtils.instance.Log(GetClassName(), "StartObject", "NOT_YET_IMPLEMENT");
     }
 
-    public void StartObject(float percentIncrease)
+    public override void StartObject(float percentIncrease)
     {
         ResetObject();
         float defaultMovementSpeed = gameObject.GetComponent<IObjectMovement>().movementSpeed;
@@ -60,28 +47,16 @@ public class PointObject : MonoBehaviour, IShootableObject, IMapObject
         gameObject.GetComponent<IShootableObjectAnimation>().DoEffectStartObject();
     }
 
-    public void DestroyObjectByBullet()
+    public override void DestroyObjectByBullet()
     {
         gameObject.GetComponent<IShootableObjectAnimation>().DoEffectDestroyObject();
-        gameObject.GetComponent<Collider2D>().enabled = false;
         gameObject.GetComponent<IObjectMovement>().StopMoving();
+        gameObject.GetComponent<Collider2D>().enabled = false;
+        Invoke("OnDetonate", ((BombConfig)config).DELAY_BEFORE_AFFECT);
         Invoke("DeactivateObject", _timeBeforeDeactivateObject);
     }
 
-    public void OnAffectedByEffectObject(EffectObjectType type, GameObject sourceObject)
-    {
-        switch (type)
-        {
-            case EffectObjectType.BOMB:
-                OnDestroyedByBomb(sourceObject);
-                break;
-            case EffectObjectType.ICE_BOMB:
-                OnSlowedByIceBomb(sourceObject);
-                break;
-        }
-    }
-
-    public void ResetObject()
+    public override void ResetObject()
     {
         gameObject.GetComponent<IObjectMovement>().StopMoving();
         gameObject.GetComponent<IObjectMovement>().moveDirection = Vector3.zero;
@@ -92,24 +67,49 @@ public class PointObject : MonoBehaviour, IShootableObject, IMapObject
         gameObject.GetComponent<Collider2D>().enabled = true;
     }
 
-    public void DeactivateObject()
+    public override void DeactivateObject()
     {
         gameObject.SetActive(false);
         ResetObject();
     }
 
-    // ========== Private methods ==========
-    private void OnDestroyedByBomb(GameObject sourceObject)
+    public override void OnAffectedByEffectObject(EffectObjectType type, GameObject sourceObject)
     {
-        gameObject.GetComponent<Collider2D>().enabled = false;
-        gameObject.GetComponent<IObjectMovement>().StopMoving();
-        Invoke("DeactivateObject", _timeBeforeDeactivateObject);
+        switch (type)
+        {
+            case EffectObjectType.BOMB:
+                DestroyObjectByBullet();
+                break;
+            case EffectObjectType.ICE_BOMB:
+                OnSlowedByIceBomb(sourceObject);
+                break;
+            default:
+                DestroyObjectByBullet();
+                break;
+        }
+    }
 
-        PointObjectConfig currentConfig = (PointObjectConfig)config;
-        if (currentConfig.POINT > 0)
-            Manager.instance.AddPoint(currentConfig.POINT);
-        gameObject.GetComponent<IObjectMovement>().StopMoving();
-        gameObject.GetComponent<IShootableObjectAnimation>().DoEffectObjectAffectedByEffectObject(EffectObjectType.BOMB, sourceObject);
+    // ========== Private methods ==========
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, ((LightningBallConfig)_config).RADIUS);
+    }
+
+    private void OnDetonate()
+    {
+        Collider2D[] affectedColliders = Physics2D.OverlapCircleAll(transform.position, ((BombConfig)config).RADIUS, _affectedLayer);
+        foreach (Collider2D collider in affectedColliders)
+        {
+            SpriteRenderer renderer = collider.GetComponent<SpriteRenderer>();
+            if (renderer == null)
+                continue;
+            // if (!ObjectUtils.CheckIfSpriteInScreen(renderer))
+            //     continue;
+
+            IShootableObject affectedObject = collider.GetComponent<IShootableObject>();
+            affectedObject.OnAffectedByEffectObject(type, gameObject);
+        }
     }
 
     private void OnSlowedByIceBomb(GameObject sourceObject)
