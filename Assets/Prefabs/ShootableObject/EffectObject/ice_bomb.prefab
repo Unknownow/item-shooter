@@ -133,6 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43e99d0fa21b2456bb3c79ae83b405c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _slowColor: {r: 0, g: 0.6117647, b: 1, a: 1}
   _angularSpeed: 300
 --- !u!114 &1266978569316209301
 MonoBehaviour:

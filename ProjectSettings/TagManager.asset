@@ -8,6 +8,7 @@ TagManager:
   - PlayerGun
   - ShootableObjectSpawner
   - ShootableObject
+  - LightningBoltPool
   layers:
   - Default
   - TransparentFX
@@ -53,4 +54,7 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 3681700757
+    locked: 0
+  - name: Effect
+    uniqueID: 100474627
     locked: 0

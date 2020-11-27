@@ -103,6 +103,9 @@ public class Bomb : EffectObject
             case EffectObjectType.ICE_BOMB:
                 OnSlowedByIceBomb(sourceObject);
                 break;
+            case EffectObjectType.LIGHTNING_BALL:
+                DestroyObjectByBullet();
+                break;
             default:
                 DestroyObjectByBullet();
                 break;

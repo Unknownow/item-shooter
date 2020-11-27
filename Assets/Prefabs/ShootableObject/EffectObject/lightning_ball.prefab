@@ -13,11 +13,12 @@ GameObject:
   - component: {fileID: 3617856056610528859}
   - component: {fileID: 3617856056610528852}
   - component: {fileID: 3617856056610528853}
+  - component: {fileID: -3530284334279180736}
   - component: {fileID: 3617856056610528850}
   - component: {fileID: 3617856056610528854}
   - component: {fileID: 3617856056610528855}
   m_Layer: 10
-  m_Name: lightning-ball
+  m_Name: lightning_ball
   m_TagString: ShootableObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -117,7 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fdeee88ee9894f4f999ebab6ae61e27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _slowColor: {r: 0, g: 0, b: 0, a: 0}
+  _slowColor: {r: 0, g: 0.6117647, b: 1, a: 1}
   _angularSpeed: 600
 --- !u!114 &3617856056610528853
 MonoBehaviour:
@@ -131,6 +132,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbc9a127c3f6f427c8178357d5a6faae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-3530284334279180736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3617856056610528851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a6abd764b6024a1e968e26c625485e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rotateWithVelocity: 0
+  _defaultDirection: {x: 0, y: 1, z: 0}
+  _movementConfig: {fileID: 0}
 --- !u!95 &3617856056610528850
 Animator:
   serializedVersion: 3

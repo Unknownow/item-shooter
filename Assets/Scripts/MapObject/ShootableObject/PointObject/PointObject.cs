@@ -41,7 +41,6 @@ public class PointObject : MonoBehaviour, IShootableObject, IMapObject
 
     [SerializeField]
     private float _timeBeforeDeactivateObject;
-
     // ========== Public methods ==========
     public void StartObject()
     {
@@ -77,6 +76,9 @@ public class PointObject : MonoBehaviour, IShootableObject, IMapObject
                 break;
             case EffectObjectType.ICE_BOMB:
                 OnSlowedByIceBomb(sourceObject);
+                break;
+            case EffectObjectType.LIGHTNING_BALL:
+                OnDestroyedByLightningBall(sourceObject);
                 break;
         }
     }
@@ -118,5 +120,18 @@ public class PointObject : MonoBehaviour, IShootableObject, IMapObject
         float slowDuration = sourceObject.GetComponent<IceBomb>().slowDuration;
         gameObject.GetComponent<IObjectMovement>().SlowDown(slowPercentage, slowDuration);
         gameObject.GetComponent<IShootableObjectAnimation>().DoEffectObjectAffectedByEffectObject(EffectObjectType.ICE_BOMB, sourceObject);
+    }
+
+    private void OnDestroyedByLightningBall(GameObject sourceObject)
+    {
+        gameObject.GetComponent<Collider2D>().enabled = false;
+        gameObject.GetComponent<IObjectMovement>().StopMoving();
+        Invoke("DeactivateObject", _timeBeforeDeactivateObject);
+
+        PointObjectConfig currentConfig = (PointObjectConfig)config;
+        if (currentConfig.POINT > 0)
+            Manager.instance.AddPoint(currentConfig.POINT);
+        gameObject.GetComponent<IObjectMovement>().StopMoving();
+        gameObject.GetComponent<IShootableObjectAnimation>().DoEffectObjectAffectedByEffectObject(EffectObjectType.LIGHTNING_BALL, sourceObject);
     }
 }

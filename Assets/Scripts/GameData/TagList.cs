@@ -10,4 +10,5 @@ public class TagList : MonoBehaviour
     public const string SHOOTABLE_OBJECT= "ShootableObject";
     public const string OBJECT_DESTROYER = "Destroyer";
     public const string SHOOTABLE_OBJECT_SPAWNER = "ShootableObjectSpawner";
+    public const string LIGHTNING_BOLT_POOL = "LightningBoltPool";
 }

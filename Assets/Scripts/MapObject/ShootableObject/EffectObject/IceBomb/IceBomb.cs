@@ -111,6 +111,9 @@ public class IceBomb : EffectObject
             case EffectObjectType.ICE_BOMB:
                 DestroyObjectByBullet();
                 break;
+            case EffectObjectType.LIGHTNING_BALL:
+                DestroyObjectByBullet();
+                break;
             default:
                 DestroyObjectByBullet();
                 break;

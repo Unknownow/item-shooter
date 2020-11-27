@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DigitalRuby.LightningBolt;
 
 public class LightningBall : EffectObject
 {
@@ -20,13 +21,40 @@ public class LightningBall : EffectObject
 
     [SerializeField]
     private float _timeBeforeDeactivateObject;
-    
+
     public float radius
     {
         get
         {
-            return ((BombConfig)config).RADIUS;
+            return ((LightningBallConfig)config).RADIUS;
         }
+    }
+
+    private int _defaultTargetCount
+    {
+        get
+        {
+            return ((LightningBallConfig)config).TARGET_COUNT;
+        }
+    }
+    private float _delayBetweenChain
+    {
+        get
+        {
+            return ((LightningBallConfig)config).DELAY_BETWEEN_CHAIN;
+        }
+    }
+
+    private GameObjectPool _lightningBoltPool;
+    private GameObject _lastStrokeObject;
+    private GameObject _currentStrokeObject;
+    private List<GameObject> _affectedGameObject;
+
+    // ========== MonoBehaviour methods ==========
+    protected void Awake()
+    {
+        _affectedGameObject = new List<GameObject>();
+        _lightningBoltPool = GameObject.FindGameObjectWithTag(TagList.LIGHTNING_BOLT_POOL).GetComponent<GameObjectPool>();
     }
 
     // ========== Public methods ==========
@@ -52,7 +80,7 @@ public class LightningBall : EffectObject
         gameObject.GetComponent<IShootableObjectAnimation>().DoEffectDestroyObject();
         gameObject.GetComponent<IObjectMovement>().StopMoving();
         gameObject.GetComponent<Collider2D>().enabled = false;
-        Invoke("OnDetonate", ((BombConfig)config).DELAY_BEFORE_AFFECT);
+        OnDetonate();
         Invoke("DeactivateObject", _timeBeforeDeactivateObject);
     }
 
@@ -83,6 +111,9 @@ public class LightningBall : EffectObject
             case EffectObjectType.ICE_BOMB:
                 OnSlowedByIceBomb(sourceObject);
                 break;
+            case EffectObjectType.LIGHTNING_BALL:
+                DestroyObjectByBullet();
+                break;
             default:
                 DestroyObjectByBullet();
                 break;
@@ -96,27 +127,79 @@ public class LightningBall : EffectObject
         Gizmos.DrawWireSphere(transform.position, ((LightningBallConfig)_config).RADIUS);
     }
 
-    private void OnDetonate()
-    {
-        Collider2D[] affectedColliders = Physics2D.OverlapCircleAll(transform.position, ((BombConfig)config).RADIUS, _affectedLayer);
-        foreach (Collider2D collider in affectedColliders)
-        {
-            SpriteRenderer renderer = collider.GetComponent<SpriteRenderer>();
-            if (renderer == null)
-                continue;
-            // if (!ObjectUtils.CheckIfSpriteInScreen(renderer))
-            //     continue;
-
-            IShootableObject affectedObject = collider.GetComponent<IShootableObject>();
-            affectedObject.OnAffectedByEffectObject(type, gameObject);
-        }
-    }
-
     private void OnSlowedByIceBomb(GameObject sourceObject)
     {
         float slowPercentage = sourceObject.GetComponent<IceBomb>().slowPercentage;
         float slowDuration = sourceObject.GetComponent<IceBomb>().slowDuration;
         gameObject.GetComponent<IObjectMovement>().SlowDown(slowPercentage, slowDuration);
         gameObject.GetComponent<IShootableObjectAnimation>().DoEffectObjectAffectedByEffectObject(EffectObjectType.ICE_BOMB, sourceObject);
+    }
+
+    private void OnDetonate()
+    {
+        _currentStrokeObject = gameObject;
+        _affectedGameObject.Clear();
+        _affectedGameObject.Add(_currentStrokeObject);
+        StartCoroutine("DoLightningStrike");
+    }
+
+    private IEnumerator DoLightningStrike()
+    {
+        while (_affectedGameObject.Count <= ((LightningBallConfig)config).TARGET_COUNT)
+        {
+            LightningStrike();
+            if (_currentStrokeObject == null)
+                break;
+            yield return new WaitForSeconds(((LightningBallConfig)config).DELAY_BETWEEN_CHAIN);
+        }
+    }
+
+    private void LightningStrike()
+    {
+        _lastStrokeObject = _currentStrokeObject;
+        _currentStrokeObject = GetAffectedObject(_lastStrokeObject);
+
+        if (_currentStrokeObject == null)
+            return;
+
+        IShootableObject currentStrokeClass = _currentStrokeObject.GetComponent<IShootableObject>();
+        currentStrokeClass.OnAffectedByEffectObject(EffectObjectType.LIGHTNING_BALL, gameObject);
+        _affectedGameObject.Add(_currentStrokeObject);
+
+        LightningBoltScript lightningBolt = _lightningBoltPool.GetObject().GetComponent<LightningBoltScript>();
+        lightningBolt.transform.position = Vector3.zero;
+        lightningBolt.StartObject = _lastStrokeObject;
+        lightningBolt.EndObject = _currentStrokeObject;
+        lightningBolt.ManualMode = true;
+        lightningBolt.Trigger();
+    }
+
+    private GameObject GetAffectedObject(GameObject sourceObject = null)
+    {
+        if (sourceObject == null)
+            return null;
+        Collider2D[] affectedColliders = Physics2D.OverlapCircleAll(sourceObject.transform.position, ((LightningBallConfig)config).RADIUS, _affectedLayer);
+        GameObject affectedObject = null;
+
+        if (affectedColliders.Length >= 0)
+        {
+            float minDistance = ((LightningBallConfig)config).RADIUS + 1;
+            ArrayUtils.Shuffle(affectedColliders);
+            foreach (Collider2D collider in affectedColliders)
+            {
+                SpriteRenderer renderer = collider.GetComponent<SpriteRenderer>();
+                if (_affectedGameObject.Contains(collider.gameObject) || renderer == null || collider.GetComponent<IShootableObject>() == null)
+                    // if (_affectedGameObject.Contains(collider.gameObject) || renderer == null || !ObjectUtils.CheckIfSpriteInScreen(renderer)|| collider.GetComponent<IShootableObject>() == null )
+                    continue;
+
+                float distance = Vector3.Distance(sourceObject.transform.position, collider.transform.position);
+                if (distance < minDistance)
+                {
+                    affectedObject = collider.gameObject;
+                    minDistance = distance;
+                }
+            }
+        }
+        return affectedObject;
     }
 }

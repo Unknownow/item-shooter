@@ -88,7 +88,7 @@ namespace DigitalRuby.LightningBolt
         [System.NonSerialized]
         public System.Random RandomGenerator = new System.Random();
 
-        private LineRenderer lineRenderer;
+        public LineRenderer lineRenderer;
         private List<KeyValuePair<Vector3, Vector3>> segments = new List<KeyValuePair<Vector3, Vector3>>();
         private int startIndex;
         private Vector2 size;
@@ -284,7 +284,11 @@ namespace DigitalRuby.LightningBolt
             SelectOffsetFromAnimationMode();
         }
 
-        private void Start()
+        private void TurnOff(){
+            gameObject.SetActive(false);
+        }
+
+        private void Awake()
         {
             orthographic = (Camera.main != null && Camera.main.orthographic);
             lineRenderer = GetComponent<LineRenderer>();
@@ -336,6 +340,8 @@ namespace DigitalRuby.LightningBolt
             startIndex = 0;
             GenerateLightningBolt(start, end, Generations, Generations, 0.0f);
             UpdateLineRenderer();
+
+            Invoke("TurnOff", Duration + 0.05f);
         }
 
         /// <summary>
