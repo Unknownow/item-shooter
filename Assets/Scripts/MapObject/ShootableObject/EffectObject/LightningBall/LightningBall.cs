@@ -188,8 +188,8 @@ public class LightningBall : EffectObject
             foreach (Collider2D collider in affectedColliders)
             {
                 SpriteRenderer renderer = collider.GetComponent<SpriteRenderer>();
-                if (_affectedGameObject.Contains(collider.gameObject) || renderer == null || collider.GetComponent<IShootableObject>() == null)
-                    // if (_affectedGameObject.Contains(collider.gameObject) || renderer == null || !ObjectUtils.CheckIfSpriteInScreen(renderer)|| collider.GetComponent<IShootableObject>() == null )
+                // if (_affectedGameObject.Contains(collider.gameObject) || renderer == null || collider.GetComponent<IShootableObject>() == null)
+                if (_affectedGameObject.Contains(collider.gameObject) || renderer == null || !ObjectUtils.CheckIfSpriteAppearInScreen(renderer) || collider.GetComponent<IShootableObject>() == null)
                     continue;
 
                 float distance = Vector3.Distance(sourceObject.transform.position, collider.transform.position);

@@ -127,8 +127,8 @@ public class Bomb : EffectObject
             SpriteRenderer renderer = collider.GetComponent<SpriteRenderer>();
             if (renderer == null)
                 continue;
-            // if (!ObjectUtils.CheckIfSpriteInScreen(renderer))
-            //     continue;
+            if (!ObjectUtils.CheckIfSpriteAppearInScreen(renderer))
+                continue;
 
             IShootableObject affectedObject = collider.GetComponent<IShootableObject>();
             affectedObject.OnAffectedByEffectObject(type, gameObject);

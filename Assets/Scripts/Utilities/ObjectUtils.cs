@@ -24,7 +24,7 @@ public static class ObjectUtils
         return ClampYPositionToScreen(ClampXPositionToScreen(position, bounds), bounds);
     }
 
-    public static bool CheckIfSpriteInScreen(SpriteRenderer spriteRenderer)
+    public static bool CheckIfSpriteAppearEntirelyInScreen(SpriteRenderer spriteRenderer)
     {
         Bounds rendererBound = spriteRenderer.bounds;
         Vector2 minScreenPosition = Camera.main.ScreenToWorldPoint(Vector2.zero);
@@ -33,7 +33,6 @@ public static class ObjectUtils
             rendererBound.min.y >= minScreenPosition.y &&
             rendererBound.max.x <= maxScreenPosition.x &&
             rendererBound.max.y <= maxScreenPosition.y;
-
     }
 
     public static bool CheckIfSpriteAppearInScreen(SpriteRenderer spriteRenderer)
