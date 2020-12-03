@@ -4,12 +4,15 @@ using UnityEngine;
 
 public interface IObjectMovement
 {
+    bool enabled { get; set; }
+    bool gravityEnabled { get; set; }
     float movementSpeed { get; set; }
     float accelerationRate { get; set; }
     Vector3 moveDirection { get; set; }
     Vector3 accelerationDirection { get; set; }
     Vector3 velocity { get; }
     Vector3 acceleration { get; }
+    Vector3 gravitationalAcceleration { get; }
     void ResetSpeedToDefault();
     void MoveBy(Vector3 distance);
     void MoveTo(Vector3 endPosition);

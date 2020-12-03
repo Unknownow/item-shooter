@@ -24,6 +24,7 @@ public class BulletCollision : MonoBehaviour
 
         ShootableObjectCollision shootableObjectCollision = shootableObject.GetComponent<ShootableObjectCollision>();
         shootableObjectCollision.OnGetHitByBullet(gameObject);
-        gameObject.SetActive(false);
+        gameObject.GetComponent<Bullet>().OnHitShootableObject(shootableObject);
+        // gameObject.SetActive(false);
     }
 }

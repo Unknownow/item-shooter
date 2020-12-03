@@ -59,8 +59,10 @@ public class PlayerShootingSystem : MonoBehaviour, IPlayerAttackSystem
         }
 
         GameObject bullet = BulletPool.instance.GetBullet(_currentBulletType);
-        bullet.transform.position = _gun.position;
+        bullet.GetComponent<IObjectMovement>().ResetSpeedToDefault();
         bullet.GetComponent<IObjectMovement>().Move(direction);
+        _gun.GetComponent<GunController>().ChangeWeaponDirection(direction);
+        bullet.transform.position = _gun.position;
     }
 
     public void Attack(Vector2 position)
@@ -79,8 +81,10 @@ public class PlayerShootingSystem : MonoBehaviour, IPlayerAttackSystem
         }
 
         GameObject bullet = BulletPool.instance.GetBullet(_currentBulletType);
-        bullet.transform.position = _gun.position;
+        bullet.GetComponent<IObjectMovement>().ResetSpeedToDefault();
         bullet.GetComponent<IObjectMovement>().Move(direction);
+        _gun.GetComponent<GunController>().ChangeWeaponDirection(direction);
+        bullet.transform.position = _gun.position;
     }
 
     public void Attack(GameObject target)

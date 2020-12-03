@@ -34,4 +34,37 @@ public class Bullet : MonoBehaviour, IMapObject
             return _config;
         }
     }
+    [SerializeField]
+    private float _timeBeforeDeactivateObject;
+    private Transform _bulletSprite;
+
+    // ========== MonoBehaviour methods ==========
+    protected void Awake()
+    {
+        _bulletSprite = transform.GetChild(0);
+    }
+
+    // ========== Public methods ==========
+    public void ResetObject()
+    {
+        gameObject.GetComponent<IObjectMovement>().gravityEnabled = false;
+        gameObject.GetComponent<IObjectMovement>().ResetSpeedToDefault();
+        _bulletSprite.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+        gameObject.GetComponent<Collider2D>().enabled = true;
+    }
+
+    public void DeactivateObject()
+    {
+        gameObject.GetComponent<IObjectMovement>().StopMoving();
+        gameObject.SetActive(false);
+        ResetObject();
+    }
+
+    public void OnHitShootableObject(GameObject target)
+    {
+        _bulletSprite.GetComponent<SpriteRenderer>().color = new Color32(90, 90, 90, 90);
+        gameObject.GetComponent<IObjectMovement>().gravityEnabled = true;
+        gameObject.GetComponent<Collider2D>().enabled = false;
+        Invoke("DeactivateObject", _timeBeforeDeactivateObject);
+    }
 }

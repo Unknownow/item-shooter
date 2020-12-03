@@ -107,7 +107,7 @@ public class PointObjectSpawner : MonoBehaviour
         pointObject.transform.position = new Vector3(spawnPosition.x, spawnPosition.y, 0);
         pointObject.GetComponent<IShootableObject>().StartObject(_currentIncreasePercentage);
 
-        pointObject.GetComponent<IShootableObject>().StartObject(_currentIncreasePercentage);
+        // pointObject.GetComponent<IShootableObject>().StartObject(_currentIncreasePercentage);
     }
 
     private PointObjectType GetRandomSpawnObject()

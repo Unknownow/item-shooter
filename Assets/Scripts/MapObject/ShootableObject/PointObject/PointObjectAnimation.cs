@@ -89,8 +89,8 @@ public class PointObjectAnimation : ShootableObjectAnimation
             miniGameObject.transform.localPosition = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0);
             miniGameObject.transform.rotation = Quaternion.Euler(Random.Range(45, 315), Random.Range(45, 315), Random.Range(45, 315));
 
-            float color = Random.Range(120, 150);
-            miniGameObject.GetComponent<SpriteRenderer>().color = new Color(color / 255f, color / 255f, color / 255f, 1);
+            byte color = (byte)Random.Range(120, 150);
+            miniGameObject.GetComponent<SpriteRenderer>().color = new Color32(color, color, color, 255);
             miniGameObject.SetActive(true);
 
             Bomb bomb = sourceObject.GetComponent<Bomb>();
@@ -115,8 +115,8 @@ public class PointObjectAnimation : ShootableObjectAnimation
             miniGameObject.transform.localPosition = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0);
             miniGameObject.transform.rotation = Quaternion.Euler(Random.Range(45, 315), Random.Range(45, 315), Random.Range(45, 315));
 
-            float color = Random.Range(100, 120);
-            miniGameObject.GetComponent<SpriteRenderer>().color = new Color(color / 255f, color / 255f, color / 255f, 1);
+            byte color = (byte)Random.Range(100, 120);
+            miniGameObject.GetComponent<SpriteRenderer>().color = new Color(color, color, color, 255);
             miniGameObject.SetActive(true);
         }
     }

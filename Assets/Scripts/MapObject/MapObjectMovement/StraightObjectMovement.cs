@@ -35,7 +35,15 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
         }
     }
 
-    private float _movementSpeed;
+    public Vector3 gravitationalAcceleration
+    {
+        get
+        {
+            return new Vector3(0, -movementConfig.GRAVITATIONAL_ACCELERATION_RATE, 0);
+        }
+    }
+
+    public float _movementSpeed;
     public float movementSpeed
     {
         get
@@ -118,12 +126,23 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
     private Vector3 _endPosition;
     private MoveType _moveType;
     private float _slowDuration;
-
+    private bool _isGravityEnable;
+    public bool gravityEnabled
+    {
+        get
+        {
+            return _isGravityEnable;
+        }
+        set
+        {
+            _isGravityEnable = value;
+        }
+    }
 
     // ========== MonoBehaviour Methods ==========
     private void Awake()
     {
-        ResetSpeedToDefault();
+        // ResetSpeedToDefault();
         _endPosition = transform.position;
     }
 
@@ -137,8 +156,6 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
     // ========== Public Methods ==========
     public void ResetSpeedToDefault()
     {
-        // _movementSpeedMultiplier = 1;
-        SpeedUp();
         if (movementConfig != null)
         {
             movementSpeed = movementConfig.MOVEMENT_SPEED;
@@ -149,6 +166,8 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
             movementSpeed = 0;
             accelerationRate = 0;
         }
+        _isGravityEnable = false;
+        SpeedUp();
     }
 
     public void MoveBy(Vector3 distance)
@@ -210,7 +229,6 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
         _movementSpeedMultiplier = 1 - percentage / 100f;
         _slowDuration = duration;
     }
-
     // ========== Private Methods ==========
     private void UpdateBulletPosition()
     {
@@ -228,6 +246,9 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
 
         transform.position += velocity * movementSpeedMultiplier * Time.deltaTime;
         _velocity += acceleration * movementSpeedMultiplier * Time.deltaTime;
+        if (gravityEnabled)
+            _velocity += gravitationalAcceleration * movementSpeedMultiplier * Time.deltaTime;
+
     }
 
     private void RotateWithVelocity()
