@@ -20,10 +20,24 @@ public class PlayerShootingSystem : MonoBehaviour, IPlayerAttackSystem
         set
         {
             _currentBulletType = value;
+            GameObject currentBullet = BulletPool.instance.GetBullet(_currentBulletType);
+            _currentBulletConfig = (BulletConfig)currentBullet.GetComponent<Bullet>().config;
+            currentBullet.SetActive(false);
         }
     }
+    private BulletConfig _currentBulletConfig;
 
+    private float bulletShootInterval
+    {
+        get
+        {
+            if (_currentBulletConfig == null)
+                return 0;
+            return 1 / _currentBulletConfig.FIRE_RATE;
+        }
+    }
     private Transform _gun;
+    private bool _isShootable;
 
     // ========== MonoBehaviour Methods ==========
     private void Awake()
@@ -37,6 +51,9 @@ public class PlayerShootingSystem : MonoBehaviour, IPlayerAttackSystem
                 break;
             }
         }
+
+        currentBulletType = BulletType.BULLET_NORMAL;
+        _isShootable = true;
     }
 
     // ========== Public methods ==========
@@ -47,6 +64,9 @@ public class PlayerShootingSystem : MonoBehaviour, IPlayerAttackSystem
 
     public void Attack(Vector3 direction)
     {
+        if (!_isShootable)
+            return;
+
         LogUtils.instance.Log(GetClassName(), "Attack(Vector3 direction)", direction.ToString());
         float directionAngle = Vector3.Angle(Vector3.up, direction);
         if (directionAngle > 90)
@@ -61,12 +81,18 @@ public class PlayerShootingSystem : MonoBehaviour, IPlayerAttackSystem
         GameObject bullet = BulletPool.instance.GetBullet(_currentBulletType);
         bullet.GetComponent<IObjectMovement>().ResetSpeedToDefault();
         bullet.GetComponent<IObjectMovement>().Move(direction);
-        _gun.GetComponent<GunController>().ChangeWeaponDirection(direction);
+        _gun.GetComponent<PlayerGunController>().ChangeWeaponDirection(direction);
         bullet.transform.position = _gun.position;
+
+        _isShootable = false;
+        Invoke("OnShootable", bulletShootInterval);
     }
 
     public void Attack(Vector2 position)
     {
+        if (!_isShootable)
+            return;
+
         LogUtils.instance.Log(GetClassName(), "Attack(Vector2 position)", position.ToString());
         Vector3 direction = (Vector3)position - _gun.position;
 
@@ -83,12 +109,20 @@ public class PlayerShootingSystem : MonoBehaviour, IPlayerAttackSystem
         GameObject bullet = BulletPool.instance.GetBullet(_currentBulletType);
         bullet.GetComponent<IObjectMovement>().ResetSpeedToDefault();
         bullet.GetComponent<IObjectMovement>().Move(direction);
-        _gun.GetComponent<GunController>().ChangeWeaponDirection(direction);
+        _gun.GetComponent<PlayerGunController>().ChangeWeaponDirection(direction);
         bullet.transform.position = _gun.position;
+
+        _isShootable = false;
+        Invoke("OnShootable", bulletShootInterval);
     }
 
     public void Attack(GameObject target)
     {
         LogUtils.instance.Log(GetClassName(), "Attack(GameObject target)", "NOT YET OVERRIDE");
+    }
+
+    public void OnShootable()
+    {
+        _isShootable = true;
     }
 }

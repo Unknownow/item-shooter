@@ -72,6 +72,8 @@ public class TouchAttackDirection : MonoBehaviour
         Vector2 currentTouchPosition = touch.position;
         currentTouchPosition = Camera.main.ScreenToWorldPoint(currentTouchPosition);
         gameObject.GetComponent<IPlayerAttackSystem>().Attack(currentTouchPosition);
+
+        gameObject.GetComponent<PlayerAnimation>().PlayAttackAnimation();
         return;
     }
 
