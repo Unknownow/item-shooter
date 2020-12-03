@@ -20,7 +20,7 @@ public class PlayerAnimation : MonoBehaviour
     private void Awake()
     {
         _animator = gameObject.GetComponent<Animator>();
-        // PlayIdleAnimation();
+        PlayIdleAnimation();
     }
     // ========== Public methods ==========
     public void PlayIdleAnimation()

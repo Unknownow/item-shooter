@@ -114,7 +114,7 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
             return this._acceleration;
         }
     }
-    private float _movementSpeedMultiplier = 1;
+    public float _movementSpeedMultiplier = 1;
     public float movementSpeedMultiplier
     {
         get

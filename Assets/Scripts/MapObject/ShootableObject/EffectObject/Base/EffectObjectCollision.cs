@@ -6,12 +6,12 @@ public class EffectObjectCollision : ShootableObjectCollision
 {
     // ========== Fields and properties ==========
     [SerializeField]
-    protected EffectConfig _config;
+    protected EffectObjectConfig _config;
     // ========== MonoBehaviour methods ==========
     protected void Awake()
     {
         if (_config == null)
-            _config = (EffectConfig)gameObject.GetComponent<EffectObject>().config;
+            _config = (EffectObjectConfig)gameObject.GetComponent<EffectObject>().config;
     }
     // ========== Public methods ==========
     public override void OnGetHitByBullet(GameObject bullet)
@@ -26,5 +26,6 @@ public class EffectObjectCollision : ShootableObjectCollision
         LogUtils.instance.Log(GetClassName(), "OnHitPlayer", "NOT_YET_IMPLEMENT");
         Manager.instance.StartMultiplyPoint(_config.POINT_MULTIPLIER, _config.POINT_MULTIPLIER_DURATION);
         gameObject.GetComponent<EffectObject>().DestroyObjectByBullet();
+        player.GetComponent<IPlayerAttackSystem>().ChangeBulletShootIntervalMultiplier(_config.BULLET_SHOOT_INTERVAL_MULTIPLIER, _config.BULLET_SHOOT_INTERVAL_MULTIPLIER_DURATION);
     }
 }

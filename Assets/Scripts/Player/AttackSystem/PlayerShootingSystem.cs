@@ -33,9 +33,13 @@ public class PlayerShootingSystem : MonoBehaviour, IPlayerAttackSystem
         {
             if (_currentBulletConfig == null)
                 return 0;
-            return 1 / _currentBulletConfig.FIRE_RATE;
+            return 1 / (_currentBulletConfig.FIRE_RATE * _bulletShootIntervalMultiplier);
         }
     }
+
+    private float _bulletShootIntervalMultiplier;
+    private float _bulletShootIntervalMultiplierDuration;
+
     private Transform _gun;
     private bool _isShootable;
 
@@ -53,6 +57,8 @@ public class PlayerShootingSystem : MonoBehaviour, IPlayerAttackSystem
         }
 
         currentBulletType = BulletType.BULLET_NORMAL;
+        _bulletShootIntervalMultiplier = 1;
+        _bulletShootIntervalMultiplierDuration = 0;
         _isShootable = true;
     }
 
@@ -81,11 +87,17 @@ public class PlayerShootingSystem : MonoBehaviour, IPlayerAttackSystem
         GameObject bullet = BulletPool.instance.GetBullet(_currentBulletType);
         bullet.GetComponent<IObjectMovement>().ResetSpeedToDefault();
         bullet.GetComponent<IObjectMovement>().Move(direction);
+        if (_bulletShootIntervalMultiplier > 1)
+            bullet.GetComponent<IObjectMovement>().SpeedUp(100 * (_bulletShootIntervalMultiplier - 1), _bulletShootIntervalMultiplierDuration);
+        else if (_bulletShootIntervalMultiplier > 0 && _bulletShootIntervalMultiplier < 1)
+            bullet.GetComponent<IObjectMovement>().SlowDown(100 * (1 - _bulletShootIntervalMultiplier), _bulletShootIntervalMultiplierDuration);
         _gun.GetComponent<PlayerGunController>().ChangeWeaponDirection(direction);
         bullet.transform.position = _gun.position;
 
         _isShootable = false;
         Invoke("OnShootable", bulletShootInterval);
+
+        gameObject.GetComponent<PlayerAnimation>().PlayAttackAnimation();
     }
 
     public void Attack(Vector2 position)
@@ -109,11 +121,17 @@ public class PlayerShootingSystem : MonoBehaviour, IPlayerAttackSystem
         GameObject bullet = BulletPool.instance.GetBullet(_currentBulletType);
         bullet.GetComponent<IObjectMovement>().ResetSpeedToDefault();
         bullet.GetComponent<IObjectMovement>().Move(direction);
+        if (_bulletShootIntervalMultiplier > 1)
+            bullet.GetComponent<IObjectMovement>().SpeedUp(100 * (_bulletShootIntervalMultiplier - 1), _bulletShootIntervalMultiplierDuration);
+        else if (_bulletShootIntervalMultiplier > 0 && _bulletShootIntervalMultiplier < 1)
+            bullet.GetComponent<IObjectMovement>().SlowDown(100 * (1 - _bulletShootIntervalMultiplier), _bulletShootIntervalMultiplierDuration);
         _gun.GetComponent<PlayerGunController>().ChangeWeaponDirection(direction);
         bullet.transform.position = _gun.position;
 
         _isShootable = false;
         Invoke("OnShootable", bulletShootInterval);
+
+        gameObject.GetComponent<PlayerAnimation>().PlayAttackAnimation();
     }
 
     public void Attack(GameObject target)
@@ -124,5 +142,20 @@ public class PlayerShootingSystem : MonoBehaviour, IPlayerAttackSystem
     public void OnShootable()
     {
         _isShootable = true;
+    }
+
+    public void ChangeBulletShootIntervalMultiplier(float multiplier, float duration)
+    {
+        CancelInvoke("ResetBulletShootIntervalMultiplier");
+        _bulletShootIntervalMultiplier = multiplier;
+        _bulletShootIntervalMultiplierDuration = duration;
+        gameObject.GetComponent<Animator>().speed = multiplier;
+        Invoke("ResetBulletShootIntervalMultiplier", duration);
+    }
+
+    public void ResetBulletShootIntervalMultiplier()
+    {
+        gameObject.GetComponent<Animator>().speed = 1;
+        _bulletShootIntervalMultiplier = 1;
     }
 }
