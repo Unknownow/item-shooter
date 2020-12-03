@@ -5,6 +5,9 @@ using UnityEngine;
 public enum BulletType
 {
     BULLET_NORMAL,
+    // BULLET_LIGHTNING,
+    // BULLET_BOMB,
+    // BULLET_ICE
 }
 
 public class Bullet : MonoBehaviour, IMapObject

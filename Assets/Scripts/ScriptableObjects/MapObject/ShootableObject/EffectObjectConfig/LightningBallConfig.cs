@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "LightningBallConfig", menuName = "ScriptableObjects/ShootableObject/LightningBallConfig", order = 2)]
-public class LightningBallConfig : MapObjectConfig
+public class LightningBallConfig : EffectConfig
 {
     public int TARGET_COUNT = 4;
     public float RADIUS = 3;

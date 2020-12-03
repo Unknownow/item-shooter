@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 1266978569316209384}
   - component: {fileID: 1266978569316209385}
   - component: {fileID: 1266978569316209386}
+  - component: {fileID: -47148776837411759}
   - component: {fileID: 1266978569316209300}
-  - component: {fileID: 1266978569316209301}
   - component: {fileID: 1266978569316209302}
   - component: {fileID: 1266978569316209387}
   - component: {fileID: 1266978569316209388}
@@ -121,6 +121,20 @@ MonoBehaviour:
   _rotateWithVelocity: 0
   _defaultDirection: {x: 0, y: 1, z: 0}
   _movementConfig: {fileID: 0}
+  _movementSpeed: 0
+--- !u!114 &-47148776837411759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1266978569316209389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 345127bba17ba4a38a05025bb40d9538, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _config: {fileID: 0}
 --- !u!114 &1266978569316209300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,18 +149,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _slowColor: {r: 0, g: 0.6117647, b: 1, a: 1}
   _angularSpeed: 300
---- !u!114 &1266978569316209301
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1266978569316209389}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2e0ed18163c74a5cb3af51a30e1ff72, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!95 &1266978569316209302
 Animator:
   serializedVersion: 3

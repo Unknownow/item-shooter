@@ -48,6 +48,8 @@ public class Manager : MonoBehaviour
         }
     }
 
+    private float _pointMultiplier;
+
     // ========== MonoBehaviour methods ==========
     private void Awake()
     {
@@ -84,6 +86,18 @@ public class Manager : MonoBehaviour
     {
         _totalPoint = 0;
         EventSystem.instance.DispatchEvent(EventCode.ON_POINT_UPDATE, new object[] { totalPoint });
+    }
+
+    public void StartMultiplyPoint(float multiplier, float duration)
+    {
+        CancelInvoke("StopMultiplyPoint");
+        _pointMultiplier = multiplier;
+        Invoke("StopMultiplyPoint", duration);
+    }
+
+    public void StopMultiplyPoint()
+    {
+        _pointMultiplier = 1;
     }
 
     // ========== Private methods ==========

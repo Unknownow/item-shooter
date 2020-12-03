@@ -1,11 +1,18 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BombCollision : ShootableObjectCollision
+public class EffectObjectCollision : ShootableObjectCollision
 {
     // ========== Fields and properties ==========
+    [SerializeField]
+    protected EffectConfig _config;
     // ========== MonoBehaviour methods ==========
+    protected void Awake()
+    {
+        if (_config == null)
+            _config = (EffectConfig)gameObject.GetComponent<EffectObject>().config;
+    }
     // ========== Public methods ==========
     public override void OnGetHitByBullet(GameObject bullet)
     {
@@ -17,5 +24,7 @@ public class BombCollision : ShootableObjectCollision
     protected override void OnHitPlayer(GameObject player)
     {
         LogUtils.instance.Log(GetClassName(), "OnHitPlayer", "NOT_YET_IMPLEMENT");
+        Manager.instance.StartMultiplyPoint(_config.POINT_MULTIPLIER, _config.POINT_MULTIPLIER_DURATION);
+        gameObject.GetComponent<EffectObject>().DestroyObjectByBullet();
     }
 }
