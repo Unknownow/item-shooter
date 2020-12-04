@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerAnimation : MonoBehaviour
 {
@@ -10,7 +11,11 @@ public class PlayerAnimation : MonoBehaviour
     }
 
     // ========== Fields and properties ==========
+    [SerializeField]
+    private int _blinkCountWhenGetHit;
+
     private Animator _animator;
+    private SpriteRenderer _renderer;
 
     private const string IDLE_ANIMATION = "Idle";
     private const string RUN_ANIMATION = "Run";
@@ -20,6 +25,7 @@ public class PlayerAnimation : MonoBehaviour
     private void Awake()
     {
         _animator = gameObject.GetComponent<Animator>();
+        _renderer = gameObject.GetComponent<SpriteRenderer>();
         PlayIdleAnimation();
     }
     // ========== Public methods ==========
@@ -45,6 +51,19 @@ public class PlayerAnimation : MonoBehaviour
         _animator.Play(RUN_ANIMATION);
         Vector3 currentRotation = transform.rotation.eulerAngles;
         transform.rotation = Quaternion.Euler(currentRotation.x, 0, currentRotation.z);
+    }
+
+    public void PlayInvincibleAnimation(float duration)
+    {
+        float intervalBetweenBlink = duration / (2f * _blinkCountWhenGetHit);
+
+        Sequence blinkSequence = DOTween.Sequence();
+        blinkSequence.Append(_renderer.DOColor(new Color(1, 1, 1, 0), 0));
+        blinkSequence.AppendInterval(intervalBetweenBlink);
+        blinkSequence.Append(_renderer.DOColor(new Color(1, 1, 1, 1), 0));
+        blinkSequence.AppendInterval(intervalBetweenBlink);
+        blinkSequence.SetLoops(_blinkCountWhenGetHit);
+        blinkSequence.Play();
     }
     // ========== Private methods ==========
 }

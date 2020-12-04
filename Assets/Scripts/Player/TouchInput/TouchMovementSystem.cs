@@ -8,25 +8,32 @@ public class TouchMovementSystem : MonoBehaviour
     }
 
     // ========== Fields and properties ==========
-    [SerializeField]
     private float _playerYPositionRatioToScreen;
-
     private EventListener[] _eventListener = null;
     private Vector3 _lastTouchPosition = Vector3.zero;
     private Collider2D _playerCollider;
+    private PlayerConfig _config;
 
     // ========== MonoBehaviour Methods ==========
-    void Start()
+    private void Awake()
     {
+        _config = gameObject.GetComponent<Player>().config;
+        _playerYPositionRatioToScreen = _config.Y_POSITION_TO_SCREEN_RATIO;
         _lastTouchPosition = Vector3.zero;
         _playerCollider = gameObject.GetComponent<Collider2D>();
         AddListeners();
     }
+
     private void Update()
     {
         UpdatePlayerPosition();
     }
 
+    private void OnDestroy()
+    {
+        RemoveListeners();
+    }
+    // ========== Event listener Methods ==========
     private void AddListeners()
     {
         _eventListener = new EventListener[1];
@@ -39,19 +46,6 @@ public class TouchMovementSystem : MonoBehaviour
         {
             EventSystem.instance.RemoveListener(listener.eventCode, listener);
         }
-    }
-
-    private void OnDestroy()
-    {
-        RemoveListeners();
-    }
-
-    // ========== Private Methods ==========
-    private void UpdatePlayerPosition()
-    {
-        Vector3 position = transform.position;
-        position.y = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height * _playerYPositionRatioToScreen, 0)).y;
-        transform.position = position;
     }
 
     private void OnMovingTouch(object[] eventParam)
@@ -69,6 +63,13 @@ public class TouchMovementSystem : MonoBehaviour
                 OnTouchEnded(touch);
                 break;
         }
+    }
+    // ========== Private Methods ==========
+    private void UpdatePlayerPosition()
+    {
+        Vector3 position = transform.position;
+        position.y = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height * _playerYPositionRatioToScreen, 0)).y;
+        transform.position = position;
     }
 
     private void OnTouchBegan(Touch touch)
