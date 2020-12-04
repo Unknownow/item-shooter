@@ -32,6 +32,7 @@ public class PointObjectCollision : ShootableObjectCollision
     protected override void OnHitPlayer(GameObject player)
     {
         player.GetComponent<Player>().OnGetHit(config.DAMAGE);
+        gameObject.GetComponent<IShootableObject>().DestroyObjectByBullet();
         return;
     }
 }

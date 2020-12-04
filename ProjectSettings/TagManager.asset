@@ -46,11 +46,17 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 3317885045
+    locked: 0
   - name: Shootable Object
     uniqueID: 1795392347
     locked: 0
   - name: Bullet
     uniqueID: 3070825153
+    locked: 0
+  - name: Foreground
+    uniqueID: 699761719
     locked: 0
   - name: Player
     uniqueID: 3681700757
