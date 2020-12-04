@@ -30,8 +30,8 @@ public class BombAnimation : ShootableObjectAnimation
 
     public override void ResetEffectObject()
     {
-        base.ResetEffectObject();
         gameObject.GetComponent<Animator>().Play(IDLE_ANIMATION);
+        base.ResetEffectObject();
     }
 
     public override void DoEffectObjectAffectedByEffectObject(EffectObjectType objectType, GameObject sourceObject)

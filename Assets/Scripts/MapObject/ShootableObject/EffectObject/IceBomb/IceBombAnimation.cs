@@ -39,9 +39,9 @@ public class IceBombAnimation : ShootableObjectAnimation
 
     public override void ResetEffectObject()
     {
+        _animator.Play(IDLE_ANIMATION);
         base.ResetEffectObject();
         gameObject.GetComponent<SpriteRenderer>().enabled = true;
-        _animator.Play(IDLE_ANIMATION);
     }
 
     public override void DoEffectObjectAffectedByEffectObject(EffectObjectType objectType, GameObject sourceObject)

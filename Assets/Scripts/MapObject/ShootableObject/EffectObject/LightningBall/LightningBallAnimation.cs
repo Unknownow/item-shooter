@@ -32,9 +32,9 @@ public class LightningBallAnimation : ShootableObjectAnimation
 
     public override void ResetEffectObject()
     {
+        gameObject.GetComponent<Animator>().Play(IDLE_ANIMATION);
         base.ResetEffectObject();
         gameObject.GetComponent<SpriteRenderer>().enabled = true;
-        gameObject.GetComponent<Animator>().Play(IDLE_ANIMATION);
     }
 
     public override void DoEffectObjectAffectedByEffectObject(EffectObjectType objectType, GameObject sourceObject)
