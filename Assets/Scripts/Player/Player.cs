@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
 
     // ========== Fields and properties ==========
     [SerializeField]
+    private PlayerConfig _config;
     private int _maxHealthPoint;
     public int _currentHealthPoint;
     public int currentHealthPoint
@@ -24,6 +25,7 @@ public class Player : MonoBehaviour
     // ========== MonoBehaviour methods ==========
     private void Awake()
     {
+        _maxHealthPoint = _config.MAX_HEALTH_POINT;
         _currentHealthPoint = _maxHealthPoint;
     }
 
@@ -37,8 +39,9 @@ public class Player : MonoBehaviour
         }
         int newHealthPoint = _currentHealthPoint - damageAmount;
         _currentHealthPoint = (newHealthPoint < 0) ? 0 : newHealthPoint;
+        EventSystem.instance.DispatchEvent(EventCode.ON_PLAYER_HEALTH_UPDATE, new object[] { _currentHealthPoint, _maxHealthPoint });
         if (_currentHealthPoint <= 0)
-            EventSystem.instance.DispatchEvent(EventCode.ON_PLAYER_DIED, new object[] { });
+            EventSystem.instance.DispatchEvent(EventCode.ON_PLAYER_DIED);
     }
 
     public void OnHeal(int healAmount)
@@ -55,5 +58,6 @@ public class Player : MonoBehaviour
         }
         int newHealthPoint = _currentHealthPoint + healAmount;
         _currentHealthPoint = (newHealthPoint > _maxHealthPoint) ? _maxHealthPoint : newHealthPoint;
+        EventSystem.instance.DispatchEvent(EventCode.ON_PLAYER_HEALTH_UPDATE, new object[] { _currentHealthPoint, _maxHealthPoint });
     }
 }

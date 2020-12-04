@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MOVEMENT_SPEED: 0
   ACCELERATION_RATE: 3
+  GRAVITATIONAL_ACCELERATION_RATE: 9
   POINT: -3
-  DAMAGE: 2
+  DAMAGE: 1

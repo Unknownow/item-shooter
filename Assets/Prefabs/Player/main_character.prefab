@@ -103,6 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 698f4765f8a5c446c9de1072c415f18e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _config: {fileID: 11400000, guid: f5b1df90df4684f0f8f207f5668abf2a, type: 2}
   _maxHealthPoint: 100
   _currentHealthPoint: 0
 --- !u!114 &6645981994848035009
