@@ -50,9 +50,13 @@ public class GUIPauseGame : MonoBehaviour
     {
         float duration = 0.3f;
         DoEffectOut(duration);
-        Sequence onResumeSequence = DOTween.Sequence();
-        GameFlowManager.instance.OnReset();
-        onResumeSequence.Play();
+        Sequence onRestartSequence = DOTween.Sequence();
+        onRestartSequence.AppendInterval(duration + 0.1f);
+        onRestartSequence.AppendCallback(() =>
+        {
+            GameFlowManager.instance.OnStartGame();
+        });
+        onRestartSequence.Play();
     }
 
     // ========== Protected methods ==========

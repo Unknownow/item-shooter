@@ -43,7 +43,7 @@ public class Manager : MonoBehaviour
         get
         {
             if (_player == null)
-                _player = Instantiate(_playerPrefab, Vector3.zero, Quaternion.identity);
+                _player = Instantiate(_playerPrefab, new Vector3(0, -100, 0), Quaternion.identity);
             return _player;
         }
     }
@@ -53,15 +53,17 @@ public class Manager : MonoBehaviour
     // ========== MonoBehaviour methods ==========
     private void Awake()
     {
-        _player = player;
         ResetPoint();
     }
 
     // ========== Public methods ==========
     public void ResetPlayer()
     {
-        GameObject.Destroy(_player);
-        _player = null;
+        if (_player != null)
+        {
+            GameObject.Destroy(_player);
+            _player = null;
+        }
         _player = player;
     }
 

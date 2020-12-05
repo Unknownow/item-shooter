@@ -33,6 +33,10 @@ public class FloatTextController : MonoBehaviour
     [SerializeField]
     private int _defaultBlinkCount;
 
+    [Header("Static")]
+    [SerializeField]
+    private float _defaultStaticDuration;
+
     private List<GameObject> _pool;
     private static FloatTextController _instance;
     public static FloatTextController instance
@@ -52,46 +56,117 @@ public class FloatTextController : MonoBehaviour
     }
     // ========== MonoBehaviour methods ==========
     // ========== Public methods ==========
-    public static void DoFloatUpText(string content, Vector3 position, Vector3 floatOffset, float duration, Color32 color, bool isWorldPosition = true)
+    public static void DoFloatUpText(string content, Vector3 position, Vector3 floatOffset, Vector3 scale, float duration, Color32 color, bool isWorldPosition = true)
     {
-        instance.CreateFloatUpText(content, position, floatOffset, duration, color, isWorldPosition);
+        instance.CreateFloatUpText(content, position, floatOffset, scale, duration, color, isWorldPosition);
+    }
+
+    public static void DoFloatUpText(string content, Vector3 position, Vector3 scale, Color32 color, bool isWorldPosition = true)
+    {
+        float defaultDuration = instance._defaultFloatDuration;
+        Vector3 defaultOffset = instance._defaultFloatOffset;
+        DoFloatUpText(content, position, defaultOffset, scale, defaultDuration, color, isWorldPosition);
     }
 
     public static void DoFloatUpText(string content, Vector3 position, Color32 color, bool isWorldPosition = true)
     {
         float defaultDuration = instance._defaultFloatDuration;
         Vector3 defaultOffset = instance._defaultFloatOffset;
-        DoFloatUpText(content, position, defaultOffset, defaultDuration, color, isWorldPosition);
+        Vector3 defaultScale = Vector3.one;
+        DoFloatUpText(content, position, defaultOffset, defaultScale, defaultDuration, color, isWorldPosition);
+    }
+
+    public static void DoFloatUpText(string content, Vector3 position, Vector3 scale, bool isWorldPosition = true)
+    {
+        float defaultDuration = instance._defaultFloatDuration;
+        Vector3 defaultOffset = instance._defaultFloatOffset;
+        Color32 defaultColor = Colors.TURQUOISE;
+        DoFloatUpText(content, position, defaultOffset, scale, defaultDuration, defaultColor, isWorldPosition);
+    }
+
+    public static void DoFloatUpText(string content, Vector3 position, float duration, bool isWorldPosition = true)
+    {
+        Vector3 defaultOffset = instance._defaultFloatOffset;
+        Vector3 defaultScale = Vector3.one;
+        Color32 defaultColor = Colors.TURQUOISE;
+        DoFloatUpText(content, position, defaultOffset, defaultScale, duration, defaultColor, isWorldPosition);
     }
 
     public static void DoFloatUpText(string content, Vector3 position, bool isWorldPosition = true)
     {
         float defaultDuration = instance._defaultFloatDuration;
         Vector3 defaultOffset = instance._defaultFloatOffset;
-        DoFloatUpText(content, position, defaultOffset, defaultDuration, Colors.TURQUOISE, isWorldPosition);
+        Vector3 defaultScale = Vector3.one;
+        Color32 defaultColor = Colors.TURQUOISE;
+        DoFloatUpText(content, position, defaultOffset, defaultScale, defaultDuration, defaultColor, isWorldPosition);
     }
 
-    public static void DoFloatBlinkText(string content, Vector3 position, int blinkCount, float duration, Color32 color, bool isWorldPosition = true)
+    public static void DoFloatBlinkText(string content, Vector3 position, int blinkCount, Vector3 scale, float duration, Color32 color, bool isWorldPosition = true)
     {
-        instance.CreateFloatBlinkText(content, position, blinkCount, duration, color, isWorldPosition);
+        instance.CreateFloatBlinkText(content, position, blinkCount, scale, duration, color, isWorldPosition);
+    }
+
+    public static void DoFloatBlinkText(string content, Vector3 position, Vector3 scale, Color32 color, bool isWorldPosition = true)
+    {
+        float defaultDuration = instance._defaultBlinkDuration;
+        int defaultBlinkCount = instance._defaultBlinkCount;
+        DoFloatBlinkText(content, position, defaultBlinkCount, scale, defaultDuration, color, isWorldPosition);
     }
 
     public static void DoFloatBlinkText(string content, Vector3 position, Color32 color, bool isWorldPosition = true)
     {
         float defaultDuration = instance._defaultBlinkDuration;
         int defaultBlinkCount = instance._defaultBlinkCount;
-        DoFloatBlinkText(content, position, defaultBlinkCount, defaultDuration, color, isWorldPosition);
+        Vector3 defaultScale = Vector3.one;
+        DoFloatBlinkText(content, position, defaultBlinkCount, defaultScale, defaultDuration, color, isWorldPosition);
+    }
+
+    public static void DoFloatBlinkText(string content, Vector3 position, Vector3 scale, bool isWorldPosition = true)
+    {
+        float defaultDuration = instance._defaultBlinkDuration;
+        int defaultBlinkCount = instance._defaultBlinkCount;
+        Color32 defaultColor = Colors.TURQUOISE;
+        DoFloatBlinkText(content, position, defaultBlinkCount, scale, defaultDuration, defaultColor, isWorldPosition);
+    }
+
+    public static void DoFloatBlinkText(string content, Vector3 position, float duration, bool isWorldPosition = true)
+    {
+        int defaultBlinkCount = instance._defaultBlinkCount;
+        Color32 defaultColor = Colors.TURQUOISE;
+        Vector3 defaultScale = Vector3.one;
+        DoFloatBlinkText(content, position, defaultBlinkCount, defaultScale, duration, Colors.TURQUOISE, isWorldPosition);
     }
 
     public static void DoFloatBlinkText(string content, Vector3 position, bool isWorldPosition = true)
     {
         float defaultDuration = instance._defaultBlinkDuration;
         int defaultBlinkCount = instance._defaultBlinkCount;
-        DoFloatBlinkText(content, position, defaultBlinkCount, defaultDuration, Colors.TURQUOISE, isWorldPosition);
+        Color32 defaultColor = Colors.TURQUOISE;
+        Vector3 defaultScale = Vector3.one;
+        DoFloatBlinkText(content, position, defaultBlinkCount, defaultScale, defaultDuration, Colors.TURQUOISE, isWorldPosition);
     }
 
+    public static void DoFloatStaticText(string content, Vector3 position, Vector3 scale, float duration, Color32 color, bool isWorldPosition = true)
+    {
+        instance.CreateFloatStaticText(content, position, scale, duration, color, isWorldPosition);
+    }
+
+    public static void DoFloatStaticText(string content, Vector3 position, float duration, bool isWorldPosition = true)
+    {
+        Vector3 defaultScale = Vector3.one;
+        Color32 defaultColor = Colors.TURQUOISE;
+        instance.CreateFloatStaticText(content, position, defaultScale, duration, defaultColor, isWorldPosition);
+    }
+
+    public static void DoFloatStaticText(string content, Vector3 position, bool isWorldPosition = true)
+    {
+        float defaultDuration = instance._defaultStaticDuration;
+        Vector3 defaultScale = Vector3.one;
+        Color32 defaultColor = Colors.TURQUOISE;
+        instance.CreateFloatStaticText(content, position, defaultScale, defaultDuration, defaultColor, isWorldPosition);
+    }
     // ========== Private methods ==========
-    private void CreateFloatUpText(string content, Vector3 position, Vector3 floatOffset, float duration, Color32 color, bool isWorldPosition = true)
+    private void CreateFloatUpText(string content, Vector3 position, Vector3 floatOffset, Vector3 scale, float duration, Color32 color, bool isWorldPosition = true)
     {
         if (isWorldPosition)
             position = CameraManager.mainCamera.WorldToScreenPoint(position);
@@ -100,10 +175,11 @@ public class FloatTextController : MonoBehaviour
         textComponent.SetText(content);
         textObject.transform.position = position;
         textComponent.color = color;
+        textObject.transform.localScale = scale;
         DoFloatUpEffect(textObject, floatOffset, duration);
     }
 
-    private void CreateFloatBlinkText(string content, Vector3 position, int blinkCount, float duration, Color32 color, bool isWorldPosition = true)
+    private void CreateFloatBlinkText(string content, Vector3 position, int blinkCount, Vector3 scale, float duration, Color32 color, bool isWorldPosition = true)
     {
         if (isWorldPosition)
             position = CameraManager.mainCamera.WorldToScreenPoint(position);
@@ -112,7 +188,21 @@ public class FloatTextController : MonoBehaviour
         textComponent.SetText(content);
         textObject.transform.position = position;
         textComponent.color = color;
+        textObject.transform.localScale = scale;
         DoFloatBlinkEffect(textObject, blinkCount, duration);
+    }
+
+    private void CreateFloatStaticText(string content, Vector3 position, Vector3 scale, float duration, Color32 color, bool isWorldPosition = true)
+    {
+        if (isWorldPosition)
+            position = CameraManager.mainCamera.WorldToScreenPoint(position);
+        GameObject textObject = instance.GetText();
+        TextMeshProUGUI textComponent = textObject.GetComponent<TextMeshProUGUI>();
+        textComponent.SetText(content);
+        textObject.transform.position = position;
+        textComponent.color = color;
+        textObject.transform.localScale = scale;
+        DoFloatStaticEffect(textObject, duration);
     }
 
     private void DoFloatUpEffect(GameObject target, Vector3 floatOffset, float duration)
@@ -151,6 +241,22 @@ public class FloatTextController : MonoBehaviour
             target.SetActive(false);
             target.GetComponent<TextMeshProUGUI>().color = Colors.TURQUOISE;
         });
+
+        blinkSequence.Play();
+    }
+
+    private void DoFloatStaticEffect(GameObject target, float duration)
+    {
+        Transform targetTransform = target.transform;
+        TextMeshProUGUI text = target.GetComponent<TextMeshProUGUI>();
+        Sequence staticSequence = DOTween.Sequence();
+        staticSequence.AppendInterval(duration);
+        staticSequence.OnComplete(() =>
+        {
+            target.SetActive(false);
+        });
+
+        staticSequence.Play();
     }
 
     private GameObject GetText()

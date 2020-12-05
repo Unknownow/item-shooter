@@ -27,29 +27,57 @@ public class GameFlowManager : MonoBehaviour
     private bool _isPlaying;
     public bool isPlaying { get { return _isPlaying; } }
     // ========== Fields and properties ==========
+    private int _countdownTime = 3;
     // ========== MonoBehaviour methods ==========
     private void Awake()
     {
-        _isPlaying = true;
+        _isPlaying = false;
+        OnStartGame();
     }
     // ========== Public methods ==========
     public void OnPause()
     {
         _isPlaying = false;
+        StopAllCoroutines();
     }
 
     public void OnResume()
     {
-        _isPlaying = true;
+        _countdownTime = 3;
+        StartCoroutine("CountdownResumeGame");
     }
 
-    public void OnReset()
+    public void OnStartGame()
     {
         OnPause();
         Manager.instance.ResetPlayer();
         Manager.instance.ResetPoint();
         EventSystem.instance.DispatchEvent(EventCode.ON_RESET_GAME);
-        Invoke("OnResume", 2);
+        _countdownTime = 3;
+        StartCoroutine("CountdownStartGame");
     }
     // ========== Private methods ==========
+    private IEnumerator CountdownStartGame()
+    {
+        while (_countdownTime > 0)
+        {
+            yield return new WaitForSeconds(0.1f);
+            FloatTextController.DoFloatStaticText(_countdownTime.ToString(), Vector3.zero, Vector3.one * 2, 0.8f, Colors.TURQUOISE);
+            yield return new WaitForSeconds(0.9f);
+            _countdownTime -= 1;
+        }
+        _isPlaying = true;
+    }
+
+    private IEnumerator CountdownResumeGame()
+    {
+        while (_countdownTime > 0)
+        {
+            yield return new WaitForSeconds(0.1f);
+            FloatTextController.DoFloatStaticText(_countdownTime.ToString(), Vector3.zero, Vector3.one * 2, 0.8f, Colors.TURQUOISE);
+            yield return new WaitForSeconds(0.9f);
+            _countdownTime -= 1;
+        }
+        _isPlaying = true;
+    }
 }
