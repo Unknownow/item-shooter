@@ -22,9 +22,15 @@ public class PointObjectCollision : ShootableObjectCollision
     {
         base.OnGetHitByBullet(bullet);
         if (config.POINT > 0)
+        {
+            FloatTextController.DoFloatUpText("+" + config.POINT.ToString(), transform.position, Colors.TURQUOISE);
             Manager.instance.AddPoint(config.POINT);
+        }
         else
+        {
+            FloatTextController.DoFloatUpText(config.POINT.ToString(), transform.position, Colors.ALIZARIN);
             Manager.instance.SubPoint(Mathf.Abs(config.POINT));
+        }
         return;
     }
 

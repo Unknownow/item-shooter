@@ -109,7 +109,10 @@ public class PointObject : MonoBehaviour, IShootableObject, IMapObject
 
         PointObjectConfig currentConfig = (PointObjectConfig)config;
         if (currentConfig.POINT > 0)
+        {
             Manager.instance.AddPoint(currentConfig.POINT);
+            FloatTextController.DoFloatUpText("+" + currentConfig.POINT.ToString(), transform.position, Colors.TURQUOISE);
+        }
         gameObject.GetComponent<IObjectMovement>().StopMoving();
         gameObject.GetComponent<IShootableObjectAnimation>().DoEffectObjectAffectedByEffectObject(EffectObjectType.BOMB, sourceObject);
     }
@@ -130,7 +133,10 @@ public class PointObject : MonoBehaviour, IShootableObject, IMapObject
 
         PointObjectConfig currentConfig = (PointObjectConfig)config;
         if (currentConfig.POINT > 0)
+        {
             Manager.instance.AddPoint(currentConfig.POINT);
+            FloatTextController.DoFloatUpText("+" + currentConfig.POINT.ToString(), transform.position, Colors.TURQUOISE);
+        }
         gameObject.GetComponent<IObjectMovement>().StopMoving();
         gameObject.GetComponent<IShootableObjectAnimation>().DoEffectObjectAffectedByEffectObject(EffectObjectType.LIGHTNING_BALL, sourceObject);
     }

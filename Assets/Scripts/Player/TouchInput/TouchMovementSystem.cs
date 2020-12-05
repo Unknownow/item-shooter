@@ -68,14 +68,14 @@ public class TouchMovementSystem : MonoBehaviour
     private void UpdatePlayerPosition()
     {
         Vector3 position = transform.position;
-        position.y = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height * _playerYPositionRatioToScreen, 0)).y;
+        position.y = CameraManager.mainCamera.ScreenToWorldPoint(new Vector3(0, Screen.height * _playerYPositionRatioToScreen, 0)).y;
         transform.position = position;
     }
 
     private void OnTouchBegan(Touch touch)
     {
         Vector3 currentTouchPosition = touch.position;
-        currentTouchPosition = Camera.main.ScreenToWorldPoint(currentTouchPosition);
+        currentTouchPosition = CameraManager.mainCamera.ScreenToWorldPoint(currentTouchPosition);
         currentTouchPosition.z = 0;
         _lastTouchPosition = currentTouchPosition;
     }
@@ -86,7 +86,7 @@ public class TouchMovementSystem : MonoBehaviour
         if (delta.sqrMagnitude > 2)
         {
             Vector3 currentTouchPosition = touch.position;
-            currentTouchPosition = Camera.main.ScreenToWorldPoint(currentTouchPosition);
+            currentTouchPosition = CameraManager.mainCamera.ScreenToWorldPoint(currentTouchPosition);
             currentTouchPosition.z = 0;
 
             Vector3 movingOffset = currentTouchPosition - _lastTouchPosition;
@@ -94,7 +94,7 @@ public class TouchMovementSystem : MonoBehaviour
             Vector3 newPosition = transform.position + movingOffset;
             if (CheckPositionInCameraBoundaries(newPosition))
             {
-                newPosition.y = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height * _playerYPositionRatioToScreen, 0)).y;
+                newPosition.y = CameraManager.mainCamera.ScreenToWorldPoint(new Vector3(0, Screen.height * _playerYPositionRatioToScreen, 0)).y;
                 transform.position = newPosition;
             }
 
@@ -127,7 +127,7 @@ public class TouchMovementSystem : MonoBehaviour
             Vector3 newMin = newBound.min;
             Vector3 newMax = newBound.max;
 
-            Camera mainCam = Camera.main;
+            Camera mainCam = CameraManager.mainCamera;
             float cameraHeight = mainCam.orthographicSize * 2;
             float cameraWidth = cameraHeight * mainCam.aspect;
             Vector3 cameraPosition = mainCam.transform.position;

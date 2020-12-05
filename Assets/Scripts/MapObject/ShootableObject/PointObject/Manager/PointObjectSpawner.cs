@@ -101,7 +101,7 @@ public class PointObjectSpawner : MonoBehaviour
 
         Bounds bounds = pointObject.GetComponent<SpriteRenderer>().bounds;
         Vector3 spawnPosition = new Vector3(Random.Range(0, Screen.width), Random.Range(Screen.height * 11f / 10, Screen.height * 12f / 10));
-        spawnPosition = Camera.main.ScreenToWorldPoint(spawnPosition);
+        spawnPosition = CameraManager.mainCamera.ScreenToWorldPoint(spawnPosition);
         spawnPosition = ObjectUtils.ClampXPositionToScreen(spawnPosition, bounds);
 
         pointObject.transform.position = new Vector3(spawnPosition.x, spawnPosition.y, 0);

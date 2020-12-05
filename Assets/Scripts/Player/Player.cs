@@ -32,7 +32,6 @@ public class Player : MonoBehaviour
         _currentHealthPoint = _maxHealthPoint;
         _isHitable = true;
     }
-
     // ========== Public methods ==========
     public void OnGetHit(int damageAmount)
     {

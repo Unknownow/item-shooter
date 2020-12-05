@@ -57,7 +57,7 @@ public class TouchAttackDirection : MonoBehaviour
     private void OnTouchBegan(Touch touch)
     {
         Vector3 currentTouchPosition = touch.position;
-        currentTouchPosition = Camera.main.ScreenToWorldPoint(currentTouchPosition);
+        currentTouchPosition = CameraManager.mainCamera.ScreenToWorldPoint(currentTouchPosition);
         currentTouchPosition.z = 0;
         _touchBeganPosition = currentTouchPosition;
     }
@@ -70,7 +70,7 @@ public class TouchAttackDirection : MonoBehaviour
     private void AttackToPosition(Touch touch)
     {
         Vector2 currentTouchPosition = touch.position;
-        currentTouchPosition = Camera.main.ScreenToWorldPoint(currentTouchPosition);
+        currentTouchPosition = CameraManager.mainCamera.ScreenToWorldPoint(currentTouchPosition);
         gameObject.GetComponent<IPlayerAttackSystem>().Attack(currentTouchPosition);
         return;
     }
@@ -78,7 +78,7 @@ public class TouchAttackDirection : MonoBehaviour
     private void AttackWithDirection(Touch touch)
     {
         Vector3 currentTouchPosition = touch.position;
-        currentTouchPosition = Camera.main.ScreenToWorldPoint(currentTouchPosition);
+        currentTouchPosition = CameraManager.mainCamera.ScreenToWorldPoint(currentTouchPosition);
         currentTouchPosition.z = 0;
 
         Vector3 direction = currentTouchPosition - _touchBeganPosition;
