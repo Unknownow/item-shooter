@@ -58,6 +58,13 @@ public class Manager : MonoBehaviour
     }
 
     // ========== Public methods ==========
+    public void ResetPlayer()
+    {
+        GameObject.Destroy(_player);
+        _player = null;
+        _player = player;
+    }
+
     public void AddPoint(int amount)
     {
         if (amount <= 0)

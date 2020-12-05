@@ -42,5 +42,14 @@ public class GameFlowManager : MonoBehaviour
     {
         _isPlaying = true;
     }
+
+    public void OnReset()
+    {
+        OnPause();
+        Manager.instance.ResetPlayer();
+        Manager.instance.ResetPoint();
+        EventSystem.instance.DispatchEvent(EventCode.ON_RESET_GAME);
+        Invoke("OnResume", 2);
+    }
     // ========== Private methods ==========
 }

@@ -19,16 +19,13 @@ public class EffectObjectSpawner : MonoBehaviour
     private int _lastIncreasePoint;
     private float _currentIncreasePercentage;
     private float _spawnCounter;
+    private EventListener[] _listeners;
     // ========== MonoBehaviour methods ==========
     private void Awake()
     {
-        _currentTimeBetweenSpawn = _config.DEFAULT_TIME_BETWEEN_SPAWN;
-        _currentPointNeededToNextLevel = _config.DEFAULT_POINT_NEEDED_TO_NEXT_LEVEL;
-        _currentLevel = 0;
-        _spawnCounter = 0;
-
         _spawnArray = new EffectObjectType[100];
         InitSpawnArray();
+        ResetSpawner();
     }
 
     private void Update()
@@ -41,6 +38,14 @@ public class EffectObjectSpawner : MonoBehaviour
     }
 
     // ========== Private methods ==========
+    private void ResetSpawner()
+    {
+        _currentTimeBetweenSpawn = _config.DEFAULT_TIME_BETWEEN_SPAWN;
+        _currentPointNeededToNextLevel = _config.DEFAULT_POINT_NEEDED_TO_NEXT_LEVEL;
+        _currentLevel = 0;
+        _spawnCounter = 0;
+    }
+
     private void InitSpawnArray()
     {
         // Check spawn rate percentage is equal 100 percents.
@@ -113,5 +118,23 @@ public class EffectObjectSpawner : MonoBehaviour
     {
         int randomIndex = Random.Range(0, _spawnArray.Length);
         return _spawnArray[randomIndex];
+    }
+
+    // ========== Event listener methods ==========
+    private void AddListeners()
+    {
+        _listeners = new EventListener[1];
+        _listeners[0] = EventSystem.instance.AddListener(EventCode.ON_RESET_GAME, this, OnReset);
+    }
+
+    private void RemoveListeners()
+    {
+        foreach (EventListener listener in _listeners)
+            EventSystem.instance.RemoveListener(listener.eventCode, listener);
+    }
+
+    private void OnReset(object[] eventParam)
+    {
+        ResetSpawner();
     }
 }

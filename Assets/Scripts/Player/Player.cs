@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
         _maxHealthPoint = _config.MAX_HEALTH_POINT;
         _currentHealthPoint = _maxHealthPoint;
         _isHitable = true;
+        EventSystem.instance.DispatchEvent(EventCode.ON_PLAYER_HEALTH_UPDATE, new object[] { _currentHealthPoint, _maxHealthPoint });
     }
     // ========== Public methods ==========
     public void OnGetHit(int damageAmount)

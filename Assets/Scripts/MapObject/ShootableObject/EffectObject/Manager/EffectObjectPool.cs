@@ -29,6 +29,19 @@ public class EffectObjectPool : MonoBehaviour
         _pool = new List<GameObject>();
     }
 
+    private EventListener[] _listeners;
+
+    // ========== MonoBehaviour Methods ==========
+    private void Awake()
+    {
+        AddListeners();
+    }
+
+    private void OnDestroy()
+    {
+        RemoveListeners();
+    }
+
     // ========== Public Methods ==========
     public GameObject GetObject(EffectObjectType type)
     {
@@ -89,5 +102,31 @@ public class EffectObjectPool : MonoBehaviour
             }
         }
         return createdObject;
+    }
+
+    private void ResetPool()
+    {
+        foreach (GameObject item in _pool)
+        {
+            item.SetActive(false);
+        }
+    }
+
+    // ========== Event listener Methods ==========
+    private void AddListeners()
+    {
+        _listeners = new EventListener[1];
+        _listeners[0] = EventSystem.instance.AddListener(EventCode.ON_RESET_GAME, this, OnReset);
+    }
+
+    private void RemoveListeners()
+    {
+        foreach (EventListener listener in _listeners)
+            EventSystem.instance.RemoveListener(listener.eventCode, listener);
+    }
+
+    private void OnReset(object[] eventParam)
+    {
+        ResetPool();
     }
 }
