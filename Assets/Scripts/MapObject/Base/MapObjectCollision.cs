@@ -12,6 +12,8 @@ public class MapObjectCollision : MonoBehaviour
     // ========== MonoBehaviour Methods ==========
     protected virtual void OnTriggerEnter2D(Collider2D other)
     {
+        if (!GameFlowManager.instance.isPlaying)
+            return;
         if (other.CompareTag(TagList.OBJECT_DESTROYER))
         {
             OnHitDestroyer();

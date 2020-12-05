@@ -7,7 +7,8 @@ public abstract class ShootableObjectCollision : MapObjectCollision
     protected override void OnTriggerEnter2D(Collider2D other)
     {
         base.OnTriggerEnter2D(other);
-
+        if (!GameFlowManager.instance.isPlaying)
+            return;
         if (other.CompareTag(TagList.PLAYER))
             OnHitPlayer(other.gameObject);
     }

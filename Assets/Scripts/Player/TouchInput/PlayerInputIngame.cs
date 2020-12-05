@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TouchInput : MonoBehaviour
+public class PlayerInputIngame : MonoBehaviour
 {
     public string GetClassName()
     {
@@ -22,6 +22,8 @@ public class TouchInput : MonoBehaviour
 
     void Update()
     {
+        if (!GameFlowManager.instance.isPlaying)
+            return;
         GetPlayerInput();
         GetPlayerInputWithMouse();
     }

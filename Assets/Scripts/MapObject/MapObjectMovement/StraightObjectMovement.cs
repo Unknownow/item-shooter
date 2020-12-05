@@ -148,6 +148,9 @@ public class StraightObjectMovement : MonoBehaviour, IObjectMovement
 
     private void Update()
     {
+        if (!GameFlowManager.instance.isPlaying)
+            return;
+
         UpdateBulletPosition();
         RotateWithVelocity();
         UpdateSlowDuration();

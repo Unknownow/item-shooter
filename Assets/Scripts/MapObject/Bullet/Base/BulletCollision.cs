@@ -12,6 +12,8 @@ public class BulletCollision : MonoBehaviour
     // ========== MonoBehaviour methods ==========
     protected void OnTriggerEnter2D(Collider2D other)
     {
+        if (!GameFlowManager.instance.isPlaying)
+            return;
         if (other.CompareTag(TagList.SHOOTABLE_OBJECT))
             OnHitShootableObject(other.gameObject);
     }

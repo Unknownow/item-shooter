@@ -33,6 +33,8 @@ public class PointObjectSpawner : MonoBehaviour
 
     private void Update()
     {
+        if (!GameFlowManager.instance.isPlaying)
+            return;
         if (CheckPointToIncreaseLevel())
             OnIncreaseLevel();
         UpdateSpawnObject();
