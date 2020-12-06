@@ -58,9 +58,17 @@ public class GUIEndGame : MonoBehaviour
 
     public void OnBackToMenuClick()
     {
-        Debug.Log("NOT_YET_IMPLEMENT!");
-        // DoEffectIn();
+        float duration = 0.3f;
+        DoEffectOut(duration);
+        Sequence onMainMenuSequence = DOTween.Sequence();
+        onMainMenuSequence.AppendInterval(duration + 0.1f);
+        onMainMenuSequence.AppendCallback(() =>
+        {
+            GameFlowManager.instance.OnMainMenu();
+        });
+        onMainMenuSequence.Play();
     }
+
 
     // ========== Protected methods ==========
     protected void PrepareDoEffectIn()
@@ -203,7 +211,7 @@ public class GUIEndGame : MonoBehaviour
     {
         foreach (EventListener listener in _listeners)
         {
-            EventSystem.instance.RemoveListener(EventCode.ON_PLAYER_DIED, listener);
+            EventSystem.instance.RemoveListener(listener.eventCode, listener);
         }
     }
 

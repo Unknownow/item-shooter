@@ -32,9 +32,23 @@ public class GameFlowManager : MonoBehaviour
     private void Awake()
     {
         _isPlaying = false;
-        OnStartGame();
+        // OnStartGame();
+    }
+
+    private void Start()
+    {
+        OnMainMenu();
     }
     // ========== Public methods ==========
+    public void OnMainMenu()
+    {
+        OnPause();
+        Manager.instance.ResetPlayer();
+        Manager.instance.ResetPoint();
+        EventSystem.instance.DispatchEvent(EventCode.ON_MAIN_MENU);
+        _isPlaying = true;
+    }
+
     public void OnPause()
     {
         _isPlaying = false;

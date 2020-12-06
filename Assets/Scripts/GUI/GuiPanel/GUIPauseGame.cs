@@ -11,8 +11,11 @@ public class GUIPauseGame : MonoBehaviour
         return this.GetType().Name;
     }
     // ========== Fields and properties ==========
+    [SerializeField]
+    private GameObject _btnPause;
     private List<Color> _childColors;
     private List<Vector3> _childScale;
+    private List<EventListener> _eventListener;
     // ========== MonoBehaviour methods ==========
     protected void Awake()
     {
@@ -26,11 +29,16 @@ public class GUIPauseGame : MonoBehaviour
             _childScale.Add(child.localScale);
         }
         gameObject.SetActive(false);
+        AddListeners();
+    }
+
+    protected void OnDestroy()
+    {
+        RemoveListeners();
     }
     // ========== Public methods ==========
     public void OnPauseClick()
     {
-        GameFlowManager.instance.OnPause();
         DoEffectIn();
     }
 
@@ -62,7 +70,15 @@ public class GUIPauseGame : MonoBehaviour
 
     public void OnBackToMenuClick()
     {
-        Debug.Log("NOT_YET_IMPLEMENT!");
+        float duration = 0.3f;
+        DoEffectOut(duration);
+        Sequence onMainMenuSequence = DOTween.Sequence();
+        onMainMenuSequence.AppendInterval(duration + 0.1f);
+        onMainMenuSequence.AppendCallback(() =>
+        {
+            GameFlowManager.instance.OnMainMenu();
+        });
+        onMainMenuSequence.Play();
     }
 
     // ========== Protected methods ==========
@@ -148,4 +164,28 @@ public class GUIPauseGame : MonoBehaviour
     }
 
     // ========== Private methods ==========
+
+    // ========== Event listener methods ==========
+    private void AddListeners()
+    {
+        _eventListener = new List<EventListener>();
+        _eventListener.Add(EventSystem.instance.AddListener(EventCode.ON_RESET_GAME, this, OnResetGame));
+        _eventListener.Add(EventSystem.instance.AddListener(EventCode.ON_MAIN_MENU, this, OnMainMenu));
+    }
+
+    private void RemoveListeners()
+    {
+        foreach (EventListener listener in _eventListener)
+            EventSystem.instance.RemoveListener(listener.eventCode, listener);
+    }
+
+    private void OnResetGame(object[] eventParam)
+    {
+        _btnPause.SetActive(true);
+    }
+
+    private void OnMainMenu(object[] eventParam)
+    {
+        _btnPause.SetActive(false);
+    }
 }

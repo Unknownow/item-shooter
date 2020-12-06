@@ -3415,7 +3415,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 814937619}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1758774479}
+        m_MethodName: OnBackToMenuClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &814937619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5174,7 +5185,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1587575170
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5780,7 +5791,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1758774478
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5815,6 +5826,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 540f88f95641d4dd591da09bad83e727, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _btnPause: {fileID: 1839689367}
 --- !u!114 &1758774480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6068,7 +6080,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1819472027}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1587575171}
+        m_MethodName: OnBackToMenuClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1819472027
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6118,6 +6141,7 @@ GameObject:
   - component: {fileID: 1839689371}
   - component: {fileID: 1839689370}
   - component: {fileID: 1839689369}
+  - component: {fileID: 1839689372}
   m_Layer: 5
   m_Name: btn_pause
   m_TagString: Untagged
@@ -6198,6 +6222,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1839689372}
+        m_MethodName: OnPauseClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1839689370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6235,6 +6270,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1839689367}
   m_CullTransparentMesh: 0
+--- !u!114 &1839689372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1839689367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fff929e7a714497f9aa50eb8456f5a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1903797688
 GameObject:
   m_ObjectHideFlags: 0

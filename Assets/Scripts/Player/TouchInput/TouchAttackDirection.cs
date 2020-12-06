@@ -15,7 +15,7 @@ public class TouchAttackDirection : MonoBehaviour
     private float _disableTouchCountdown;
 
     // ========== MonoBehaviour Methods ==========
-    void Start()
+    private void Awake()
     {
         _touchBeganPosition = Vector3.zero;
         AddListeners();

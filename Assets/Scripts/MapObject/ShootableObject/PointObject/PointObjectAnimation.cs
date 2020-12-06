@@ -63,6 +63,8 @@ public class PointObjectAnimation : ShootableObjectAnimation
             miniGameObject.transform.parent = transform;
             SpriteRenderer renderer = miniGameObject.GetComponent<SpriteRenderer>();
             renderer.sprite = gameObject.GetComponent<SpriteRenderer>().sprite;
+            renderer.sortingLayerName = SortingLayerList.SHOOTABLE_OBJECT;
+            renderer.sortingOrder = 0;
             miniGameObject.GetComponent<Rigidbody2D>().gravityScale = 2.5f;
             _miniGameObjectList[i] = miniGameObject;
         }

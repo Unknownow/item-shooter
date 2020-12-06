@@ -38,9 +38,10 @@ public class HealthBarController : MonoBehaviour
     // ========== Event listener methods ==========
     private void AddListeners()
     {
-        _eventListener = new EventListener[2];
+        _eventListener = new EventListener[3];
         _eventListener[0] = EventSystem.instance.AddListener(EventCode.ON_PLAYER_HEALTH_UPDATE, this, OnPlayerHealthPointUpdate);
         _eventListener[1] = EventSystem.instance.AddListener(EventCode.ON_RESET_GAME, this, OnResetGame);
+        _eventListener[2] = EventSystem.instance.AddListener(EventCode.ON_MAIN_MENU, this, OnMainMenu);
     }
 
     private void RemoveListeners()
@@ -77,6 +78,12 @@ public class HealthBarController : MonoBehaviour
     {
         Reset();
         DoHeartBeat();
+        gameObject.SetActive(true);
+    }
+
+    private void OnMainMenu(object[] eventParam)
+    {
+        gameObject.SetActive(false);
     }
 
     // ========== Public methods ==========

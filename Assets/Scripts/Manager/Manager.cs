@@ -79,6 +79,15 @@ public class Manager : MonoBehaviour
         _player = player;
     }
 
+    public void DestroyPlayer()
+    {
+        if (_player != null)
+        {
+            GameObject.Destroy(_player);
+            _player = null;
+        }
+    }
+
     public void AddPoint(int amount)
     {
         if (amount <= 0)
@@ -128,17 +137,23 @@ public class Manager : MonoBehaviour
     {
         _listeners = new List<EventListener>();
         _listeners.Add(EventSystem.instance.AddListener(EventCode.ON_PLAYER_DIED, this, OnPlayerDied));
+        _listeners.Add(EventSystem.instance.AddListener(EventCode.ON_MAIN_MENU, this, OnMainMenu));
     }
 
     protected void RemoveListeners()
     {
         foreach (EventListener listener in _listeners)
-            EventSystem.instance.RemoveListener(EventCode.ON_PLAYER_DIED, listener);
+            EventSystem.instance.RemoveListener(listener.eventCode, listener);
     }
 
     protected void OnPlayerDied(object[] eventParam)
     {
         if (highScore < totalPoint)
             highScore = totalPoint;
+    }
+
+    protected void OnMainMenu(object[] eventParam)
+    {
+        DestroyPlayer();
     }
 }

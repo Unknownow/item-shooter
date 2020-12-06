@@ -1,10 +1,10 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class PointController : MonoBehaviour
+public class PauseButtonController : MonoBehaviour
 {
     public string GetClassName()
     {
@@ -12,14 +12,11 @@ public class PointController : MonoBehaviour
     }
 
     // ========== Fields and properties ==========
-    private TextMeshProUGUI _textPoint;
     private EventListener[] _eventListener;
 
     // ========== MonoBehaviour methods ==========
     private void Awake()
     {
-        _textPoint = gameObject.GetComponent<TextMeshProUGUI>();
-        SetCurrentPoint(0);
         AddListeners();
     }
 
@@ -28,30 +25,22 @@ public class PointController : MonoBehaviour
         RemoveListeners();
     }
     // ========== Public methods ==========
-    // ========== Private methods ==========
-    private void SetCurrentPoint(int point)
+    public void OnPauseClick()
     {
-        _textPoint.SetText(point.ToString());
+        GameFlowManager.instance.OnPause();
     }
     // ========== Event listener methods ==========
     private void AddListeners()
     {
-        _eventListener = new EventListener[3];
-        _eventListener[0] = EventSystem.instance.AddListener(EventCode.ON_POINT_UPDATE, this, OnPointUpdate);
-        _eventListener[1] = EventSystem.instance.AddListener(EventCode.ON_RESET_GAME, this, OnResetGame);
-        _eventListener[2] = EventSystem.instance.AddListener(EventCode.ON_MAIN_MENU, this, OnMainMenu);
+        _eventListener = new EventListener[2];
+        _eventListener[0] = EventSystem.instance.AddListener(EventCode.ON_RESET_GAME, this, OnResetGame);
+        _eventListener[1] = EventSystem.instance.AddListener(EventCode.ON_MAIN_MENU, this, OnMainMenu);
     }
 
     private void RemoveListeners()
     {
         foreach (EventListener listener in _eventListener)
             EventSystem.instance.RemoveListener(listener.eventCode, listener);
-    }
-
-    private void OnPointUpdate(object[] eventParam)
-    {
-        int currentPoint = (int)eventParam[0];
-        SetCurrentPoint(currentPoint);
     }
 
     private void OnResetGame(object[] eventParam)
