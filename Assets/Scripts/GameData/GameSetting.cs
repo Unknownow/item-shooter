@@ -16,4 +16,6 @@ public class GameSetting : MonoBehaviour
             _isLog = value;
         }
     }
+    public const float DESIGN_HEIGHT = 1280;
+    public const float DESIGN_WIDTH = 720;
 }

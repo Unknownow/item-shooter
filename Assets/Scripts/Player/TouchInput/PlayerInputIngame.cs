@@ -18,6 +18,7 @@ public class PlayerInputIngame : MonoBehaviour
     void Awake()
     {
         _currentMovingFingerId = -1;
+        Input.multiTouchEnabled = true;
     }
 
     void Update()
@@ -36,41 +37,21 @@ public class PlayerInputIngame : MonoBehaviour
     {
         if (Input.touchCount > 0)
         {
-            if (_currentMovingFingerId == -1)
+            bool isMovingTouch = true;
+            bool isShootingTouch = true;
+            for (int i = 0; i < Input.touchCount; i++)
             {
-                for (int i = 0; i < Input.touchCount; i++)
+                Touch touch = Input.GetTouch(i);
+                if (touch.position.y >= Screen.height / 5 && isShootingTouch)
                 {
-                    Touch touch = Input.GetTouch(i);
-                    if (touch.position.y < Screen.height / 5 && _currentMovingFingerId == -1)
-                        _currentMovingFingerId = touch.fingerId;
-                    else if (touch.position.y >= Screen.height / 5 && _currentShootingFingerId == -1)
-                        _currentShootingFingerId = touch.fingerId;
+                    isShootingTouch = false;
+                    isMovingTouch = false;
+                    OnShootingTouch(touch);
                 }
-            }
-
-            if (_currentMovingFingerId >= 0)
-            {
-                try
+                else if (touch.position.y < Screen.height / 5 && isMovingTouch)
                 {
-                    Touch currentTouch = GetTouchByFingerID(_currentMovingFingerId);
-                    OnMovingTouch(currentTouch);
-                }
-                catch (UnityException e)
-                {
-                    LogUtils.instance.Log(e.Message);
-                }
-            }
-
-            if (_currentShootingFingerId >= 0)
-            {
-                try
-                {
-                    Touch currentTouch = GetTouchByFingerID(_currentShootingFingerId);
-                    OnShootingTouch(currentTouch);
-                }
-                catch (UnityException e)
-                {
-                    LogUtils.instance.Log(e.Message);
+                    isMovingTouch = false;
+                    OnMovingTouch(touch);
                 }
             }
         }
@@ -85,9 +66,11 @@ public class PlayerInputIngame : MonoBehaviour
                 for (int i = 0; i < InputWrapper.Input.touchCount; i++)
                 {
                     Touch touch = InputWrapper.Input.GetTouch(i);
-                    if (touch.position.y < Screen.height / 5 && _currentMovingFingerId == -1)
+                    // if (touch.position.y < Screen.height / 5 && _currentMovingFingerId == -1)
+                    if (touch.position.y < Screen.height / 5)
                         _currentMovingFingerId = touch.fingerId;
-                    else if (touch.position.y >= Screen.height / 5 && _currentShootingFingerId == -1)
+                    // else if (touch.position.y >= Screen.height / 5 && _currentShootingFingerId == -1)
+                    else if (touch.position.y >= Screen.height / 5)
                         _currentShootingFingerId = touch.fingerId;
                 }
             }

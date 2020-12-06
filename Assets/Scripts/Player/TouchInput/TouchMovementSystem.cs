@@ -82,13 +82,13 @@ public class TouchMovementSystem : MonoBehaviour
 
     private void OnTouchMoved(Touch touch)
     {
-        Vector3 delta = touch.deltaPosition;
-        if (delta.sqrMagnitude > 2)
+        Vector3 currentTouchPosition = touch.position;
+        currentTouchPosition = CameraManager.mainCamera.ScreenToWorldPoint(currentTouchPosition);
+        currentTouchPosition.z = 0;
+        Vector3 delta = currentTouchPosition - _lastTouchPosition;
+        Debug.Log(delta);
+        if (delta.sqrMagnitude > 0.02f)
         {
-            Vector3 currentTouchPosition = touch.position;
-            currentTouchPosition = CameraManager.mainCamera.ScreenToWorldPoint(currentTouchPosition);
-            currentTouchPosition.z = 0;
-
             Vector3 movingOffset = currentTouchPosition - _lastTouchPosition;
             movingOffset.y = 0;
             Vector3 newPosition = transform.position + movingOffset;
@@ -99,7 +99,6 @@ public class TouchMovementSystem : MonoBehaviour
             }
 
             _lastTouchPosition = currentTouchPosition;
-
             if (movingOffset.x > 0)
                 gameObject.GetComponent<PlayerAnimation>().PlayRunRightAnimation();
             else if (movingOffset.x < 0)
