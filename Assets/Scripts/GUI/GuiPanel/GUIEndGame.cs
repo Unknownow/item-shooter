@@ -3,50 +3,46 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
+using TMPro;
 
-public class GUIPauseGame : MonoBehaviour
+public class GUIEndGame : MonoBehaviour
 {
     public string GetClassName()
     {
         return this.GetType().Name;
     }
     // ========== Fields and properties ==========
-    private List<Color> _childColors;
-    private List<Vector3> _childScale;
+    [SerializeField]
+    private TextMeshProUGUI _textPoint;
+    [SerializeField]
+    private TextMeshProUGUI _textHighscore;
+    private float _currentPoint;
+    private Color[] _childColors;
+    private Vector3[] _childScale;
+    private List<EventListener> _listeners;
     // ========== MonoBehaviour methods ==========
     protected void Awake()
     {
-        _childColors = new List<Color>();
-        _childScale = new List<Vector3>();
+        _childColors = new Color[transform.childCount];
+        _childScale = new Vector3[transform.childCount];
         for (int i = 0; i < transform.childCount; i++)
         {
             Transform child = transform.GetChild(i);
             if (child.GetComponent<Image>() != null)
-                _childColors.Add(child.GetComponent<Image>().color);
-            _childScale.Add(child.localScale);
+                _childColors[i] = child.GetComponent<Image>().color;
+            else if (child.GetComponent<TextMeshProUGUI>() != null)
+                _childColors[i] = child.GetComponent<TextMeshProUGUI>().color;
+            _childScale[i] = child.localScale;
         }
+        AddListeners();
         gameObject.SetActive(false);
     }
+
+    protected void OnDestroy()
+    {
+        RemoveListeners();
+    }
     // ========== Public methods ==========
-    public void OnPauseClick()
-    {
-        GameFlowManager.instance.OnPause();
-        DoEffectIn();
-    }
-
-    public void OnResumeClick()
-    {
-        float duration = 0.3f;
-        DoEffectOut(duration);
-        Sequence onResumeSequence = DOTween.Sequence();
-        onResumeSequence.AppendInterval(duration + 0.1f);
-        onResumeSequence.AppendCallback(() =>
-        {
-            GameFlowManager.instance.OnResume();
-        });
-        onResumeSequence.Play();
-    }
-
     public void OnRestartClick()
     {
         float duration = 0.3f;
@@ -63,6 +59,7 @@ public class GUIPauseGame : MonoBehaviour
     public void OnBackToMenuClick()
     {
         Debug.Log("NOT_YET_IMPLEMENT!");
+        // DoEffectIn();
     }
 
     // ========== Protected methods ==========
@@ -82,8 +79,19 @@ public class GUIPauseGame : MonoBehaviour
                 childImage.color = currentColor;
             }
 
+            TextMeshProUGUI childText = child.GetComponent<TextMeshProUGUI>();
+            if (childImage != null)
+            {
+                Color currentColor = childImage.color;
+                currentColor.a = 0;
+                childImage.color = currentColor;
+            }
+
             child.localScale = Vector3.zero;
         }
+
+        _textPoint.SetText("0");
+        _currentPoint = 0;
     }
 
     protected void DoEffectIn(float duration = 0.3f)
@@ -102,6 +110,16 @@ public class GUIPauseGame : MonoBehaviour
                 Sequence fadeInSequence = DOTween.Sequence();
                 fadeInSequence.AppendInterval(delayTime);
                 fadeInSequence.Append(child.GetComponent<Image>().DOFade(_childColors[i].a, duration));
+                fadeInSequence.Play();
+            }
+
+
+            TextMeshProUGUI childText = child.GetComponent<TextMeshProUGUI>();
+            if (childText != null)
+            {
+                Sequence fadeInSequence = DOTween.Sequence();
+                fadeInSequence.AppendInterval(delayTime);
+                fadeInSequence.Append(childText.DOFade(_childColors[i].a, duration));
                 fadeInSequence.Play();
             }
 
@@ -131,6 +149,15 @@ public class GUIPauseGame : MonoBehaviour
                 fadeInSequence.Play();
             }
 
+            TextMeshProUGUI childText = child.GetComponent<TextMeshProUGUI>();
+            if (childText != null)
+            {
+                Sequence fadeInSequence = DOTween.Sequence();
+                fadeInSequence.AppendInterval(delayTime);
+                fadeInSequence.Append(childText.DOFade(0, duration));
+                fadeInSequence.Play();
+            }
+
             Sequence scaleSequence = DOTween.Sequence();
             scaleSequence.AppendInterval(delayTime);
             scaleSequence.Append(child.DOScale(_childScale[i] * 1.1f, duration / 3f));
@@ -147,5 +174,45 @@ public class GUIPauseGame : MonoBehaviour
         });
     }
 
+    protected IEnumerator DoEffectPointIncrease(int targetPoint = 200, float delayTime = 0, float duration = 1.2f, float numberOfIncrease = 80)
+    {
+        yield return new WaitForSeconds(delayTime);
+
+        float deltaTime = duration / numberOfIncrease;
+        float deltaPoint = targetPoint / numberOfIncrease;
+        while (numberOfIncrease > 0)
+        {
+            _currentPoint += deltaPoint;
+            _textPoint.SetText(Mathf.RoundToInt(_currentPoint).ToString());
+            yield return new WaitForSeconds(deltaTime);
+            numberOfIncrease -= 1;
+        }
+
+        _textPoint.SetText(Mathf.RoundToInt(targetPoint).ToString());
+    }
+
     // ========== Private methods ==========
+    // ========== Event listener methods ==========
+    protected void AddListeners()
+    {
+        _listeners = new List<EventListener>();
+        _listeners.Add(EventSystem.instance.AddListener(EventCode.ON_PLAYER_DIED, this, OnPlayerDied));
+    }
+
+    protected void RemoveListeners()
+    {
+        foreach (EventListener listener in _listeners)
+        {
+            EventSystem.instance.RemoveListener(EventCode.ON_PLAYER_DIED, listener);
+        }
+    }
+
+    protected void OnPlayerDied(object[] eventParam)
+    {
+        GameFlowManager.instance.OnPause();
+        DoEffectIn();
+        int playerPoint = Manager.instance.totalPoint;
+        StartCoroutine(DoEffectPointIncrease(playerPoint, 1));
+        _textHighscore.SetText(Manager.instance.highScore.ToString());
+    }
 }

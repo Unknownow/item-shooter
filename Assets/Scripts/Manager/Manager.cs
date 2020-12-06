@@ -34,6 +34,11 @@ public class Manager : MonoBehaviour
             return this._totalPoint;
         }
     }
+    public int highScore
+    {
+        get { return PlayerPrefs.GetInt(PlayerPreferenceKey.HIGH_SCORE); }
+        set { PlayerPrefs.SetInt(PlayerPreferenceKey.HIGH_SCORE, value); }
+    }
 
     [SerializeField]
     private GameObject _playerPrefab;
@@ -49,11 +54,18 @@ public class Manager : MonoBehaviour
     }
 
     private float _pointMultiplier;
+    private List<EventListener> _listeners;
 
     // ========== MonoBehaviour methods ==========
     private void Awake()
     {
+        AddListeners();
         ResetPoint();
+    }
+
+    private void OnDestroy()
+    {
+        RemoveListeners();
     }
 
     // ========== Public methods ==========
@@ -110,4 +122,23 @@ public class Manager : MonoBehaviour
     }
 
     // ========== Private methods ==========
+    // ========== Event listener methods ==========
+
+    protected void AddListeners()
+    {
+        _listeners = new List<EventListener>();
+        _listeners.Add(EventSystem.instance.AddListener(EventCode.ON_PLAYER_DIED, this, OnPlayerDied));
+    }
+
+    protected void RemoveListeners()
+    {
+        foreach (EventListener listener in _listeners)
+            EventSystem.instance.RemoveListener(EventCode.ON_PLAYER_DIED, listener);
+    }
+
+    protected void OnPlayerDied(object[] eventParam)
+    {
+        if (highScore < totalPoint)
+            highScore = totalPoint;
+    }
 }

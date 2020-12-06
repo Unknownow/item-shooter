@@ -14,6 +14,7 @@ public class HealthBarController : MonoBehaviour
     // ========== Fields and properties ==========
     [SerializeField]
     private float _intervalBetweenHeartBeat;
+    private float _currentIntervalBetweenHeartBeat;
     [SerializeField]
     private int _numberOfPulsePerHeartBeat;
     [SerializeField]
@@ -37,16 +38,15 @@ public class HealthBarController : MonoBehaviour
     // ========== Event listener methods ==========
     private void AddListeners()
     {
-        _eventListener = new EventListener[1];
+        _eventListener = new EventListener[2];
         _eventListener[0] = EventSystem.instance.AddListener(EventCode.ON_PLAYER_HEALTH_UPDATE, this, OnPlayerHealthPointUpdate);
+        _eventListener[1] = EventSystem.instance.AddListener(EventCode.ON_RESET_GAME, this, OnResetGame);
     }
 
     private void RemoveListeners()
     {
         foreach (EventListener listener in _eventListener)
-        {
             EventSystem.instance.RemoveListener(listener.eventCode, listener);
-        }
     }
 
     private void OnPlayerHealthPointUpdate(object[] eventParam)
@@ -67,28 +67,38 @@ public class HealthBarController : MonoBehaviour
         }
 
         if (currentPercentage < percentage)
-            _intervalBetweenHeartBeat *= _rateOfHeartBeatChange;
+            _currentIntervalBetweenHeartBeat *= _rateOfHeartBeatChange;
         else
-            _intervalBetweenHeartBeat /= _rateOfHeartBeatChange;
+            _currentIntervalBetweenHeartBeat /= _rateOfHeartBeatChange;
+        DoHeartBeat();
+    }
+
+    private void OnResetGame(object[] eventParam)
+    {
+        Reset();
         DoHeartBeat();
     }
 
     // ========== Public methods ==========
     // ========== Private methods ==========
+    private void Reset()
+    {
+        _currentIntervalBetweenHeartBeat = _intervalBetweenHeartBeat;
+    }
 
     private void DoHeartBeat()
     {
         StopHeartBeat();
 
         Sequence scaleSequence = DOTween.Sequence();
-        scaleSequence.Append(transform.DOScale(new Vector3(1.25f, 1.25f, 1.25f), _intervalBetweenHeartBeat / 5f));
-        scaleSequence.Append(transform.DOScale(new Vector3(1f, 1f, 1f), _intervalBetweenHeartBeat / 10f));
+        scaleSequence.Append(transform.DOScale(new Vector3(1.25f, 1.25f, 1.25f), _currentIntervalBetweenHeartBeat / 5f));
+        scaleSequence.Append(transform.DOScale(new Vector3(1f, 1f, 1f), _currentIntervalBetweenHeartBeat / 10f));
         scaleSequence.SetLoops(_numberOfPulsePerHeartBeat);
 
         Sequence heartBeatSequence = DOTween.Sequence();
         heartBeatSequence.Append(scaleSequence);
         heartBeatSequence.SetLoops(-1);
-        heartBeatSequence.AppendInterval(_intervalBetweenHeartBeat);
+        heartBeatSequence.AppendInterval(_currentIntervalBetweenHeartBeat);
         heartBeatSequence.SetId(DOTweenIdList.HEART_BEAT);
         heartBeatSequence.Play();
     }
