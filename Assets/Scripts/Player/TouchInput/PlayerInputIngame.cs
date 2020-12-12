@@ -13,10 +13,13 @@ public class PlayerInputIngame : MonoBehaviour
     private float _playerTransformDelayCountdown;
     private int _currentMovingFingerId = -1;
     private int _currentShootingFingerId = -1;
-
+    private float _yPositionInputRationToScreen;
+    private PlayerConfig _config;
     // ========== MonoBehaviour Methods ==========
     void Awake()
     {
+        _config = gameObject.GetComponent<Player>().config;
+        _yPositionInputRationToScreen = _config.Y_POSITION_INPUT_TO_SCREEN_RATIO;
         _currentMovingFingerId = -1;
         Input.multiTouchEnabled = true;
     }
@@ -42,13 +45,13 @@ public class PlayerInputIngame : MonoBehaviour
             for (int i = 0; i < Input.touchCount; i++)
             {
                 Touch touch = Input.GetTouch(i);
-                if (touch.position.y >= Screen.height / 5 && isShootingTouch)
+                if (touch.position.y >= Screen.height * _yPositionInputRationToScreen && isShootingTouch)
                 {
                     isShootingTouch = false;
                     isMovingTouch = false;
                     OnShootingTouch(touch);
                 }
-                else if (touch.position.y < Screen.height / 5 && isMovingTouch)
+                else if (touch.position.y < Screen.height * _yPositionInputRationToScreen && isMovingTouch)
                 {
                     isMovingTouch = false;
                     OnMovingTouch(touch);
@@ -66,11 +69,11 @@ public class PlayerInputIngame : MonoBehaviour
                 for (int i = 0; i < InputWrapper.Input.touchCount; i++)
                 {
                     Touch touch = InputWrapper.Input.GetTouch(i);
-                    // if (touch.position.y < Screen.height / 5 && _currentMovingFingerId == -1)
-                    if (touch.position.y < Screen.height / 5)
+                    // if (touch.position.y < Screen.height * _yPositionInputRationToScreen && _currentMovingFingerId == -1)
+                    if (touch.position.y < Screen.height * _yPositionInputRationToScreen)
                         _currentMovingFingerId = touch.fingerId;
-                    // else if (touch.position.y >= Screen.height / 5 && _currentShootingFingerId == -1)
-                    else if (touch.position.y >= Screen.height / 5)
+                    // else if (touch.position.y >= Screen.height * _yPositionInputRationToScreen && _currentShootingFingerId == -1)
+                    else if (touch.position.y >= Screen.height * _yPositionInputRationToScreen)
                         _currentShootingFingerId = touch.fingerId;
                 }
             }

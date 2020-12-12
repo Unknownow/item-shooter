@@ -13,3 +13,6 @@ MonoBehaviour:
   m_Name: player_config
   m_EditorClassIdentifier: 
   MAX_HEALTH_POINT: 4
+  INTERVAL_BETWEEN_GET_HIT: 2
+  Y_POSITION_TO_SCREEN_RATIO: 0.1
+  Y_POSITION_INPUT_TO_SCREEN_RATIO: 0.4
