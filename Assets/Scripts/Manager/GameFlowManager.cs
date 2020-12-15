@@ -39,6 +39,18 @@ public class GameFlowManager : MonoBehaviour
     {
         OnMainMenu();
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+            Time.timeScale = 1;
+        if (Input.GetKeyDown(KeyCode.A))
+            Time.timeScale = 0.2f;
+        if (Input.GetKeyDown(KeyCode.S))
+            Time.timeScale = 0;
+        if (Input.GetKeyDown(KeyCode.D))
+            Time.timeScale = 1.8f;
+    }
     // ========== Public methods ==========
     public void OnMainMenu()
     {
