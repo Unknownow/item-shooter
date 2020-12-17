@@ -2882,7 +2882,6 @@ GameObject:
   - component: {fileID: 356494645}
   - component: {fileID: 356494644}
   - component: {fileID: 356494643}
-  - component: {fileID: 356494646}
   m_Layer: 5
   m_Name: btn_share
   m_TagString: Untagged
@@ -2953,7 +2952,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 356494646}
+      - m_Target: {fileID: 371335602}
         m_MethodName: OnSharing
         m_Mode: 1
         m_Arguments:
@@ -3001,18 +3000,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 356494641}
   m_CullTransparentMesh: 0
---- !u!114 &356494646
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 356494641}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e98bf40791f1f4d56b93ebd88c1e4bfd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &371335597
 GameObject:
   m_ObjectHideFlags: 0
@@ -3025,6 +3012,7 @@ GameObject:
   - component: {fileID: 371335599}
   - component: {fileID: 371335600}
   - component: {fileID: 371335601}
+  - component: {fileID: 371335602}
   m_Layer: 0
   m_Name: game_manager
   m_TagString: Untagged
@@ -3089,6 +3077,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 92d02fab5e49c4c7a9c5803fb88cc856, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &371335602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371335597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e98bf40791f1f4d56b93ebd88c1e4bfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &441964400
@@ -5317,9 +5317,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Multi
-
-'
+  m_text: Share
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5e1c9b3e1887f4ad78019561c134eb9c, type: 2}
   m_sharedMaterial: {fileID: 8444731511029090548, guid: 5e1c9b3e1887f4ad78019561c134eb9c,

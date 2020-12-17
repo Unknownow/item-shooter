@@ -29,8 +29,12 @@ public class FacebookManager : MonoBehaviour
 
     public void OnSharing()
     {
-        // FB.ShareLink(new System.Uri("http://google.vn"), "TESTING TITLE", "TESTING DESCRIPTION");
-        FB.FeedShare("", new System.Uri("http://google.vn"), "TESTING_LINK_NAME", "TESTING_CAPTION", "TESTING_LINK_DESCRIPTION");
+        FB.ShareLink(new System.Uri("https://play.google.com/store/apps/developer?id=Jason%20Ledesma&hl=enhttps://play.google.com/store/apps/developer?id=Jason%20Ledesma&hl=en"),
+        "TESTING TITLE",
+        "TESTING DESCRIPTION",
+        new System.Uri("https://www.elle.vn/wp-content/uploads/2017/07/25/hinh-anh-dep-1.jpg"),
+        HandleResult);
+        // FB.FeedShare("", new System.Uri("http://google.vn"), "TESTING_LINK_NAME", "TESTING_CAPTION", "TESTING_LINK_DESCRIPTION");
     }
 
     protected void HandleResult(IResult result)
