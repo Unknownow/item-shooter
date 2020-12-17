@@ -116,13 +116,13 @@ public class EffectObjectPool : MonoBehaviour
     private void AddListeners()
     {
         _listeners = new EventListener[1];
-        _listeners[0] = EventSystem.instance.AddListener(EventCode.ON_RESET_GAME, this, OnReset);
+        _listeners[0] = CustomEventSystem.instance.AddListener(EventCode.ON_RESET_GAME, this, OnReset);
     }
 
     private void RemoveListeners()
     {
         foreach (EventListener listener in _listeners)
-            EventSystem.instance.RemoveListener(listener.eventCode, listener);
+            CustomEventSystem.instance.RemoveListener(listener.eventCode, listener);
     }
 
     private void OnReset(object[] eventParam)

@@ -96,7 +96,7 @@ public class Manager : MonoBehaviour
             return;
         }
         _totalPoint += amount;
-        EventSystem.instance.DispatchEvent(EventCode.ON_POINT_UPDATE, new object[] { totalPoint });
+        CustomEventSystem.instance.DispatchEvent(EventCode.ON_POINT_UPDATE, new object[] { totalPoint });
     }
 
     public void SubPoint(int amount)
@@ -109,13 +109,13 @@ public class Manager : MonoBehaviour
         _totalPoint -= amount;
         if (_totalPoint < 0)
             _totalPoint = 0;
-        EventSystem.instance.DispatchEvent(EventCode.ON_POINT_UPDATE, new object[] { totalPoint });
+        CustomEventSystem.instance.DispatchEvent(EventCode.ON_POINT_UPDATE, new object[] { totalPoint });
     }
 
     public void ResetPoint()
     {
         _totalPoint = 0;
-        EventSystem.instance.DispatchEvent(EventCode.ON_POINT_UPDATE, new object[] { totalPoint });
+        CustomEventSystem.instance.DispatchEvent(EventCode.ON_POINT_UPDATE, new object[] { totalPoint });
     }
 
     public void StartMultiplyPoint(float multiplier, float duration)
@@ -136,14 +136,14 @@ public class Manager : MonoBehaviour
     protected void AddListeners()
     {
         _listeners = new List<EventListener>();
-        _listeners.Add(EventSystem.instance.AddListener(EventCode.ON_PLAYER_DIED, this, OnPlayerDied));
-        _listeners.Add(EventSystem.instance.AddListener(EventCode.ON_MAIN_MENU, this, OnMainMenu));
+        _listeners.Add(CustomEventSystem.instance.AddListener(EventCode.ON_PLAYER_DIED, this, OnPlayerDied));
+        _listeners.Add(CustomEventSystem.instance.AddListener(EventCode.ON_MAIN_MENU, this, OnMainMenu, false));
     }
 
     protected void RemoveListeners()
     {
         foreach (EventListener listener in _listeners)
-            EventSystem.instance.RemoveListener(listener.eventCode, listener);
+            CustomEventSystem.instance.RemoveListener(listener.eventCode, listener);
     }
 
     protected void OnPlayerDied(object[] eventParam)

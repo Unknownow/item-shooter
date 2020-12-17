@@ -31,13 +31,13 @@ public class TouchAttackDirection : MonoBehaviour
     private void AddListeners()
     {
         _eventListener = new EventListener[1];
-        _eventListener[0] = EventSystem.instance.AddListener(EventCode.ON_SHOOTING_TOUCH, this, OnShootingTouch);
+        _eventListener[0] = CustomEventSystem.instance.AddListener(EventCode.ON_SHOOTING_TOUCH, this, OnShootingTouch);
     }
 
     private void RemoveListeners()
     {
         foreach (EventListener listener in _eventListener)
-            EventSystem.instance.RemoveListener(listener.eventCode, listener);
+            CustomEventSystem.instance.RemoveListener(listener.eventCode, listener);
     }
 
     private void OnShootingTouch(object[] eventParam)

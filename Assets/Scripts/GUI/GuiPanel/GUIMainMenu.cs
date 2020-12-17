@@ -228,15 +228,13 @@ public class GUIMainMenu : MonoBehaviour
     protected void AddListeners()
     {
         _listeners = new List<EventListener>();
-        _listeners.Add(EventSystem.instance.AddListener(EventCode.ON_MAIN_MENU, this, OnMainMenu));
+        _listeners.Add(CustomEventSystem.instance.AddListener(EventCode.ON_MAIN_MENU, this, OnMainMenu, false));
     }
 
     protected void RemoveListeners()
     {
         foreach (EventListener listener in _listeners)
-        {
-            EventSystem.instance.RemoveListener(listener.eventCode, listener);
-        }
+            CustomEventSystem.instance.RemoveListener(listener.eventCode, listener);
     }
 
     protected void OnMainMenu(object[] eventParam)

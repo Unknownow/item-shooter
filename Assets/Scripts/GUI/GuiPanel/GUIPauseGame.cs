@@ -169,14 +169,14 @@ public class GUIPauseGame : MonoBehaviour
     private void AddListeners()
     {
         _eventListener = new List<EventListener>();
-        _eventListener.Add(EventSystem.instance.AddListener(EventCode.ON_RESET_GAME, this, OnResetGame));
-        _eventListener.Add(EventSystem.instance.AddListener(EventCode.ON_MAIN_MENU, this, OnMainMenu));
+        _eventListener.Add(CustomEventSystem.instance.AddListener(EventCode.ON_RESET_GAME, this, OnResetGame));
+        _eventListener.Add(CustomEventSystem.instance.AddListener(EventCode.ON_MAIN_MENU, this, OnMainMenu, false));
     }
 
     private void RemoveListeners()
     {
         foreach (EventListener listener in _eventListener)
-            EventSystem.instance.RemoveListener(listener.eventCode, listener);
+            CustomEventSystem.instance.RemoveListener(listener.eventCode, listener);
     }
 
     private void OnResetGame(object[] eventParam)

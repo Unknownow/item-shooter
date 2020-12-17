@@ -31,7 +31,7 @@ public class Player : MonoBehaviour
         _maxHealthPoint = _config.MAX_HEALTH_POINT;
         _currentHealthPoint = _maxHealthPoint;
         _isHitable = true;
-        EventSystem.instance.DispatchEvent(EventCode.ON_PLAYER_HEALTH_UPDATE, new object[] { _currentHealthPoint, _maxHealthPoint });
+        CustomEventSystem.instance.DispatchEvent(EventCode.ON_PLAYER_HEALTH_UPDATE, new object[] { _currentHealthPoint, _maxHealthPoint });
     }
     // ========== Public methods ==========
     public void OnGetHit(int damageAmount)
@@ -46,9 +46,9 @@ public class Player : MonoBehaviour
         }
         int newHealthPoint = _currentHealthPoint - damageAmount;
         _currentHealthPoint = (newHealthPoint < 0) ? 0 : newHealthPoint;
-        EventSystem.instance.DispatchEvent(EventCode.ON_PLAYER_HEALTH_UPDATE, new object[] { _currentHealthPoint, _maxHealthPoint });
+        CustomEventSystem.instance.DispatchEvent(EventCode.ON_PLAYER_HEALTH_UPDATE, new object[] { _currentHealthPoint, _maxHealthPoint });
         if (_currentHealthPoint <= 0)
-            EventSystem.instance.DispatchEvent(EventCode.ON_PLAYER_DIED);
+            CustomEventSystem.instance.DispatchEvent(EventCode.ON_PLAYER_DIED);
         else
         {
             _isHitable = false;
@@ -72,7 +72,7 @@ public class Player : MonoBehaviour
         }
         int newHealthPoint = _currentHealthPoint + healAmount;
         _currentHealthPoint = (newHealthPoint > _maxHealthPoint) ? _maxHealthPoint : newHealthPoint;
-        EventSystem.instance.DispatchEvent(EventCode.ON_PLAYER_HEALTH_UPDATE, new object[] { _currentHealthPoint, _maxHealthPoint });
+        CustomEventSystem.instance.DispatchEvent(EventCode.ON_PLAYER_HEALTH_UPDATE, new object[] { _currentHealthPoint, _maxHealthPoint });
     }
 
     // ========== Private methods ==========

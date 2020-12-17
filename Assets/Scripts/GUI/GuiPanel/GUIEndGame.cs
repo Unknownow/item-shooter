@@ -204,14 +204,14 @@ public class GUIEndGame : MonoBehaviour
     protected void AddListeners()
     {
         _listeners = new List<EventListener>();
-        _listeners.Add(EventSystem.instance.AddListener(EventCode.ON_PLAYER_DIED, this, OnPlayerDied));
+        _listeners.Add(CustomEventSystem.instance.AddListener(EventCode.ON_PLAYER_DIED, this, OnPlayerDied));
     }
 
     protected void RemoveListeners()
     {
         foreach (EventListener listener in _listeners)
         {
-            EventSystem.instance.RemoveListener(listener.eventCode, listener);
+            CustomEventSystem.instance.RemoveListener(listener.eventCode, listener);
         }
     }
 

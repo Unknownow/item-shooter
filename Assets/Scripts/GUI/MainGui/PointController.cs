@@ -37,15 +37,15 @@ public class PointController : MonoBehaviour
     private void AddListeners()
     {
         _eventListener = new EventListener[3];
-        _eventListener[0] = EventSystem.instance.AddListener(EventCode.ON_POINT_UPDATE, this, OnPointUpdate);
-        _eventListener[1] = EventSystem.instance.AddListener(EventCode.ON_RESET_GAME, this, OnResetGame);
-        _eventListener[2] = EventSystem.instance.AddListener(EventCode.ON_MAIN_MENU, this, OnMainMenu);
+        _eventListener[0] = CustomEventSystem.instance.AddListener(EventCode.ON_POINT_UPDATE, this, OnPointUpdate);
+        _eventListener[1] = CustomEventSystem.instance.AddListener(EventCode.ON_RESET_GAME, this, OnResetGame);
+        _eventListener[2] = CustomEventSystem.instance.AddListener(EventCode.ON_MAIN_MENU, this, OnMainMenu, false);
     }
 
     private void RemoveListeners()
     {
         foreach (EventListener listener in _eventListener)
-            EventSystem.instance.RemoveListener(listener.eventCode, listener);
+            CustomEventSystem.instance.RemoveListener(listener.eventCode, listener);
     }
 
     private void OnPointUpdate(object[] eventParam)

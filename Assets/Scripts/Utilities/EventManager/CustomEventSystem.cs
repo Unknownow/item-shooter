@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class CustomEventSystem : MonoBehaviour
@@ -19,8 +20,8 @@ public class CustomEventSystem : MonoBehaviour
     {
         get
         {
-            if (_instance == null)
-                _instance = new CustomEventSystem();
+            // if (_instance == null)
+            //     _instance = new CustomEventSystem();
             return _instance;
         }
     }
@@ -38,13 +39,18 @@ public class CustomEventSystem : MonoBehaviour
     /// </summary>
     private CustomEventSystem()
     {
+        if (_instance == null)
+            _instance = this;
         _eventList = new Dictionary<string, List<EventListener>>();
         _eventListenerCount = 0;
+        _cachedAddedListeners = new List<EventListener>();
+        _cachedRemovedListeners = new List<EventListener>();
     }
 
-    // ========== MonoBehaviour methods ==========
-    
+    private List<EventListener> _cachedAddedListeners;
+    private List<EventListener> _cachedRemovedListeners;
 
+    // ========== MonoBehaviour methods ==========
     // ========== Public methods ==========
     /// <summary>
     /// Add listener to certain event code
@@ -53,7 +59,7 @@ public class CustomEventSystem : MonoBehaviour
     /// <param name="caller">Object create this listener</param>
     /// <param name="callback">Callback to call when event is dispatched</param>
     /// <returns></returns>
-    public EventListener AddListener(string eventCode, System.Object caller, Action<object[]> callback)
+    public EventListener AddListener(string eventCode, System.Object caller, Action<object[]> callback, bool isWaitForEndOfFrame = true)
     {
         LogUtils.instance.Log(GetClassName(), "AddListener", "EVENT_CODE:", eventCode);
         if (!_eventList.ContainsKey(eventCode))
@@ -63,7 +69,20 @@ public class CustomEventSystem : MonoBehaviour
         if (listener == null)
         {
             listener = new EventListener(eventCode, eventCode + "_" + _eventListenerCount, caller, callback);
-            listEventListener.Add(listener);
+
+            if (isWaitForEndOfFrame)
+            {
+                bool isCallCoroutine = false;
+                if (_cachedAddedListeners.Count == 0)
+                    isCallCoroutine = true;
+
+                _cachedAddedListeners.Add(listener);
+
+                if (isCallCoroutine)
+                    StartCoroutine("AddListenerCoroutine");
+            }
+            else
+                listEventListener.Add(listener);
             _eventListenerCount += 1;
         }
         return listener;
@@ -113,16 +132,29 @@ public class CustomEventSystem : MonoBehaviour
     /// </summary>
     /// <param name="eventCode">Event code of listener</param>
     /// <param name="listener">Listener want to remove</param>
-    public void RemoveListener(string eventCode, EventListener listener)
+    public void RemoveListener(string eventCode, EventListener listener, bool isWaitForEndOfFrame = true)
     {
         LogUtils.instance.Log(GetClassName(), "RemoveListener", "EVENT_CODE:", eventCode, "LISTENER_ID:", listener.listenerId);
         EventListener existedListener = GetListener(eventCode, listener.listenerId);
         if (existedListener == null)
         {
             LogUtils.instance.Log(GetClassName(), "RemoveListener", "EVENT_CODE:", eventCode, "LISTENER DOES NOT EXIST!");
-            return;
+            // return;
         }
-        existedListener.isRemoved = true;
+        if (isWaitForEndOfFrame)
+        {
+            bool isCallCoroutine = false;
+            if (_cachedRemovedListeners.Count == 0)
+                isCallCoroutine = true;
+
+            _cachedRemovedListeners.Add(listener);
+
+            if (isCallCoroutine)
+                StartCoroutine("RemoveListenerCoroutine");
+
+        }
+        else
+            existedListener.isRemoved = true;
     }
 
     /// <summary>
@@ -146,6 +178,56 @@ public class CustomEventSystem : MonoBehaviour
     }
 
     // ========== Private methods ==========
+    private IEnumerator AddListenerCoroutine()
+    {
+        yield return new WaitForEndOfFrame();
+        if (_cachedAddedListeners.Count > 0)
+        {
+            foreach (EventListener listener in _cachedAddedListeners)
+            {
+                List<EventListener> listEventListener = GetListenersList(listener.eventCode);
+                listEventListener.Add(listener);
+            }
+        }
+
+        if (_cachedRemovedListeners.Count == 0)
+        {
+            foreach (string key in _eventList.Keys)
+            {
+                List<EventListener> list;
+                _eventList.TryGetValue(key, out list);
+                if (list != null)
+                    foreach (EventListener listener in list)
+                        if (listener.isRemoved)
+                        {
+                            List<EventListener> listenerList = GetListenersList(listener.eventCode);
+                            if (listenerList != null)
+                                listenerList.Remove(listener);
+                        }
+            }
+        }
+
+        _cachedAddedListeners.Clear();
+    }
+
+    private IEnumerator RemoveListenerCoroutine()
+    {
+        yield return new WaitForEndOfFrame();
+        if (_cachedRemovedListeners.Count > 0)
+            foreach (EventListener listener in _cachedRemovedListeners)
+            {
+                listener.isRemoved = true;
+                if (_cachedAddedListeners.Count == 0)
+                {
+                    List<EventListener> listenerList = GetListenersList(listener.eventCode);
+                    if (listenerList != null)
+                        listenerList.Remove(listener);
+                }
+            }
+
+        _cachedRemovedListeners.Clear();
+    }
+
     /// <summary>
     /// Get listener list of certain event code
     /// </summary>

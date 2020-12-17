@@ -108,14 +108,14 @@ public class PlayerInputIngame : MonoBehaviour
 
     private void OnMovingTouch(Touch touch)
     {
-        EventSystem.instance.DispatchEvent(EventCode.ON_MOVING_TOUCH, new object[] { touch });
+        CustomEventSystem.instance.DispatchEvent(EventCode.ON_MOVING_TOUCH, new object[] { touch });
         if (touch.phase == TouchPhase.Ended)
             _currentMovingFingerId = -1;
     }
 
     private void OnShootingTouch(Touch touch)
     {
-        EventSystem.instance.DispatchEvent(EventCode.ON_SHOOTING_TOUCH, new object[] { touch });
+        CustomEventSystem.instance.DispatchEvent(EventCode.ON_SHOOTING_TOUCH, new object[] { touch });
         if (touch.phase == TouchPhase.Ended)
             _currentShootingFingerId = -1;
     }

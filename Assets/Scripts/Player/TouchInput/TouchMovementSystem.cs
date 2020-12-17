@@ -37,14 +37,14 @@ public class TouchMovementSystem : MonoBehaviour
     private void AddListeners()
     {
         _eventListener = new EventListener[1];
-        _eventListener[0] = EventSystem.instance.AddListener(EventCode.ON_MOVING_TOUCH, this, OnMovingTouch);
+        _eventListener[0] = CustomEventSystem.instance.AddListener(EventCode.ON_MOVING_TOUCH, this, OnMovingTouch);
     }
 
     private void RemoveListeners()
     {
         foreach (EventListener listener in _eventListener)
         {
-            EventSystem.instance.RemoveListener(listener.eventCode, listener);
+            CustomEventSystem.instance.RemoveListener(listener.eventCode, listener);
         }
     }
 
@@ -86,7 +86,6 @@ public class TouchMovementSystem : MonoBehaviour
         currentTouchPosition = CameraManager.mainCamera.ScreenToWorldPoint(currentTouchPosition);
         currentTouchPosition.z = 0;
         Vector3 delta = currentTouchPosition - _lastTouchPosition;
-        Debug.Log(delta);
         if (delta.sqrMagnitude > 0.02f)
         {
             Vector3 movingOffset = currentTouchPosition - _lastTouchPosition;

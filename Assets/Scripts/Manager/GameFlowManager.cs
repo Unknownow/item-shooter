@@ -57,7 +57,7 @@ public class GameFlowManager : MonoBehaviour
         OnPause();
         Manager.instance.ResetPlayer();
         Manager.instance.ResetPoint();
-        EventSystem.instance.DispatchEvent(EventCode.ON_MAIN_MENU);
+        CustomEventSystem.instance.DispatchEvent(EventCode.ON_MAIN_MENU);
         _isPlaying = true;
     }
 
@@ -78,7 +78,7 @@ public class GameFlowManager : MonoBehaviour
         OnPause();
         Manager.instance.ResetPlayer();
         Manager.instance.ResetPoint();
-        EventSystem.instance.DispatchEvent(EventCode.ON_RESET_GAME);
+        CustomEventSystem.instance.DispatchEvent(EventCode.ON_RESET_GAME);
         _countdownTime = 3;
         StartCoroutine("CountdownStartGame");
     }
